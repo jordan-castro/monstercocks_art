@@ -48,7 +48,7 @@ const parseAttributes = (cockJson) => {
  * 
  * @returns `MonsterCock`
  */
-const parseCock = (cockJson, specials?) => {
+export const parseCock = (cockJson, specials?) => {
     // La data
     let cockId = cockJson.tokenId;
     let cockName = cockJson.name;
@@ -56,9 +56,18 @@ const parseCock = (cockJson, specials?) => {
     let cockImage = cockJson.image;
     
     // Los attributes
-
+    let attributes = parseAttributes(cockJson);
     
     if (specials !== undefined) {
         cockId = specials.id;
     }
+
+    // Regresa el MonsterCock
+    return new MonsterCock(
+        cockId,
+        cockName,
+        cockUri,
+        cockImage,
+        attributes
+    );
 }
