@@ -1,24 +1,23 @@
-import { AbiItem } from 'web3-utils';
-import Web3 from 'web3';
-import Abi from '../utils/abi.json';
 import Attribute from '../models/attribute';
 import MonsterCock from '../models/cock';
 
 /**
  * Crea una lista de attributes sobre JSON.
  * 
- * @param cockJson 
- * JSON, el cock JSON.
+ * @param attributesJson 
+ * JSON, el JSON de los attributos.
  * 
  * @returns `Attribute[]`
  */
-const parseAttributes = (cockJson) => {
+const parseAttributes = (attributesJson) => {
     let attributes: Attribute[] = [];
 
+    console.log(attributesJson);
+
     // Loop sobre los attributes
-    for (var x = 0; x < cockJson.attributes.lenght; x++) {
+    for (var x = 0; x < attributesJson.length; x++) {
         // Creamos el attribute
-        var attribute = cockJson.attributes[x];
+        var attribute = attributesJson[x];
         // Un push
         attributes.push(
             new Attribute(
@@ -32,7 +31,7 @@ const parseAttributes = (cockJson) => {
 }
 
 /**
- * Crea un objecto de MonsterCock por una respuesta de cuerpo.
+ * Crea un objecto de MonsterCock por una respuesta de JSON.
  * 
  * @param cockJson 
  * JSON, un cock en representacion JSON.
@@ -49,6 +48,8 @@ const parseAttributes = (cockJson) => {
  * @returns `MonsterCock`
  */
 export const parseCock = (cockJson, specials?) => {
+    console.log(cockJson);
+
     // La data
     let cockId = cockJson.tokenId;
     let cockName = cockJson.name;
