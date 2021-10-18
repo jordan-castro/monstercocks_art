@@ -3,7 +3,6 @@ import Web3 from 'web3';
 import Abi from '../utils/abi.json';
 import MonsterCock from '../models/cock';
 import { API_COCK_GATEWAY, API_KEY } from '../utils/server_keys';
-import axios from 'axios';
 import { MCK_BASE, CONTRACT_ADDRESS } from '../utils/globals';
 import { parseCock } from './parse_cocks';
 import valid_http from '../utils/valid_http';
@@ -43,7 +42,10 @@ export async function fetchCocks(): Promise<MonsterCock[]> {
     return cocks;
 }
 
+// TODO move all fetches to Centrelized server to save time!
+
 /**
+ * 
  * Buscamos un cock sobre el smart contract por su ID.
  * 
  * @param id
