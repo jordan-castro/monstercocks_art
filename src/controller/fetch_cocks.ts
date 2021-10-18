@@ -13,7 +13,22 @@ import MonsterCock from '../models/cock';
  * @returns `Attribute[]`
  */
 const parseAttributes = (cockJson) => {
+    let attributes: Attribute[] = [];
 
+    // Loop sobre los attributes
+    for (var x = 0; x < cockJson.attributes.lenght; x++) {
+        // Creamos el attribute
+        var attribute = cockJson.attributes[x];
+        // Un push
+        attributes.push(
+            new Attribute(
+                attribute.type,
+                attribute.value
+            )
+        );
+    }
+
+    return attributes;
 }
 
 /**
