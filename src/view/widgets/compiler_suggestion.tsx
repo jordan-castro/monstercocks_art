@@ -1,0 +1,1 @@
+export const CompilerSuggestion = () => <div>Compiler Suggestion</div>;
