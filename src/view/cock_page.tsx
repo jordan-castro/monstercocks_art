@@ -18,14 +18,22 @@ export function CockPage() {
     );
 }
 
-class CockPageBuilder extends React.Component<{ id?: number }, { cock?: MonsterCock, loading: boolean, error: boolean, owner: string }> {
+class CockPageBuilder extends React.Component<
+    { id?: number },
+    {
+        cock?: MonsterCock,
+        loading: boolean,
+        error: boolean,
+        owner: string,
+    }>
+{
     constructor(props) {
         super(props);
         this.state = {
             cock: props.cock,
             loading: true,
             error: false,
-            owner: 'Loading...'
+            owner: 'Loading...',
         };
     }
 
@@ -92,7 +100,8 @@ class CockPageBuilder extends React.Component<{ id?: number }, { cock?: MonsterC
                         <div className="cock-col">
                             <CockCard
                                 cock={(this.state.cock as MonsterCock)}
-                                main={true} />
+                                main={true}
+                            />
                             <AttributesWidget
                                 attributes={(this.state.cock as MonsterCock).attributes}
                             />
