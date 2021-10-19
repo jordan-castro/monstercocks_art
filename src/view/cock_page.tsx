@@ -6,6 +6,9 @@ import { CompilerSuggestion } from "./widgets/compiler_suggestion";
 import { Loader } from "./widgets/loader";
 import { useParams } from 'react-router-dom';
 import { CockCard } from "./widgets/cocks/cock_card";
+import fetchOwner from "../controller/fetch_owner";
+import './css/cock_page.css';
+import { Banner } from "./widgets/side_banner/banner";
 
 export function CockPage() {
     var { id } = useParams();
@@ -15,13 +18,14 @@ export function CockPage() {
     );
 }
 
-class CockPageBuilder extends React.Component<{ id?: number }, { cock?: MonsterCock, loading: boolean, error: boolean }> {
+class CockPageBuilder extends React.Component<{ id?: number }, { cock?: MonsterCock, loading: boolean, error: boolean, owner: string }> {
     constructor(props) {
         super(props);
         this.state = {
             cock: props.cock,
             loading: true,
             error: false,
+            owner: 'Loading...'
         };
     }
 
@@ -30,6 +34,17 @@ class CockPageBuilder extends React.Component<{ id?: number }, { cock?: MonsterC
             error: true,
             loading: false,
         });
+    }
+
+    async grabOwner() {
+        // Busca el owner
+        const owner = await fetchOwner((this.state.cock as MonsterCock).id);
+        // Chequea si no es falso
+        if (owner !== false) {
+            this.setState({
+                owner
+            });
+        }
     }
 
     componentDidMount() {
@@ -49,6 +64,8 @@ class CockPageBuilder extends React.Component<{ id?: number }, { cock?: MonsterC
                             error: false,
                             cock: cock
                         });
+                        // Busca owner
+                        this.grabOwner();
                     }
                 }
                 ).catch((error) => this.compilerSuggestion());
@@ -71,13 +88,20 @@ class CockPageBuilder extends React.Component<{ id?: number }, { cock?: MonsterC
                 : this.state.error
                     ? <CompilerSuggestion />
                     :
-                    <>
-                        <h1 color='white'>{(this.state.cock as MonsterCock).name}</h1>
-                        <CockCard cock={(this.state.cock as MonsterCock)} main={true}/>
-                        <AttributesWidget
-                            attributes={(this.state.cock as MonsterCock).attributes}
+                    <div className="cock-row">
+                        <div className="cock-col">
+                            <CockCard
+                                cock={(this.state.cock as MonsterCock)}
+                                main={true} />
+                            <AttributesWidget
+                                attributes={(this.state.cock as MonsterCock).attributes}
+                            />
+                        </div>
+                        <Banner
+                            owner={this.state.owner}
+                            cock={(this.state.cock as MonsterCock)}
                         />
-                    </>
+                    </div>
         );
     }
 }
