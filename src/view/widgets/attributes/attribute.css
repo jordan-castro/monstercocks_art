@@ -1,0 +1,10 @@
+.attributes {
+
+}
+
+.attribute {
+    background-color: steelblue;
+    color: white;
+    width: fit-content + 20px;
+    height: fit-content + 20px;
+}
