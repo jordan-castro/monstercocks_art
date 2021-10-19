@@ -54,9 +54,9 @@ export async function fetchCocks(): Promise<MonsterCock[]> {
 export async function fetchCock(id: number): Promise<MonsterCock | false> {
     const contract = connectToContract();    
     // Busca el max que puede ser un cock.
-    const maxCockId = await contract.methods.mostRecentToken().call();
+    const maxCockId = +(await contract.methods.mostRecentToken().call());
 
-    // No existe
+    // No existe    
     if (id >= maxCockId || id < 0) {
         return false;
     }
