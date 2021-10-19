@@ -7,7 +7,7 @@ function AttributeWidget(props: { attribute?: Attribute }) {
     return (
         <div className="attribute">
             {
-                attribute !== undefined ?
+                attribute !== undefined ? // Si el attribute no existe no muestra nada!
                     <>
                         <span className='attribute-title'>{attribute.type}</span>
                         <span className='attribute-body'>
@@ -22,6 +22,9 @@ function AttributeWidget(props: { attribute?: Attribute }) {
     );
 }
 
+/**
+ * El Elemento para Mostrar Attributes! 
+ */
 export default function AttributesWidget(props: { attributes?: Attribute[] }) {
     const { attributes } = props;
 
