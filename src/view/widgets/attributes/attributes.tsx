@@ -34,7 +34,7 @@ export default function AttributesWidget(props: { attributes?: Attribute[] }) {
                 attributes !== undefined
                     ? attributes.map((attribute) => <AttributeWidget
                         attribute={attribute}
-                        key={attribute.type}
+                        key={attribute.type + attribute.value}
                     />)
                     : null
             }
