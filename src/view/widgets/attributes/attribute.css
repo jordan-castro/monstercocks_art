@@ -1,10 +1,27 @@
 .attributes {
-
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    width: 50%;
+    margin: auto;
 }
 
 .attribute {
     background-color: steelblue;
-    color: white;
-    width: fit-content + 20px;
-    height: fit-content + 20px;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
 }
+
+.attribute-title {
+    color: rgb(8, 58, 99);
+    margin: auto;
+    font-size: 20px;
+}
+
+.attribute-body {
+    color: white;
+    margin: auto;
+    text-align: center;
+} 

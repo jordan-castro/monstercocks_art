@@ -5,6 +5,7 @@ import AttributesWidget from "./widgets/attributes/attributes";
 import { CompilerSuggestion } from "./widgets/compiler_suggestion";
 import { Loader } from "./widgets/loader";
 import { useParams } from 'react-router-dom';
+import { CockCard } from "./widgets/cocks/cock_card";
 
 export function CockPage() {
     var { id } = useParams();
@@ -69,9 +70,14 @@ class CockPageBuilder extends React.Component<{ id?: number }, { cock?: MonsterC
                 ? <Loader />
                 : this.state.error
                     ? <CompilerSuggestion />
-                    : <AttributesWidget
-                        attributes={(this.state.cock as MonsterCock).attributes}
-                    />
+                    :
+                    <>
+                        <h1 color='white'>{(this.state.cock as MonsterCock).name}</h1>
+                        <CockCard cock={(this.state.cock as MonsterCock)} main={true}/>
+                        <AttributesWidget
+                            attributes={(this.state.cock as MonsterCock).attributes}
+                        />
+                    </>
         );
     }
 }

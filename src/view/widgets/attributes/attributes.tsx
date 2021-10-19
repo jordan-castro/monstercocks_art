@@ -1,4 +1,5 @@
 import Attribute from '../../../models/attribute';
+import './attribute.css';
 
 function AttributeWidget(props: { attribute?: Attribute }) {
     const { attribute } = props;
@@ -8,8 +9,12 @@ function AttributeWidget(props: { attribute?: Attribute }) {
             {
                 attribute !== undefined ?
                     <>
-                        <span>{attribute.type}</span>
-                        <span>{attribute.value}</span>
+                        <span className='attribute-title'>{attribute.type}</span>
+                        <span className='attribute-body'>
+                            {
+                                attribute.value.split('-').map((val) => val + " ")
+                            }
+                        </span>
                     </>
                     : null
             }
