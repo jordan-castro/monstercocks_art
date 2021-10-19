@@ -1,0 +1,10 @@
+.cock-row {
+    display: flex;
+    direction: ltr;
+    margin-left: 20%;
+}
+
+.cock-col {
+    display: flex;
+    flex-direction: column;
+}
