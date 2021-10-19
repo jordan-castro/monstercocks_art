@@ -1,9 +1,9 @@
-import { Avatar, Button } from "@mui/material";
 import MonsterCock from "../../../models/cock";
 import { OPENSEA_DARK_BANNER, OPENSEA_LIGHT_BANNER } from "../../../utils/globals";
 import { openseaUrl } from "../../../utils/url_builder";
 import { styled } from '@mui/material/styles';
 import ButtonBase from '@mui/material/ButtonBase';
+import './store_buttons.css';
 
 export enum StoreButtons { opensea, solart }
 
@@ -24,18 +24,19 @@ export const StoreButton = (props: { type: StoreButtons, cock: MonsterCock }) =>
 
     return (
         <ImageButton
+            className="store-button"
             onClick={() => window.open(openseaUrl(cock.id))}
         >
-            <img src={OPENSEA_DARK_BANNER}/>
+            <img
+                src={OPENSEA_LIGHT_BANNER}
+            />
         </ImageButton>
     );
 }
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
     position: 'relative',
-    height: 200,
     [theme.breakpoints.down('sm')]: {
-        width: '100% !important', // Overrides inline-style
         height: 100,
     },
     '&:hover, &.Mui-focusVisible': {
