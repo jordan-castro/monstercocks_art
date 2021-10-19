@@ -1,11 +1,9 @@
-import { AbiItem } from 'web3-utils';
-import Web3 from 'web3';
-import Abi from '../utils/abi.json';
 import MonsterCock from '../models/cock';
 import { API_COCK_GATEWAY, API_KEY } from '../utils/server_keys';
-import { MCK_BASE, CONTRACT_ADDRESS } from '../utils/globals';
+import { MCK_BASE } from '../utils/globals';
 import { parseCock } from './parse_cocks';
 import valid_http from '../utils/valid_http';
+import connectToContract from './contract_con';
 
 /**
  * Hacemos un fetch del server para los cocks!
@@ -54,17 +52,12 @@ export async function fetchCocks(): Promise<MonsterCock[]> {
  * @returns `Promise<MonsteCock | false>`
  */
 export async function fetchCock(id: number): Promise<MonsterCock | false> {
-    // Connecta a web3.
-    const web3 = new Web3(new Web3.providers.HttpProvider("https://rpc-mainnet.maticvigil.com/"));
-    // Connecta el contract
-    const contract = new web3.eth.Contract(Abi as AbiItem[], CONTRACT_ADDRESS)
+    const contract = connectToContract();    
     // Busca el max que puede ser un cock.
     const maxCockId = await contract.methods.mostRecentToken().call();
 
     // No existe
-    if (id >= maxCockId) {
-        return false;
-    } else if (id < 0) {
+    if (id >= maxCockId || id < 0) {
         return false;
     }
 
