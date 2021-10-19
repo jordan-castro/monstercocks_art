@@ -54,6 +54,12 @@ class CockPageBuilder extends React.Component<{ id?: number }, { cock?: MonsterC
             } else {
                 this.compilerSuggestion();
             }
+        } else {
+            // Ya tenemos un cock!
+            this.setState({
+                loading: false,
+                error: false
+            });
         }
     }
 
