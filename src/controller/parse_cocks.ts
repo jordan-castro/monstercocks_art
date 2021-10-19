@@ -12,8 +12,6 @@ import MonsterCock from '../models/cock';
 const parseAttributes = (attributesJson) => {
     let attributes: Attribute[] = [];
 
-    console.log(attributesJson);
-
     // Loop sobre los attributes
     for (var x = 0; x < attributesJson.length; x++) {
         // Creamos el attribute
@@ -21,7 +19,7 @@ const parseAttributes = (attributesJson) => {
         // Un push
         attributes.push(
             new Attribute(
-                attribute.type,
+                attribute.type || attribute.trait_type,
                 attribute.value
             )
         );
@@ -48,8 +46,6 @@ const parseAttributes = (attributesJson) => {
  * @returns `MonsterCock`
  */
 export const parseCock = (cockJson, specials?) => {
-    console.log(cockJson);
-
     // La data
     let cockId = cockJson.tokenId;
     let cockName = cockJson.name;
@@ -57,10 +53,11 @@ export const parseCock = (cockJson, specials?) => {
     let cockImage = cockJson.image;
     
     // Los attributes
-    let attributes = parseAttributes(cockJson);
+    let attributes = parseAttributes(cockJson.attributes);
     
     if (specials !== undefined) {
         cockId = specials.id;
+        cockUri = specials.uri;
     }
 
     // Regresa el MonsterCock
