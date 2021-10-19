@@ -84,7 +84,10 @@ export async function fetchCock(id: number): Promise<MonsterCock | false> {
     }
 
     // Ok tenemos data
-    const cock = parseCock(response.data);
+    const cock = parseCock(response.data, {
+        id,
+        uri
+    });
 
     return cock;
 }
