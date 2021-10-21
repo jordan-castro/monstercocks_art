@@ -31,3 +31,10 @@ code {
   left: 50%;
   margin: -25px 0 0 -25px; /* Apply negative top and left margins to truly center the element */
 }
+
+.center-within-div {
+  /* Center vertically and horizontally */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
