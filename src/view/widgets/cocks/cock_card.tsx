@@ -2,7 +2,8 @@ import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import React from "react";
 import MonsterCock from "../../../models/cock";
 import './cock.css';
-import Skeleton from '@mui/material/Skeleton';
+import { Loader } from "../loader";
+import { height } from "@mui/system";
 
 /**
  * Una carta para un Cock.
@@ -14,25 +15,44 @@ export class CockCard extends React.Component<{ cock?: MonsterCock, main?: boole
             loading: true,
         };
     }
+    /** 
+     * El nombre dek css para el carta de cock 
+     */
     cName = this.props.main !== undefined
         ? this.props.main
             ? 'cock-main' : 'cock-def'
         : 'cock-def';
 
+    /**
+     *  El elemento del imagen.
+     */
     img() {
-        return this.state.loading ? <Skeleton
-            sx={{ bgcolor: 'grey.900' }}
-            variant="rectangular"
-            width={'1000'}
-            height={800}
-        /> : <CardMedia
-            component='img'
-            // height="800"
-            image={this.props.cock?.image}
-            onLoad={function () {
-                console.log("Cargado");
-            }}
-        />;
+        return (
+            <>
+                <img
+                    src={this.props.cock?.image}
+                    onLoad={() => this.setState({
+                        loading: false,
+                    })}
+                    style={{
+                        display: this.state.loading ? 'none' : 'flex',
+                    }}
+                    className={this.cName}
+                />
+                <div
+                    style={{
+                        display: this.state.loading ? 'flex' : 'none',
+                        justifyContent: 'center',
+                        backgroundColor: 'black',
+                        height: '800px'
+                    }}
+                >
+                    <Loader
+                        centerType='center-within-div'
+                    />
+                </div>
+            </>
+        );
     }
 
     render() {
