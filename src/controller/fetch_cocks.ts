@@ -71,6 +71,7 @@ export async function fetchCock(id: number): Promise<MonsterCock | false> {
 
     // Funciono! busca con get!
     const response = await valid_http(uri);
+
     // Chequea por suggestion de compiler
     if (response === false) {
         return false;
