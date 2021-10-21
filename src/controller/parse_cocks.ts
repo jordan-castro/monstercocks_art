@@ -60,12 +60,14 @@ export const parseCock = (cockJson, specials?) => {
         cockUri = specials.uri;
     }
 
+    const pinataBase = "https://gateway.pinata.cloud/ipfs/";
+
     // Regresa el MonsterCock
     return new MonsterCock(
         cockId,
         cockName,
-        cockUri,
-        cockImage,
+        pinataBase + cockUri.split('ipfs/')[1],
+        pinataBase + cockImage.split('ipfs/')[1],
         attributes
     );
 }
