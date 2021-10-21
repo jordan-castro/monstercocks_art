@@ -9,6 +9,9 @@ import { CockCard } from "./widgets/cocks/cock_card";
 import fetchOwner from "../controller/fetch_owner";
 import './css/cock_page.css';
 import { Banner } from "./widgets/side_banner/banner";
+import Header from "./widgets/Header/Header";
+import Breadcrumb from "./widgets/Breadcrumb/Breadcrumb";
+import ItemDetails from "./widgets/ItemDetails/ItemDetails";
 
 export function CockPage() {
     var { id } = useParams();
@@ -95,22 +98,31 @@ class CockPageBuilder extends React.Component<
                 ? <Loader />
                 : this.state.error
                     ? <CompilerSuggestion />
-                    :
-                    <div className="cock-row">
-                        <div className="cock-col">
-                            <CockCard
-                                cock={(this.state.cock as MonsterCock)}
-                                main={true}
-                            />
-                            <AttributesWidget
-                                attributes={(this.state.cock as MonsterCock).attributes}
-                            />
-                        </div>
-                        <Banner
-                            owner={this.state.owner}
-                            cock={(this.state.cock as MonsterCock)}
+                    : <>
+                        <Header />
+                        <Breadcrumb
+                            title={this.state.cock?.name}
+                            subpage="Cocks"
+                            page={this.state.cock?.name}
                         />
-                    </div>
+                        <ItemDetails />
+                        
+                    </>
+            // <div className="cock-row">
+            //     <div className="cock-col">
+            //         <CockCard
+            //             cock={(this.state.cock as MonsterCock)}
+            //             main={true}
+            //         />
+            //         <AttributesWidget
+            //             attributes={(this.state.cock as MonsterCock).attributes}
+            //         />
+            //     </div>
+            //     <Banner
+            //         owner={this.state.owner}
+            //         cock={(this.state.cock as MonsterCock)}
+            //     />
+            // </div>
         );
     }
 }
