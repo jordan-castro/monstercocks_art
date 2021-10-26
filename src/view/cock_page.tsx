@@ -1,5 +1,5 @@
 import React from "react";
-import { fetchCock } from "../controller/fetch_cocks";
+import { cockAmount, fetchCock } from "../controller/fetch_cocks";
 import MonsterCock from "../models/cock";
 import AttributesWidget from "./widgets/attributes/attributes";
 import { CompilerSuggestion } from "./widgets/compiler_suggestion";
@@ -28,6 +28,7 @@ class CockPageBuilder extends React.Component<
         loading: boolean,
         error: boolean,
         owner: string,
+        totalAmount: number,
     }>
 {
     constructor(props) {
@@ -37,6 +38,7 @@ class CockPageBuilder extends React.Component<
             loading: true,
             error: false,
             owner: 'Loading...',
+            totalAmount: 0,
         };
     }
 
@@ -54,6 +56,17 @@ class CockPageBuilder extends React.Component<
         if (owner !== false) {
             this.setState({
                 owner
+            });
+        }
+    }
+
+    async grabAmount() {
+        // Busca el amounto
+        const amount = await cockAmount();
+        // Chequea que funciono
+        if (amount != -1) {
+            this.setState({
+                totalAmount: amount - 1
             });
         }
     }
@@ -77,6 +90,8 @@ class CockPageBuilder extends React.Component<
                         });
                         // Busca owner
                         this.grabOwner();
+                        // Busca amounto
+                        this.grabAmount();
                     }
                 }
                 ).catch((error) => this.compilerSuggestion());
@@ -104,9 +119,15 @@ class CockPageBuilder extends React.Component<
                             title={this.state.cock?.name}
                             subpage="Cocks"
                             page={this.state.cock?.name}
+
                         />
-                        <ItemDetails />
-                        
+                        <ItemDetails 
+                            cock={this.state.cock}
+                            owner={this.state.owner}
+                            totalAmount={this.state.totalAmount}
+                            dateCreated='Today'
+                        />
+
                     </>
             // <div className="cock-row">
             //     <div className="cock-col">

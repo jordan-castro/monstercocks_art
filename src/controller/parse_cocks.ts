@@ -1,5 +1,6 @@
 import Attribute from '../models/attribute';
 import MonsterCock from '../models/cock';
+import { MCK_BASE } from '../utils/globals';
 
 /**
  * Crea una lista de attributes sobre JSON.
@@ -60,14 +61,12 @@ export const parseCock = (cockJson, specials?) => {
         cockUri = specials.uri;
     }
 
-    const pinataBase = "https://gateway.pinata.cloud/ipfs/";
-
     // Regresa el MonsterCock
     return new MonsterCock(
         cockId,
         cockName,
-        pinataBase + cockUri.split('ipfs/')[1],
-        pinataBase + cockImage.split('ipfs/')[1],
+        cockUri,
+        MCK_BASE + cockImage,
         attributes
     );
 }

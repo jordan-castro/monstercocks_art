@@ -4,17 +4,22 @@ import { MCK_BASE } from '../utils/globals';
 import { parseCock } from './parse_cocks';
 import valid_http from '../utils/valid_http';
 import connectToContract from './contract_con';
+import { validId } from '../utils/valid_id';
 
 /**
  * Hacemos un fetch del server para los cocks!
  * 
+ * @param pageNumber
+ * number?, el numero de pagina.
+ * 
  * @returns `Promise<MonsterCock[]>`
  */
-export async function fetchCocks(): Promise<MonsterCock[]> {
+export async function fetchCocks(pageNumber?: number): Promise<MonsterCock[]> {
     // Los params
     const params = {
         q: 'cocks',
-        p: API_KEY
+        p: API_KEY,
+        n: pageNumber !== undefined ? pageNumber.toString() : '0'
     };
 
     // Busca la data del server
@@ -52,36 +57,24 @@ export async function fetchCocks(): Promise<MonsterCock[]> {
  * @returns `Promise<MonsteCock | false>`
  */
 export async function fetchCock(id: number): Promise<MonsterCock | false> {
-    const contract = connectToContract();    
-    // Busca el max que puede ser un cock.
-    const maxCockId = +(await contract.methods.mostRecentToken().call());
-
-    // No existe    
-    if (id >= maxCockId || id < 0) {
+    if (!(await validId(id))) {
         return false;
     }
 
-    // Busca el uri del token
-    const uri = await contract.methods.tokenURI(id).call();
+    // Ahora llama el API
+    const response = await valid_http(`${MCK_BASE}${API_COCK_GATEWAY}`, {
+        params: {
+            p: API_KEY,
+            q: 'cock',
+            tokenId: id.toString()
+        }
+    })
 
-    // Chequea por error
-    if (uri === false) {
-        return false;
-    }
-
-    // Funciono! busca con get!
-    const response = await valid_http(uri);
-
-    // Chequea por suggestion de compiler
+    // Chequea no funciono
     if (response === false) {
         return false;
     }
 
-    // Ok tenemos data
-    const cock = parseCock(response.data, {
-        id,
-        uri
-    });
-
-    return cock;
+    // Parse y regresa el cock
+    return parseCock(response.data);
 }
