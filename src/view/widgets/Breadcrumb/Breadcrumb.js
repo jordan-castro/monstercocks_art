@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class Breadcrumb extends Component {
     render() {
         return (
-            <section className="breadcrumb-area overlay-dark d-flex align-items-center bg-white">
+            <section className="breadcrumb-area d-flex align-items-center bg-blue-black">
                 <div className="container">
                     <div className="row">
                         <div className="col-12">

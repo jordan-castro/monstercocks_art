@@ -38,3 +38,8 @@ code {
   justify-content: center;
   align-items: center;
 }
+
+/* Css para colores de #1e1f26 */
+.bg-blue-black {
+  background-color: #1e1f26;
+}
