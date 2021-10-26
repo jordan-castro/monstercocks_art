@@ -38,7 +38,7 @@ export async function fecthTransactions(id: number, pageNumber?: number): Promis
 
     let transactions: Transaction[] = [];
     // Ahora hacemos parse
-    for (var tx of transactions) {
+    for (var tx of (response.data as any[])) {
         transactions.push(parseTransaction(tx));
     }
 
