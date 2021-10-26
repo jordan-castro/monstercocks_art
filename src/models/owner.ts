@@ -7,7 +7,7 @@ export default class Owner {
     date: Date;
     isCurrentOwner: boolean;
 
-    constructor(address, previous, tokenId, date, isCurrentOwner) {
+    constructor(address: string, previous: string, tokenId: number, date: string, isCurrentOwner: boolean) {
         this.address = address;
         this.previous = previous;
         this.tokenId = tokenId;
