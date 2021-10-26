@@ -15,6 +15,10 @@ const validHttpResponse = (response: AxiosResponse) => {
     }
 
     if (response.data) {
+        // Chequa failado.
+        if (+(response.data as string) < 1) {
+            return false;
+        } 
         return true;
     } else {
         return false;
