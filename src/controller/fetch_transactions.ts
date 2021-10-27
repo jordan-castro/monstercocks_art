@@ -45,6 +45,38 @@ export async function fecthTransactions(id: number, pageNumber?: number): Promis
     return transactions;
 }
 
+/**
+ * Busca el transactione genesis de un cock.
+ * 
+ * @param id 
+ * number, El id del cock. 
+ * 
+ * @returns `Promise<Transaction| false>`
+ */
+export async function fetchCreatorTransaction(id: number): Promise<Transaction | false> {
+    // Verifica ID
+    if (!(await validId(id))) {
+        return false;
+    }
+
+    // Llama API
+    const response = await valid_http(`${MCK_BASE}${API_COCK_GATEWAY}`, {
+        params: {
+            q: 'creator',
+            p: API_KEY,
+            tokenId: id.toString(),
+        }
+    });
+
+    // Chequea falso
+    if (response === false) {
+        return false;
+    }
+
+    // Ahora hacemos parse
+    return parseTransaction(response.data);
+}
+
 // TODO un transaction?!
 
 const parseTransaction = (transactionData) => {
