@@ -16,10 +16,9 @@ import { fecthTransactions, fetchCreatorTransaction } from "../controller/fetch_
 import ModalSearch from "./widgets/Modal/ModalSearch";
 import ModalMenu from "./widgets/Modal/ModalMenu";
 import Scrollup from "./widgets/Scrollup/Scrollup";
-import Sidebar from "./widgets/Sidebar/Sidebar";
 
 export function CockPage() {
-    var { id } = useParams();
+    let { id } = useParams();
 
     return (
         <CockPageBuilder id={id} />
