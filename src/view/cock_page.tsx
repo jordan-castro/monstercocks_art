@@ -1,17 +1,22 @@
 import React from "react";
-import { cockAmount, fetchCock } from "../controller/fetch_cocks";
+import { fetchCock } from "../controller/fetch_cocks";
 import MonsterCock from "../models/cock";
-import AttributesWidget from "./widgets/attributes/attributes";
 import { CompilerSuggestion } from "./widgets/compiler_suggestion";
 import { Loader } from "./widgets/loader";
 import { useParams } from 'react-router-dom';
-import { CockCard } from "./widgets/cocks/cock_card";
-import fetchOwner from "../controller/fetch_owner";
+import { fetchOwner, fetchOwners } from "../controller/fetch_owner";
 import './css/cock_page.css';
-import { Banner } from "./widgets/side_banner/banner";
 import Header from "./widgets/Header/Header";
 import Breadcrumb from "./widgets/Breadcrumb/Breadcrumb";
 import ItemDetails from "./widgets/ItemDetails/ItemDetails";
+import Owner from "../models/owner";
+import { cockAmount } from "../utils/valid_id";
+import Transaction from "../models/transaction";
+import { fecthTransactions, fetchCreatorTransaction } from "../controller/fetch_transactions";
+import ModalSearch from "./widgets/Modal/ModalSearch";
+import ModalMenu from "./widgets/Modal/ModalMenu";
+import Scrollup from "./widgets/Scrollup/Scrollup";
+import Sidebar from "./widgets/Sidebar/Sidebar";
 
 export function CockPage() {
     var { id } = useParams();
@@ -27,8 +32,15 @@ class CockPageBuilder extends React.Component<
         cock?: MonsterCock,
         loading: boolean,
         error: boolean,
-        owner: string,
+        owner?: Owner,
         totalAmount: number,
+        transactions?: Transaction[],
+        owners?: Owner[],
+        siblings?: {
+            previous?: MonsterCock,
+            next?: MonsterCock
+        },
+        creator?: Transaction,
     }>
 {
     constructor(props) {
@@ -37,29 +49,51 @@ class CockPageBuilder extends React.Component<
             cock: props.cock,
             loading: true,
             error: false,
-            owner: 'Loading...',
             totalAmount: 0,
+            siblings: {
+                previous: undefined,
+                next: undefined,
+            },
         };
     }
 
-    compilerSuggestion() {
+    // Suggestion de compiler
+    compilerSuggestion(error?) {
+        // Si hay un erro entonces console.log
+        if (error) {
+            console.log(error);
+        }
+
         this.setState({
             error: true,
             loading: false,
         });
     }
 
-    async grabOwner() {
+    // Carga el dueno del cock.
+    async grabOwners() {
         // Busca el owner
         const owner = await fetchOwner((this.state.cock as MonsterCock).id);
-        // Chequea si no es falso
+        // Busca los owners 
+        const owners = await fetchOwners((this.state.cock as MonsterCock).id);
+        // Pon la data si no hay error con owner
         if (owner !== false) {
             this.setState({
-                owner
+                owner: owner,
+                owners: owners,
             });
         }
     }
 
+    // Load the transactions for the coc
+    async loadTransactions() {
+        const transactions = await fecthTransactions((this.state.cock as MonsterCock).id);
+        this.setState({
+            transactions
+        });
+    }
+
+    // Carga el amount de cocks que hay en este momento
     async grabAmount() {
         // Busca el amounto
         const amount = await cockAmount();
@@ -71,6 +105,57 @@ class CockPageBuilder extends React.Component<
         }
     }
 
+    // Busca el creador del cock.
+    async grabCreator() {
+        // Fecth el creador
+        const creator = await fetchCreatorTransaction((this.state.cock as MonsterCock).id);
+        // Chequea que no haya error
+        if (creator !== false) {
+            this.setState({
+                creator
+            });
+        }
+    }
+
+    // Fetch previos and next cock based on the current cock id.
+    async fetchSiblings() {
+        // Toma los ids
+        const previousId = (this.state.cock as MonsterCock).id - 1;
+        const nextId = (this.state.cock as MonsterCock).id + 1;
+        const siblings: {
+            previous?: MonsterCock;
+            next?: MonsterCock;
+        } = {};
+
+        // Chequea si previos id es mas o igual a 0
+        if (previousId >= 0) {
+            // Toma el previo
+            const previousCock = await fetchCock(previousId);
+            // Chequea que no haya error
+            if (previousCock !== false) {
+                // Pone el previo
+                siblings.previous = (previousCock as MonsterCock);
+            }
+        }
+
+        // Chequea si next es menos el cock amount
+        if (nextId < this.state.totalAmount) {
+            // Toma el next
+            const nextCock = await fetchCock(nextId);
+            // Chequea que no haya error
+            if (nextCock !== false) {
+                // Pone el next
+                siblings.next = (nextCock as MonsterCock);
+            }
+        }
+
+
+        // Ponemos los cocks
+        this.setState({
+            siblings: siblings
+        });
+    }
+
     componentDidMount() {
         // Chequea si cock no existe
         if (this.state.cock === undefined) {
@@ -80,7 +165,7 @@ class CockPageBuilder extends React.Component<
                 fetchCock(this.props.id).then((cock) => {
                     if (cock === false) {
                         // Suggestion de compiler
-                        this.compilerSuggestion();
+                        this.compilerSuggestion('No cock');
                     } else {
                         // Tenemos un cock!
                         this.setState({
@@ -88,15 +173,22 @@ class CockPageBuilder extends React.Component<
                             error: false,
                             cock: cock
                         });
-                        // Busca owner
-                        this.grabOwner();
+                        // Carga el owners
+                        this.grabOwners();
+                        // Busca transacciones
+                        this.loadTransactions();
                         // Busca amounto
-                        this.grabAmount();
+                        this.grabAmount().then(() => {
+                            // Busca previos y next
+                            this.fetchSiblings();
+                        });
+                        this.grabCreator();
                     }
                 }
-                ).catch((error) => this.compilerSuggestion());
+                ).catch((error) => this.compilerSuggestion(error));
             } else {
-                this.compilerSuggestion();
+                // Suggestion de compiler
+                this.compilerSuggestion('No id');
             }
         } else {
             // Ya tenemos un cock!
@@ -121,29 +213,19 @@ class CockPageBuilder extends React.Component<
                             page={this.state.cock?.name}
 
                         />
-                        <ItemDetails 
+                        <ItemDetails
                             cock={this.state.cock}
                             owner={this.state.owner}
                             totalAmount={this.state.totalAmount}
-                            dateCreated='Today'
+                            transactions={this.state.transactions}
+                            owners={this.state.owners}
+                            siblings={this.state.siblings}
+                            creator={this.state.creator}
                         />
-
+                        <ModalSearch />
+                        <ModalMenu />
+                        <Scrollup />
                     </>
-            // <div className="cock-row">
-            //     <div className="cock-col">
-            //         <CockCard
-            //             cock={(this.state.cock as MonsterCock)}
-            //             main={true}
-            //         />
-            //         <AttributesWidget
-            //             attributes={(this.state.cock as MonsterCock).attributes}
-            //         />
-            //     </div>
-            //     <Banner
-            //         owner={this.state.owner}
-            //         cock={(this.state.cock as MonsterCock)}
-            //     />
-            // </div>
         );
     }
 }

@@ -8,7 +8,7 @@ const Header = () => {
                 <div className="container header">
                     {/* Navbar Brand*/}
                     <a className="navbar-brand" href="/">
-                        <img className="navbar-brand-sticky" src="img/logo.png" alt="sticky brand-logo" />
+                        {/* <img className="navbar-brand-sticky" src="img/logo.png" alt="sticky brand-logo" /> */}
                     </a>
                     <div className="ml-auto" />
                     {/* Navbar */}
