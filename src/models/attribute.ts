@@ -15,3 +15,15 @@ export default class Attribute {
         this.value = value;
     }
 }
+
+/**
+ * Strip teh Attribute value of dashes "-".
+ * 
+ * @param {string} value
+ * 
+ * @returns {string}
+ */
+export function stripAttributeValue(value: string): string {
+    // Unas vainas de regex
+    return value.replace(/-/g, ' ');
+}
