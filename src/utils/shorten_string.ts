@@ -7,28 +7,23 @@
  * @param max
  * number, el max que puede ser el string.
  * 
+ * @param removeHttp
+ * boolean, si queremos quitar el http.
+ * 
  * @retusn `string` 
  */
-export default function shortenString(str: string, max: number): string {
-    // Chequea si el length es menos del max
-    if (str.length <= max) return str;
-
-    // Saca el https
-    if (str.includes('https://')) {
-        var str = str.split('https://').join('');
+export default function shortenString(str: string, max: number, removeHttp?: boolean): string {
+    // Si queremos quitar el http.
+    if (removeHttp) {
+        str = str.replace(/^https?\:\/\//i, '');
     }
-
-    // Buscamos la differencia del max
-    let diff = str.length - max;
-    // Make sure que la differencia es max
-    while (diff > max) {
-        diff -= 1;
+    
+    // Si el length es mas de mex, cortamos el string.
+    if (str.length > max) {
+        return str.substring(0, max) + '...';
     }
-
-    const end = str.length - diff;
-
-    // Ahore hacemos magica
-    return str.substring(0, end) + '...';
+    // Entonces esta bien.
+    return str;
 }
 
 /**
