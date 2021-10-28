@@ -75,13 +75,12 @@ class CockPageBuilder extends React.Component<
         const owner = await fetchOwner((this.state.cock as MonsterCock).id);
         // Busca los owners 
         const owners = await fetchOwners((this.state.cock as MonsterCock).id);
+        console.log(owners);
         // Pon la data si no hay error con owner
-        if (owner !== false) {
-            this.setState({
-                owner: owner,
-                owners: owners,
-            });
-        }
+        this.setState({
+            owner: owner !== false ? owner : undefined,
+            owners
+        });
     }
 
     // Load the transactions for the coc

@@ -1,0 +1,23 @@
+
+/*
+    Align items in center of parent div horizontally and vertically.
+*/
+.page-numbers {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-numbers-active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(87, 84, 79) !important;
+}
+
+/* .pagenumber-active {
+    color: green;
+    align-items: center;
+    justify-content: center;
+    vertical-align: auto;
+} */

@@ -4,8 +4,9 @@ import { fetchCreatorTransaction } from "../../../controller/fetch_transactions"
 import MonsterCock from "../../../models/cock";
 import Owner from "../../../models/owner";
 import Transaction from "../../../models/transaction";
+import { OPENSEA_DARK_BANNER, OPENSEA_LIGHT_BANNER } from "../../../utils/globals";
 import { shortenAddress } from "../../../utils/shorten_string";
-import { polygonUrl } from "../../../utils/url_builder";
+import { openseaUrl, polygonUrl } from "../../../utils/url_builder";
 
 
 export class CockCardExploreFour extends React.Component<{
@@ -111,6 +112,9 @@ export class CockCardExploreFour extends React.Component<{
                                 }
                             </div>
                             <a className="btn btn-bordered-white btn-smaller mt-3" href={`/cock/${cock.id}`}><i className="icon-eye mr-2" />View</a>
+                            {/* <a href={openseaUrl(this.props.cock.id)} target="_new">
+                                <img className="img-fluid" src={OPENSEA_LIGHT_BANNER} alt="" height="20px" width="50%"/>
+                            </a> */}
                         </div>
                     </div>
                 </div>

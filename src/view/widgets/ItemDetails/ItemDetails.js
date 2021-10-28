@@ -221,7 +221,9 @@ class ItemDetails extends Component {
                                                                 <img className="avatar-sm rounded-circle mr-3" src="/img/blankprofile.jpg" alt="" />
                                                                 <p className="m-0">
                                                                     <a
-                                                                        href={polygonUrl(owner.address)}
+                                                                        href={polygonUrl({
+                                                                            address: owner.address
+                                                                        })}
                                                                         target="_new">
                                                                         {shortenAddress(owner.address)}
                                                                     </a>
