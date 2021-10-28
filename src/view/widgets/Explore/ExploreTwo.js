@@ -18,7 +18,7 @@ const ExploreTwo = (props) => {
                                 <h3 className="mt-3 mb-0">{initData.heading}</h3>
                             </div>
                             <div className="intro-btn">
-                                <a className="btn content-btn" href={`/cocks?pn=${pageNumber}`}>{initData.btnText}</a>
+                                <a className="btn content-btn" href={`/cocks?pn=${pageNumber + 1}`}>{initData.btnText}</a>
                             </div>
                         </div>
                     </div>
