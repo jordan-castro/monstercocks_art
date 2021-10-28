@@ -1,4 +1,7 @@
 import connectToContract from "../controller/contract_con";
+import { MCK_BASE } from "./globals";
+import { API_COCK_GATEWAY, API_KEY } from "./server_keys";
+import valid_http from "./valid_http";
 
 /**
  * Chequea si un cock id es valido.
@@ -32,4 +35,26 @@ export async function validId(id: number): Promise<boolean> {
 
     // Regresa! Y converte a Numero
     return +(res);
+}
+
+/**
+ * Busca el numero de monstercocks por el server.
+ * 
+ * @returns `Promise<number>`
+ */
+export async function cockAmountFromServer(): Promise<number> {
+    // Busca
+    let res = await valid_http(`${MCK_BASE}${API_COCK_GATEWAY}`, {
+        params: {
+            q: 'camount',
+            p: API_KEY,
+        }
+    });
+    // Chequea resulta
+    if (res === false) {
+        return -1;
+    }
+
+    // Regresa! Y converte a Numero
+    return (res.data as {amount: number}).amount;
 }
