@@ -4,3 +4,5 @@ export const MCK_BASE = "https://monstercocks.art/";
 // Imagenes de OPENSEA
 export const OPENSEA_LIGHT_BANNER = "https://storage.googleapis.com/opensea-static/Logomark/Badge%20-%20Available%20On%20-%20Light.png"
 export const OPENSEA_DARK_BANNER = "https://storage.googleapis.com/opensea-static/Logomark/Badge%20-%20Available%20On%20-%20Dark.png"
+
+export const MATIC_PROVIDER = "https://rpc-mainnet.maticvigil.com/";
