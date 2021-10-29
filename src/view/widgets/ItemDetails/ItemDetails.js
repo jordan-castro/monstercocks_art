@@ -116,6 +116,8 @@ const CockSiblingCard = (props) => {
 }
 
 class ItemDetails extends Component {
+    defaultAvatar = "/img/blankprofile.jpg";
+
     constructor(props) {
         super(props);
         // Ponomes el state inicial
@@ -218,14 +220,17 @@ class ItemDetails extends Component {
                                                             // Regresa una lista de owners
                                                             // Un owner tiene address, previous, tokenId, date, isCurrentOwner
                                                             <li key={owner.address} className="single-tab-list d-flex align-items-center">
-                                                                <img className="avatar-sm rounded-circle mr-3" src="/img/blankprofile.jpg" alt="" />
+                                                                <img
+                                                                    className="avatar-sm rounded-circle mr-3"
+                                                                    src={owner.image ? owner.image : this.defaultAvatar}
+                                                                    alt="" />
                                                                 <p className="m-0">
                                                                     <a
                                                                         href={polygonUrl({
                                                                             address: owner.address
                                                                         })}
                                                                         target="_new">
-                                                                        {shortenAddress(owner.address)}
+                                                                        {owner.name ? owner.name : shortenAddress(owner.address)}
                                                                     </a>
                                                                     <br />
                                                                     {
@@ -266,10 +271,20 @@ class ItemDetails extends Component {
                                 {/* Owner */}
                                 <div className="owner d-flex align-items-center">
                                     <span>Owned By</span>
-                                    <a className="owner-meta d-flex align-items-center ml-3" href={"/author/" + this.props.owner?.address}>
-                                        <img className="avatar-sm rounded-circle" src='/img/blankprofile.jpg' alt="" />
-                                        <h6 className="ml-2">{this.props.owner?.address}</h6>
-                                    </a>
+                                    {
+                                        this.props.owner ?
+                                            <a className="owner-meta d-flex align-items-center ml-3" href={"/author/" + this.props.owner.address}>
+                                                <img
+                                                    className="avatar-sm rounded-circle"
+                                                    src={this.props.owner?.image ? this.props.owner.image : this.defaultAvatar}
+                                                    alt="" />
+                                                <h6
+                                                    className="ml-2">
+                                                    {this.props.owner?.name ? this.props.owner.name : shortenAddress(this.props.owner.address)}
+                                                </h6>
+                                            </a>
+                                            : null
+                                    }
                                 </div>
                                 {/* Item Info List */}
                                 <div className="item-info-list mt-4">
