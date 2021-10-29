@@ -78,3 +78,45 @@ export async function fetchCock(id: number): Promise<MonsterCock | false> {
     // Parse y regresa el cock
     return parseCock(response.data);
 }
+
+/**
+ * Busca los cocks por un address.
+ * 
+ * @param address
+ * string, El owner address del cock.
+ * 
+ * @returns `Promise<any>`
+ */
+export async function fetchCocksByOwner(address: string): Promise<any> {
+    // Busca los cocks 
+    const response = await valid_http(`${MCK_BASE}${API_COCK_GATEWAY}`, {
+        params: {
+            p: API_KEY,
+            q: 'owned',
+            address
+        }
+    });
+
+    // Chequea que funcione
+    if (response === false) {
+        return {
+            amount: 0,
+            cocks: []
+        };
+    }
+
+    // Crea el array
+    let cocks: MonsterCock[] = [];
+
+    // Ahora creamos los cocks! Usando parse.
+    for (var x of (response.data as any).cocks as any) {
+        // Crea y pon el cock
+        const cock = parseCock(x);
+        cocks.push(cock);
+    }
+
+    return {
+        amount: (response.data as any).amount,
+        cocks
+    };
+}
