@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import connectWallet, { checkWallet } from '../../../utils/connect_wallet';
+import connectWallet, { checkWallet, grabWallet } from '../../../utils/connect_wallet';
 import swal from '@sweetalert/with-react';
 import { createAuthor } from '../../../controller/fetch_author';
+import { DEFAULT_AVATAR } from '../../../utils/globals';
+import DisplayImage from '../UploadAndDisplay/UploadAndDisplay';
 
 const initData = {
     pre_heading: "Edit",
@@ -22,48 +24,43 @@ class Signup extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    // Chequea web3 esta connectado
-    async checkWeb3() {
-        // Chequea si esta conectado por el sessionStorage.
-        if (checkWallet()) {
-            // Si esta connectado entonces usa el wallet address de connectWallet()
-            this.setState({
-                address: await connectWallet()
-            });
-        } else {
-            // Muestra mensaje de connectar
-            swal({
-                title: "Connect Wallet",
-                text: "Please connect your wallet to continue.",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            });
-        }
-    }
-
     componentDidMount() {
         // Chequea web3
-        this.checkWeb3();
+        grabWallet().then(address => {
+            if (address) {
+                this.setState({
+                    address: address
+                });
+            } else {
+                swal({
+                    title: "Connect Wallet",
+                    text: "Please connect your wallet to continue.",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                });
+            }
+        });
     }
 
     // Handle el submit del form
-    async handleSubmit(event) {
+    async handleSubmit(event) { // TODO
         event.preventDefault();
         let data = {
             name: this.state.name,
             address: this.state.address,
             about: this.state.about,
+            image: event.target[0]
         };
-        let result;
-        if (data.address === undefined) {
-            result = false;
-        } else {
+        // La resulta defaulto
+        let result = false;
+        if (data.address !== undefined) {
             // Manda al server
             result = await createAuthor(
                 data.address,
                 data.name,
-                data.about
+                data.about,
+                data.image
             );
             console.log(result);
         }
@@ -105,6 +102,13 @@ class Signup extends Component {
                             <form className="item-form card no-hover"
                                 onSubmit={this.handleSubmit}
                                 method='post'>
+                                {/* UploadAndDisplay image. Tambien queremos en el centro */}
+                                <div className="upload-image text-center">
+                                    <DisplayImage
+                                        image={DEFAULT_AVATAR}
+                                        alt="avatar"
+                                    />
+                                </div>
                                 <div className="row">
                                     <div className="col-12">
                                         <div className="form-group mt-3">
@@ -173,7 +177,7 @@ class Signup extends Component {
                                         <button
                                             className="btn w-100 mt-3 mt-sm-4"
                                             type="submit"
-                                        >Sign Up</button>
+                                        >Save</button>
                                     </div>
                                     {/* <div className="col-12">
                                         <span className="d-block text-center mt-4">Already have an account? <a href="/login">Login</a></span>
