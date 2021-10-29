@@ -6,3 +6,6 @@ export const OPENSEA_LIGHT_BANNER = "https://storage.googleapis.com/opensea-stat
 export const OPENSEA_DARK_BANNER = "https://storage.googleapis.com/opensea-static/Logomark/Badge%20-%20Available%20On%20-%20Dark.png"
 
 export const MATIC_PROVIDER = "https://rpc-mainnet.maticvigil.com/";
+
+export const DEFAULT_AVATAR = "/img/blankprofile.jpg";
+    
