@@ -1,6 +1,6 @@
 import AuthorData from "../models/author";
 import { MCK_BASE } from "../utils/globals";
-import { API_COCK_GATEWAY, API_KEY } from "../utils/server_keys";
+import { API_AUTHOR_GATEWAY, API_KEY } from "../utils/server_keys";
 import valid_http from "../utils/valid_http";
 
 /**
@@ -13,9 +13,9 @@ import valid_http from "../utils/valid_http";
  */
 export async function fetchAuthor(address: string): Promise<AuthorData | false> {
     // Buscamos el author por el address
-    const response = await valid_http(`${MCK_BASE}${API_COCK_GATEWAY}`, {
+    const response = await valid_http(`${MCK_BASE}${API_AUTHOR_GATEWAY}`, {
         params: {
-            q: 'author',
+            q: 'view',
             p: API_KEY,
             address: address
         }
@@ -39,34 +39,26 @@ export async function fetchAuthor(address: string): Promise<AuthorData | false> 
  * @param name
  * string - The name of the author
  * 
- * @param email
- * string - The email of the author
+ * @param about
+ * string - The about of the author
  *  
  * @returns `Promise<boolean>` 
  */
-export async function createAuthor(address: string, name: string, email: string): Promise<boolean> {
-    // Chequea primero que el author no exista
-    const author = await fetchAuthor(address);
-    if (author !== false) {
-        // Ya existe!
-        return false;
-    }
-
+export async function createAuthor(address: string, name: string, about: string): Promise<boolean> {
     // Crea el author
-    const response = await valid_http(`${MCK_BASE}${API_COCK_GATEWAY}`, {
+    const response = await valid_http(`${MCK_BASE}${API_AUTHOR_GATEWAY}`, {
         params: {
-            q: 'author',
+            q: 'upload',
             p: API_KEY,
             address: address,
             name: name,
-            email: email,
-            image: "",
-            about: ""
-        }
+            about: about
+        },
+        method: 'POST',
     });
 
     // Regresa la resulta de response
-    return response && response.data === "1";
+    return response && response.data === 1;
 }
 
 
