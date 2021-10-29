@@ -26,3 +26,17 @@ export default async function connectWallet() {
 export function checkWallet() {
   return sessionStorage.getItem('connected') && sessionStorage.getItem('connected') === 'true';
 }
+
+/**
+ * Intenta a connectar a un walleto. Usa esto cuando 
+ * se necesita una wallet pero no queries preguntar por accesso.
+ * 
+ * @returns `Promise<string | boolean>`
+ */
+export const grabWallet = async () => {
+  if (checkWallet()) {
+    return await connectWallet();
+  } else {
+    return false;
+  }
+}
