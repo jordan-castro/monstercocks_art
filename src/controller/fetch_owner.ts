@@ -89,5 +89,7 @@ const parseOwner = (ownerData) => {
         ownerData.tokenId,
         ownerData.date,
         ownerData.isCurrentOwner == 1,
+        ownerData.image, 
+        ownerData.name,
     );
 }
