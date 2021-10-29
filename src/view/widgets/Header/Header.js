@@ -48,7 +48,8 @@ class WalletConnectButton extends Component {
                 isConnecting: false,
             });
             // Chequea si deberiamos recargar la pagina
-            if (this.props.reload) {
+            if (this.props.reload && window.sessionStorage.getItem('reloaded') == "false") {
+                window.sessionStorage.setItem('reloaded', true);
                 // Recarga la pagina
                 window.location.reload();
             }
@@ -90,7 +91,9 @@ class WalletConnectButton extends Component {
     }
 }
 
-const Header = () => {
+const Header = (props) => {
+    const { reload } = props;
+
     return (
         <header id="header">
             {/* Navbar */}
@@ -162,7 +165,7 @@ const Header = () => {
                     {/* Navbar Action Button */}
                     <ul className="navbar-nav action">
                         <li className="nav-item ml-3">
-                            <WalletConnectButton />
+                            <WalletConnectButton reload={reload} />
                         </li>
                     </ul>
                 </div>

@@ -11,8 +11,8 @@ class EditPage extends React.Component {
     render() {
         return (
             <div className="main">
-                <Header />
-                <Breadcrumb title="Edit" subpage="Authors" page="Edit"/>
+                <Header reload={true} />
+                <Breadcrumb title="Edit" subpage="Authors" page="Edit" />
                 <SignupSection />
                 <Footer />
                 <ModalSearch />
