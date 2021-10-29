@@ -55,13 +55,18 @@ class Signup extends Component {
             address: this.state.address,
             about: this.state.about,
         };
-        // Manda al server
-        let result = await createAuthor(
-            data.address,
-            data.name,
-            data.about
-        );
-        console.log(result);
+        let result;
+        if (data.address === undefined) {
+            result = false;
+        } else {
+            // Manda al server
+            result = await createAuthor(
+                data.address,
+                data.name,
+                data.about
+            );
+            console.log(result);
+        }
 
         // Chequea result
         if (result === false) {
@@ -108,6 +113,7 @@ class Signup extends Component {
                                                 className="form-control"
                                                 name="address"
                                                 readOnly
+                                                required="required"
                                                 value={this.state.address}
                                             />
                                         </div>
