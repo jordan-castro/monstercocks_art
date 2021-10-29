@@ -1,4 +1,89 @@
-import React from 'react';
+import React, { Component } from 'react';
+import connectWallet, { checkWallet } from '../../../utils/connect_wallet';
+import { shortenAddress } from '../../../utils/shorten_string';
+import swal from 'sweetalert';
+
+class WalletConnectButton extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isConnected: false,
+            isConnecting: false,
+            address: null,
+        };
+
+        this.checkWeb3 = this.checkWeb3.bind(this);
+        this.connect = this.connect.bind(this);
+    }
+
+    async connect() {
+        // Estamos connectando
+        this.setState({
+            isConnecting: true,
+        });
+
+        let wallet = await connectWallet();
+        // Chequea falso
+        if (wallet === false) {
+            // Muestra un dialog customizado
+            await swal({
+                title: "Error",
+                text: "Please connect your wallet and try again.",
+                icon: "error",
+                button: "Ok",
+            });
+
+            // Setea no conectado
+            this.setState({
+                isConnected: false,
+                isConnecting: false,
+            });
+        } else {
+            // Pon la connected en el sessionStorage a true
+            window.sessionStorage.setItem('connected', true);
+            // Setea el address en el state
+            this.setState({
+                address: wallet,
+                isConnected: true,
+                isConnecting: false,
+            });
+        }
+    }
+
+    // Chequea web3 esta connectado
+    async checkWeb3() {
+        // Chequeqa si ya esta conectado
+        if (checkWallet()) {
+            // Setea el address en el state
+            await this.connect();
+        }
+    }
+
+    componentDidMount() {
+        // Chequea web3
+        this.checkWeb3();
+    }
+
+    render() {
+        return (
+            <button
+                className={`btn ml-lg-auto ${this.state.isConnected ? '' : 'btn-bordered-white'}`}
+                onClick={this.connect}>
+                <i className="icon-wallet mr-md-2" />
+                {
+                    // Chequea si esta conectado
+                    this.state.isConnected ? (
+                        shortenAddress(this.state.address)
+                    ) : (
+                        this.state.isConnecting ? (
+                            <span>Connecting...</span>) :
+                            (<span>Connect Wallet</span>)
+                    )
+                }
+            </button>
+        );
+    }
+}
 
 const Header = () => {
     return (
@@ -72,7 +157,7 @@ const Header = () => {
                     {/* Navbar Action Button */}
                     <ul className="navbar-nav action">
                         <li className="nav-item ml-3">
-                            <a href="/wallet-connect" className="btn ml-lg-auto btn-bordered-white"><i className="icon-wallet mr-md-2" />Wallet Connect</a>
+                            <WalletConnectButton />
                         </li>
                     </ul>
                 </div>
