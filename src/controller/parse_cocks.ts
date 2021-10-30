@@ -52,10 +52,14 @@ export const parseCock = (cockJson, specials?) => {
     let cockName = cockJson.name;
     let cockUri = cockJson.uri;
     let cockImage = cockJson.image;
-    
-    // Los attributes
-    let attributes = parseAttributes(cockJson.attributes);
-    
+
+    let attributes: Attribute[] = [];
+    // Chequea si hay attributes
+    if (cockJson.attributes) {
+        // Los attributes
+        attributes = parseAttributes(cockJson.attributes);
+    }
+
     if (specials !== undefined) {
         cockId = specials.id;
         cockUri = specials.uri;
