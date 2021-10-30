@@ -79,6 +79,10 @@ export default async function valid_http(
                 data: stringify(kwargs.params),
                 headers: kwargs.headers,
             });
+        } else if (kwargs.method === 'FORM') {
+            response = await axios.post(url, kwargs.params, {
+                headers: kwargs.headers,
+            });
         } else {
             return false;
         }

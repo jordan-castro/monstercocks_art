@@ -13,6 +13,7 @@ class PageNumbersProps {
 }
 
 export default function PageNumbers(props: PageNumbersProps) {
+    console.log(props.currentPage);
 
     // Crea los objectos de la pagina numeros
     const createPageButtons = (props) => {
@@ -20,8 +21,9 @@ export default function PageNumbers(props: PageNumbersProps) {
         for (let i = 1; i <= props.amountOfPages; i++) {
             pageButtons.push(
                 <a
+                    key={`_page_${i}`}
                     href={`${props.href}?pn=${i}`}
-                    className={props.currentPage === i ? "page-numbers-active" : "page-numbers"}
+                    className={props.currentPage == i ? "page-numbers-active" : "page-numbers"}
                 >
                     {i}
                 </a>
@@ -35,7 +37,7 @@ export default function PageNumbers(props: PageNumbersProps) {
             width: '100%',
             justifyContent: 'center',
             margin: '20px'
-}}>
+        }}>
             {
                 createPageButtons(props)
             }

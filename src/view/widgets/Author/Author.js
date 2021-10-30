@@ -1,8 +1,52 @@
 import React, { Component } from 'react';
+import { fetchAuthor } from '../../../controller/fetch_author';
+import { fetchCocksByOwner } from '../../../controller/fetch_cocks';
 import AuthorProfile from '../AuthorProfile/AuthorProfile';
 import Explore from '../Explore/ExploreSix';
+import PageNumbers from '../PageNumbers/PageNumbers';
 
 class Author extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            cocks: [],
+            amount: 0,
+            author: null
+        }
+
+        this.getCocks = this.getCocks.bind(this);
+        this.getAuthor = this.getAuthor.bind(this);
+    }
+
+    // Regresa amout dividado por 20
+    pageAmount = (amount) => {
+        return Math.ceil(amount / 20);
+    }
+
+    // Busca los cocks del address
+    async getCocks() {
+        const data = await fetchCocksByOwner(this.props.address, this.props.startingPage - 1);
+        this.setState({
+            cocks: data.cocks,
+            amount: data.amount,
+        });
+    }
+
+    async getAuthor() {
+        // Busca el author
+        const author = await fetchAuthor(this.props.address);
+        if (author) {
+            this.setState({
+                author
+            });
+        }
+    }
+
+    componentDidMount() {
+        this.getCocks();
+        this.getAuthor();
+    }
+
     render() {
         return (
             <section className="author-area explore-area popular-collections-area">
@@ -10,12 +54,20 @@ class Author extends Component {
                     <div className="row justify-content-between">
                         <div className="col-12 col-md-4">
                             {/* Author Profile */}
-                            <AuthorProfile />
+                            <AuthorProfile author={this.state.author} />
                         </div>
                         <div className="col-12 col-md-8">
-                            <Explore />
+                            <Explore
+                                cocks={this.state.cocks}
+                                amount={this.state.amount}
+                            />
                         </div>
                     </div>
+                    <PageNumbers
+                        currentPage={this.props.startingPage}
+                        amountOfPages={this.pageAmount(this.state.amount)}
+                        href={`/author/${this.props.address}`}
+                    />
                 </div>
             </section>
         );

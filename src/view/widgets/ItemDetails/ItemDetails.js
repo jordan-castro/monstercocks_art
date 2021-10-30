@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { openseaUrl, polygonUrl } from '../../../utils/url_builder';
 import shortenString, { shortenAddress } from '../../../utils/shorten_string';
 import { dateDifference, toFormattedString } from '../../../utils/to_date_time';
-import { OPENSEA_DARK_BANNER, OPENSEA_LIGHT_BANNER } from '../../../utils/globals';
+import { OPENSEA_DARK_BANNER, OPENSEA_LIGHT_BANNER, DEFAULT_AVATAR } from '../../../utils/globals';
 import { stripAttributeValue } from '../../../models/attribute';
 
 const initData = {
@@ -116,7 +116,6 @@ const CockSiblingCard = (props) => {
 }
 
 class ItemDetails extends Component {
-    defaultAvatar = "/img/blankprofile.jpg";
 
     constructor(props) {
         super(props);
@@ -222,7 +221,7 @@ class ItemDetails extends Component {
                                                             <li key={owner.address} className="single-tab-list d-flex align-items-center">
                                                                 <img
                                                                     className="avatar-sm rounded-circle mr-3"
-                                                                    src={owner.image ? owner.image : this.defaultAvatar}
+                                                                    src={owner.image ? owner.image : DEFAULT_AVATAR}
                                                                     alt="" />
                                                                 <p className="m-0">
                                                                     <a
@@ -276,7 +275,7 @@ class ItemDetails extends Component {
                                             <a className="owner-meta d-flex align-items-center ml-3" href={"/author/" + this.props.owner.address}>
                                                 <img
                                                     className="avatar-sm rounded-circle"
-                                                    src={this.props.owner?.image ? this.props.owner.image : this.defaultAvatar}
+                                                    src={this.props.owner?.image ? this.props.owner.image : DEFAULT_AVATAR}
                                                     alt="" />
                                                 <h6
                                                     className="ml-2">

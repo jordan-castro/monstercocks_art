@@ -42,11 +42,11 @@ export const shortenAddress = (address: string): string => {
     const amountDiv = amountToKeep / 2;
     
     // Terminamos a su vaina
-    const end = address.length;
+    const end = address ? address.length : 0;
 
     // Creamos los subs
-    const sub1 = address.substring(start, (start + amountDiv));
-    const sub2 = address.substring((end - amountDiv), end);
+    const sub1 = address ? address.substring(start, (start + amountDiv)) : '...';
+    const sub2 = address ? address.substring((end - amountDiv), end) : '...';
 
     return `${sub1}...${sub2}`;
 }

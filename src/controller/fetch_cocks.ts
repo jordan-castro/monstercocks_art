@@ -87,12 +87,13 @@ export async function fetchCock(id: number): Promise<MonsterCock | false> {
  * 
  * @returns `Promise<any>`
  */
-export async function fetchCocksByOwner(address: string): Promise<any> {
+export async function fetchCocksByOwner(address: string, pageNumber: number): Promise<any> {
     // Busca los cocks 
     const response = await valid_http(`${MCK_BASE}${API_COCK_GATEWAY}`, {
         params: {
             p: API_KEY,
             q: 'owned',
+            n: pageNumber.toString(),
             address
         }
     });
