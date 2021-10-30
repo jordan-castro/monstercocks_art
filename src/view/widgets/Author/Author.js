@@ -4,6 +4,7 @@ import { fetchCocksByOwner } from '../../../controller/fetch_cocks';
 import AuthorProfile from '../AuthorProfile/AuthorProfile';
 import Explore from '../Explore/ExploreSix';
 import PageNumbers from '../PageNumbers/PageNumbers';
+import pageAmount from '../../../utils/page_amount';
 
 class Author extends Component {
     constructor(props) {
@@ -16,11 +17,6 @@ class Author extends Component {
 
         this.getCocks = this.getCocks.bind(this);
         this.getAuthor = this.getAuthor.bind(this);
-    }
-
-    // Regresa amout dividado por 20
-    pageAmount = (amount) => {
-        return Math.ceil(amount / 20);
     }
 
     // Busca los cocks del address
@@ -65,7 +61,7 @@ class Author extends Component {
                     </div>
                     <PageNumbers
                         currentPage={this.props.startingPage}
-                        amountOfPages={this.pageAmount(this.state.amount)}
+                        amountOfPages={pageAmount(this.state.amount, 20)}
                         href={`/author/${this.props.address}`}
                     />
                 </div>

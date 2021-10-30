@@ -1,17 +1,18 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import MonsterCock from '../models/cock';
-import Breadcrumb from './widgets/Breadcrumb/Breadcrumb';
-import Header from './widgets/Header/Header';
-import Explore from './widgets/Explore/ExploreTwo';
-import Scrollup from './widgets/Scrollup/Scrollup';
-import ModalMenu from './widgets/Modal/ModalMenu';
-import ModalSearch from './widgets/Modal/ModalSearch';
-import { fetchCocks } from '../controller/fetch_cocks';
-import { Loader } from './widgets/loader';
-import Footer from './widgets/Footer/Footer';
-import PageNumbers from './widgets/PageNumbers/PageNumbers';
-import { cockAmountFromServer } from '../utils/valid_id';
+import MonsterCock from '../../models/cock';
+import Breadcrumb from '../widgets/Breadcrumb/Breadcrumb';
+import Header from '../widgets/Header/Header';
+import Explore from '../widgets/Explore/ExploreTwo';
+import Scrollup from '../widgets/Scrollup/Scrollup';
+import ModalMenu from '../widgets/Modal/ModalMenu';
+import ModalSearch from '../widgets/Modal/ModalSearch';
+import { fetchCocks } from '../../controller/fetch_cocks';
+import { Loader } from '../widgets/loader';
+import Footer from '../widgets/Footer/Footer';
+import PageNumbers from '../widgets/PageNumbers/PageNumbers';
+import { cockAmountFromServer } from '../../utils/valid_id';
+import pageAmount from '../../utils/page_amount';
 
 export default function ExploreCocksPage() {
     let query = new URLSearchParams(useLocation().search);;
@@ -67,7 +68,7 @@ class ExploreCocksPageBuilder extends React.Component<
         let amount = await cockAmountFromServer();
         
         // Divide the amount by 20 to get the amount of pages.
-        let pages = Math.ceil(amount / 20);
+        let pages = pageAmount(amount, 20);
 
         this.setState({
             amountOfPages: pages,

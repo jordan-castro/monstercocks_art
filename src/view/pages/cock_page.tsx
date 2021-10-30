@@ -1,21 +1,21 @@
 import React from "react";
-import { fetchCock } from "../controller/fetch_cocks";
-import MonsterCock from "../models/cock";
-import { CompilerSuggestion } from "./widgets/compiler_suggestion";
-import { Loader } from "./widgets/loader";
+import { fetchCock } from "../../controller/fetch_cocks";
+import MonsterCock from "../../models/cock";
+import { CompilerSuggestion } from "../widgets/compiler_suggestion";
+import { Loader } from "../widgets/loader";
 import { useParams } from 'react-router-dom';
-import { fetchOwner, fetchOwners } from "../controller/fetch_owner";
+import { fetchOwner, fetchOwners } from "../../controller/fetch_owner";
 import './css/cock_page.css';
-import Header from "./widgets/Header/Header";
-import Breadcrumb from "./widgets/Breadcrumb/Breadcrumb";
-import ItemDetails from "./widgets/ItemDetails/ItemDetails";
-import Owner from "../models/owner";
-import { cockAmount } from "../utils/valid_id";
-import Transaction from "../models/transaction";
-import { fecthTransactions, fetchCreatorTransaction } from "../controller/fetch_transactions";
-import ModalSearch from "./widgets/Modal/ModalSearch";
-import ModalMenu from "./widgets/Modal/ModalMenu";
-import Scrollup from "./widgets/Scrollup/Scrollup";
+import Header from "../widgets/Header/Header";
+import Breadcrumb from "../widgets/Breadcrumb/Breadcrumb";
+import ItemDetails from "../widgets/ItemDetails/ItemDetails";
+import Owner from "../../models/owner";
+import { cockAmount } from "../../utils/valid_id";
+import Transaction from "../../models/transaction";
+import { fecthTransactions, fetchCreatorTransaction } from "../../controller/fetch_transactions";
+import ModalSearch from "../widgets/Modal/ModalSearch";
+import ModalMenu from "../widgets/Modal/ModalMenu";
+import Scrollup from "../widgets/Scrollup/Scrollup";
 
 export function CockPage() {
     let { id } = useParams();

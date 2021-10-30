@@ -1,10 +1,10 @@
-import AuthorProfile from './widgets/Author/Author';
-import Breadcrumb from "./widgets/Breadcrumb/Breadcrumb";
-import Footer from "./widgets/Footer/Footer";
-import Header from "./widgets/Header/Header";
-import ModalMenu from "./widgets/Modal/ModalMenu";
-import ModalSearch from "./widgets/Modal/ModalSearch";
-import Scrollup from "./widgets/Scrollup/Scrollup";
+import AuthorProfile from '../widgets/Author/Author';
+import Breadcrumb from "../widgets/Breadcrumb/Breadcrumb";
+import Footer from "../widgets/Footer/Footer";
+import Header from "../widgets/Header/Header";
+import ModalMenu from "../widgets/Modal/ModalMenu";
+import ModalSearch from "../widgets/Modal/ModalSearch";
+import Scrollup from "../widgets/Scrollup/Scrollup";
 import { useParams, useLocation } from 'react-router-dom';
 
 const AuthorPage = (props) => {

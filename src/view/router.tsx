@@ -2,11 +2,11 @@ import {
     Switch,
     Route,
 } from "react-router-dom";
-import ExploreCocksPage from "./cocks_pages";
-import { CockPage } from "./cock_page";
-import EditPage from "./edit_page";
-import Home from "./home_page";
-import AuthorPage from "./author_page";
+import ExploreCocksPage from "./pages/cocks_pages";
+import { CockPage } from "./pages/cock_page";
+import EditPage from "./pages/edit_page";
+import Home from "./pages/home_page";
+import AuthorPage from "./pages/author_page";
 
 
 export default function AppRouter() {
