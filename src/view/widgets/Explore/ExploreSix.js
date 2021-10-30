@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Loader } from '../loader';
 
 const initData = {
     pre_heading: "Explore",
@@ -74,86 +75,81 @@ const data = [
     }
 ]
 
-class ExploreSix extends Component {
-    state = {
-        initData: {},
-        data: []
-    }
-    componentDidMount(){
-        this.setState({
-            initData: initData,
-            data: data
-        })
-    }
-    render() {
-        return (
-            <div>
-                <div className="row justify-content-center text-center mt-5 mt-lg-0">
-                    <div className="col-12">
-                        {/* Explore Menu */}
-                        <div className="explore-menu btn-group btn-group-toggle flex-wrap justify-content-center text-center mb-4" data-toggle="buttons">
-                            <label className="btn active d-table text-uppercase p-2">
-                                <input type="radio" defaultValue="all" defaultChecked className="explore-btn" />
-                                <span>{this.state.initData.filter_1}</span>
-                            </label>
-                            <label className="btn d-table text-uppercase p-2">
-                                <input type="radio" defaultValue="art" className="explore-btn" />
-                                <span>{this.state.initData.filter_2}</span>
-                            </label>
-                            <label className="btn d-table text-uppercase p-2">
-                                <input type="radio" defaultValue="music" className="explore-btn" />
-                                <span>{this.state.initData.filter_3}</span>
-                            </label>
-                            <label className="btn d-table text-uppercase p-2">
-                                <input type="radio" defaultValue="collectibles" className="explore-btn" />
-                                <span>{this.state.initData.filter_4}</span>
-                            </label>
-                            <label className="btn d-table text-uppercase p-2">
-                                <input type="radio" defaultValue="sports" className="explore-btn" />
-                                <span>{this.state.initData.filter_5}</span>
-                            </label>
-                        </div>
+const ExploreSix = (props) => {
+    const { cocks } = props;
+
+    console.log(cocks);
+
+    return (
+        <div>
+            <div className="row justify-content-center text-center mt-5 mt-lg-0">
+                <div className="col-12">
+                    {/* Explore Menu */}
+                    <div className="explore-menu btn-group btn-group-toggle flex-wrap justify-content-center text-center mb-4" data-toggle="buttons">
+                        <label className="btn active d-table text-uppercase p-2">
+                            <input type="radio" defaultValue="all" defaultChecked className="explore-btn" />
+                            <span>Filter 1</span>
+                        </label>
+                        <label className="btn d-table text-uppercase p-2">
+                            <input type="radio" defaultValue="art" className="explore-btn" />
+                            <span>Filter 2</span>
+                        </label>
+                        <label className="btn d-table text-uppercase p-2">
+                            <input type="radio" defaultValue="music" className="explore-btn" />
+                            <span>Filter 3</span>
+                        </label>
+                        <label className="btn d-table text-uppercase p-2">
+                            <input type="radio" defaultValue="collectibles" className="explore-btn" />
+                            <span>Filter 4</span>
+                        </label>
+                        <label className="btn d-table text-uppercase p-2">
+                            <input type="radio" defaultValue="sports" className="explore-btn" />
+                            <span>Filter 5</span>
+                        </label>
                     </div>
                 </div>
-                <div className="row items explore-items">
-                    {this.state.data.map((item, idx) => {
-                        return (
-                            <div key={`eds_${idx}`} className="col-12 col-md-6 item explore-item" data-groups={item.group}>
-                                <div className="card no-hover text-center">
-                                    <div className="image-over">
-                                        <a href="/item-details">
-                                            <img className="card-img-top" src={item.img} alt="" />
+            </div>
+            <div className="row items explore-items">
+                {cocks ? cocks.map((item, idx) => {
+                    return (
+                        // TODO pon data-group
+                        <div key={`eds_${idx}`} className="col-12 col-md-6 item explore-item" data-grou={"all"}>
+                            <div className="card no-hover text-center">
+                                <div className="image-over">
+                                    <a href={`/cock/${item.id}`}>
+                                        <img className="card-img-top" src={item.image} alt="" />
+                                    </a>
+                                    {/* Author */}
+                                    {/* <a className="author" href="/authors">
+                                        <div className="author-thumb avatar-lg">
+                                            <img className="rounded-circle" src={item.author} alt="" />
+                                        </div>
+                                    </a> */}
+                                </div>
+                                {/* Card Caption */}
+                                <div className="card-caption col-12 p-0">
+                                    {/* Card Body */}
+                                    <div className="card-body mt-4">
+                                        <a href={`/cock/${item.id}`}>
+                                            <h5 className="mb-2">{item.name}</h5>
                                         </a>
-                                        {/* Author */}
-                                        <a className="author" href="/authors">
-                                            <div className="author-thumb avatar-lg">
-                                                <img className="rounded-circle" src={item.author} alt="" />
-                                            </div>
-                                        </a>
-                                    </div>
-                                    {/* Card Caption */}
-                                    <div className="card-caption col-12 p-0">
-                                        {/* Card Body */}
-                                        <div className="card-body mt-4">
-                                            <a href="/item-details">
-                                                <h5 className="mb-2">{item.title}</h5>
-                                            </a>
-                                            <span>{item.content}</span>
-                                            <hr />
-                                            <div className="card-bottom d-flex justify-content-between">
-                                                <span>{item.price}</span>
-                                                <span><i className="icon-heart mr-2" />{item.likes}</span>
-                                            </div>
+                                        {/* <span>{item.content}</span> */}
+                                        <hr />
+                                        <div className="card-bottom d-flex justify-content-between">
+                                            {/* <span>{item.price}</span> */}
+                                            <span><i className="icon-heart mr-2" />50</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        );
-                    })}
-                </div>
+                        </div>
+                    );
+                }) :
+                    <Loader />
+                }
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 export default ExploreSix;
