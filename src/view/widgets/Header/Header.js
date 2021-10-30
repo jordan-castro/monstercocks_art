@@ -17,6 +17,11 @@ class WalletConnectButton extends Component {
     }
 
     async connect() {
+        // Chequea primero si ya esta conectado
+        if (this.state.isConnected) {
+            // Vamos por el author page de esta address
+            window.location.href = `/author/${this.state.address}`;
+        }
         // Estamos connectando
         this.setState({
             isConnecting: true,

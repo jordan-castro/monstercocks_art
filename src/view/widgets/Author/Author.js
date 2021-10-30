@@ -21,10 +21,10 @@ class Author extends Component {
 
     // Busca los cocks del address
     async getCocks() {
-        const data = await fetchCocksByOwner(this.props.address, this.props.startingPage - 1);
+        const {cocks, amount} = await fetchCocksByOwner(this.props.address, this.props.startingPage - 1);
         this.setState({
-            cocks: data.cocks,
-            amount: data.amount,
+            cocks,
+            amount
         });
     }
 

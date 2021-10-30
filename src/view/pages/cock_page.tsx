@@ -5,7 +5,6 @@ import { CompilerSuggestion } from "../widgets/compiler_suggestion";
 import { Loader } from "../widgets/loader";
 import { useParams } from 'react-router-dom';
 import { fetchOwner, fetchOwners } from "../../controller/fetch_owner";
-import './css/cock_page.css';
 import Header from "../widgets/Header/Header";
 import Breadcrumb from "../widgets/Breadcrumb/Breadcrumb";
 import ItemDetails from "../widgets/ItemDetails/ItemDetails";
