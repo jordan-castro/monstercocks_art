@@ -109,10 +109,10 @@ export async function fetchCocksByOwner(address: string): Promise<any> {
     let cocks: MonsterCock[] = [];
 
     // Ahora creamos los cocks! Usando parse.
-    for (var x of (response.data as any).cocks as any) {
+    for (var cock of (response.data as any).cocks) {
         // Crea y pon el cock
-        const cock = parseCock(x);
-        cocks.push(cock);
+        const parsedCock = parseCock(cock);
+        cocks.push(parsedCock);
     }
 
     return {
