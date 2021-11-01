@@ -83,6 +83,9 @@ const parseAuthor = (authorData: any): AuthorData => {
         authorData.address,
         authorData.name,
         authorData.image,
-        authorData.about
+        authorData.about,
+        authorData.fbook,
+        authorData.insta,
+        authorData.twitter,
     );
 }
