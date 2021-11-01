@@ -1,5 +1,6 @@
 import React from "react";
 import Breadcrumb from "../widgets/Breadcrumb/Breadcrumb";
+import Create from "../widgets/Create/Create";
 import Footer from "../widgets/Footer/Footer";
 import Header from "../widgets/Header/Header";
 import ModalMenu from "../widgets/Modal/ModalMenu";
@@ -13,7 +14,7 @@ class EditPage extends React.Component {
             <div className="main">
                 <Header reload={true} />
                 <Breadcrumb title="Edit" subpage="Authors" page="Edit" />
-                <SignupSection />
+                <Create />
                 <Footer />
                 <ModalSearch />
                 <ModalMenu />
