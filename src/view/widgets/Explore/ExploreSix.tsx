@@ -1,5 +1,4 @@
 import MonsterCock from '../../../models/cock';
-import { Loader } from '../loader';
 
 const ExploreSix = (props: {
     cocks: MonsterCock[],
