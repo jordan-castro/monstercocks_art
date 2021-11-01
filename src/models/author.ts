@@ -4,15 +4,13 @@ export default class AuthorData {
     name: string;
     image: string;
     about: string;
-    email: string;
 
-    constructor(id: number, address: string, name: string, image: string, about: string, email: string) {
+    constructor(id: number, address: string, name: string, image: string, about: string) {
         this.id = id;
         this.address = address;
         this.name = name;
         this.image = image;
         this.about = about;
-        this.email = email;
     }
 
     // Buscamos un author sobre su address que esta en localStorage
