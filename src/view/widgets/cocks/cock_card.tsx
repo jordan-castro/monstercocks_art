@@ -55,10 +55,10 @@ export class CockCardExploreFour extends React.Component<{
     }
 
     render() {
-        const { cock } = this.props;
+        const { cock, idx } = this.props;
 
         return (
-            <div key={`exf_${this.props.idx}`} className="col-12 col-sm-6 col-lg-3 item" style={{
+            <div key={`exf_${idx}`} className="col-12 col-sm-6 col-lg-3 item" style={{
                 display: "block"
             }}>
                 <div className="card">
