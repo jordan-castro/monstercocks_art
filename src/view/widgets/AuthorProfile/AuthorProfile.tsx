@@ -6,48 +6,13 @@ import { polygonUrl } from '../../../utils/url_builder';
 import shortenString, { shortenAddress } from '../../../utils/shorten_string';
 
 const AuthorProfile = (props: {
-    author: AuthorData;
+    author: AuthorData,
+    editMode?: boolean,
 }) => {
-    const { author } = props;
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         loading: true,
-    //         error: false,
-    //     };
-
-    //     this.compilerSuggestion = this.compilerSuggestion.bind(this);
-    //     this.grabAuthor = this.grabAuthor.bind(this);
-    //     this.authorImage = this.authorImage.bind(this);
-    // }
-
-    // compilerSuggestion() {
-    //     this.setState({
-    //         loading: false,
-    //         error: true,
-    //     });
-    // }
-
-    // async grabAuthor() {
-    //     // Busca el author
-    //     const author = await fetchAuthor(this.props.address);
-    //     if (author) {
-    //         this.setState({
-    //             author,
-    //             loading: false,
-    //             error: false
-    //         });
-    //     } else {
-    //         this.compilerSuggestion();
-    //     }
-    // }
-
-    // componentDidMount() {
-    //     this.grabAuthor();
-    // }
+    const { author, editMode } = props;
 
     const authorImage = () => {
-        const {author} = props;
+        const { author } = props;
         return author?.image ? author.image : DEFAULT_AVATAR;
     }
 
@@ -92,6 +57,12 @@ const AuthorProfile = (props: {
                         </div> */}
                                 <hr />
                                 <a className="btn btn-bordered-white btn-smaller" href={polygonUrl({ address: author.address })}>View</a>
+                                {
+                                    editMode && 
+                                        <a className="btn btn-bordered-white btn-smaller" href="/edit" style={{
+                                            marginLeft: '10px'
+                                        }}>Edit</a>
+                                }
 
                             </div>
                         ) : null}
