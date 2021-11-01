@@ -18,7 +18,8 @@ export async function fetchAuthor(address: string): Promise<AuthorData | false> 
         params: {
             q: 'view',
             p: API_KEY,
-            address: address
+            address: address,
+            t: new Date().getTime(),
         }
     });
 
@@ -50,14 +51,17 @@ export async function fetchAuthor(address: string): Promise<AuthorData | false> 
  */
 export async function createAuthor(address: string, name: string, about: string, image?): Promise<boolean> {
     // Crea la form data
-    const formData = new FormData();
+    let formData = new FormData();
     formData.append('address', address);
     formData.append('name', name);
     formData.append('about', about);
     
     if (image) {
+        console.log("Hay imagen");
         formData.append('file', image);
     }
+
+    console.log(formData);
 
     // Crea el author
     const response = await valid_http(`${MCK_BASE}${API_AUTHOR_GATEWAY}?q=upload&p=${API_KEY}`, {
@@ -79,7 +83,6 @@ const parseAuthor = (authorData: any): AuthorData => {
         authorData.address,
         authorData.name,
         authorData.image,
-        authorData.about,
-        authorData.email
+        authorData.about
     );
 }
