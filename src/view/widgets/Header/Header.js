@@ -53,7 +53,7 @@ class WalletConnectButton extends Component {
                 isConnecting: false,
             });
             // Chequea si deberiamos recargar la pagina
-            if (this.props.reload && window.sessionStorage.getItem('reloaded') == "false") {
+            if (this.props.reload && window.sessionStorage.getItem('reloaded') != "true") {
                 window.sessionStorage.setItem('reloaded', true);
                 // Recarga la pagina
                 window.location.reload();
