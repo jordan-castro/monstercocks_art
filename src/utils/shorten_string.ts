@@ -19,7 +19,7 @@ export default function shortenString(str: string, max: number, removeHttp?: boo
     }
     
     // Si el length es mas de mex, cortamos el string.
-    if (str.length > max) {
+    if (str && (str.length > max)) {
         return str.substring(0, max) + '...';
     }
     // Entonces esta bien.
