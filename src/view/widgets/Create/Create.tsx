@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import swal from '@sweetalert/with-react';
 import AuthorData from '../../../models/author';
 import { grabWallet } from '../../../utils/connect_wallet';
 import AuthorProfile from "../AuthorProfile/AuthorProfile";
 import { createAuthor, fetchAuthor } from '../../../controller/fetch_author';
+import FormData from 'form-data'
 
 class Create extends Component<{}, {
     author: AuthorData,
@@ -41,7 +42,7 @@ class Create extends Component<{}, {
             if (event.target.files[0].type.match(/image.*/)) {
                 // Si es una imagen la muestra
                 let img = event.target.files[0];
-                this.setState({ 
+                this.setState({
                     author: { ...this.state.author, image: URL.createObjectURL(img) },
                     imageFile: img
                 });
@@ -50,6 +51,27 @@ class Create extends Component<{}, {
                 swal("Error", "El archivo no es una imagen", "error");
             }
         }
+    }
+
+    /**
+     * Update the authors Facebook.
+     */
+    updateFacebook = (event) => {
+        this.setState({ author: { ...this.state.author, facebook: event.target.value } });
+    }
+
+    /** 
+     * Updat the authors Twitter.
+     */
+    updateTwitter = (event) => {
+        this.setState({ author: { ...this.state.author, twitter: event.target.value } });
+    }
+
+    /**
+     * Update the authors instagram.
+     */
+    updateInstagram = (event) => {
+        this.setState({ author: { ...this.state.author, instagram: event.target.value } });
     }
 
     /**
@@ -69,20 +91,30 @@ class Create extends Component<{}, {
             });
             // Cieera
             return;
-        } 
+        }
 
         // Ponemos la vaina en su lugar.
         let author = this.state.author;
         let image = this.state.imageFile;
 
-        let editResult = await createAuthor(
-            author.address,
-            author.name,
-            author.about,
-            image
-        );
+        // Crea el form data
+        let formData = new FormData();
+        formData.append('address', author.address);
+        formData.append('name', author.name);
+        formData.append('about', author.about);
+        if (image !== undefined) {
+            formData.append('image', image);
+        }
 
-        console.log(editResult);
+        let editResult = await createAuthor(formData);
+
+        if (editResult) {
+            // Si se creo el autor, lo redireccionamos
+            window.location.href = "/author/" + author.address;
+        } else {
+            // Si no, lo notificamos
+            swal("Error", "No se pudo crear el autor", "error");
+        }
     }
 
     /**
@@ -137,7 +169,7 @@ class Create extends Component<{}, {
                                     <div className="col-12">
                                         <div className="input-group form-group">
                                             <div className="custom-file">
-                                                <input type="file" className="custom-file-input" id="inputGroupFile01" onChange={this.updateImage}/>
+                                                <input type="file" className="custom-file-input" id="inputGroupFile01" onChange={this.updateImage} />
                                                 <label className="custom-file-label" htmlFor="inputGroupFile01" >Choose file</label>
                                             </div>
                                         </div>
@@ -152,6 +184,22 @@ class Create extends Component<{}, {
                                             <textarea className="form-control" name="textarea" placeholder="Description" cols={30} rows={3} onChange={this.updateAbout} value={this.state.author.about} />
                                         </div>
                                     </div>
+                                    <div className="col-12">
+                                        <div className="form-group">
+                                            <input type="text" className="form-control" name="facebook" placeholder="Facebook" required={false} onChange={this.updateFacebook} value={this.state.author.facebook} />
+                                        </div>
+                                    </div>
+                                    <div className="col-12">
+                                        <div className="form-group">
+                                            <input type="text" className="form-control" name="twitter" placeholder="Twitter" required={false} onChange={this.updateTwitter} value={this.state.author.twitter} />
+                                        </div>
+                                    </div>
+                                    <div className="col-12">
+                                        <div className="form-group">
+                                            <input type="text" className="form-control" name="instagram" placeholder="Instagram" required={false} onChange={this.updateInstagram} value={this.state.author.instagram} />
+                                        </div>
+                                    </div>
+
                                     {/* <div className="col-12 col-md-6">
                                         <div className="form-group">
                                             <input type="text" className="form-control" name="price" placeholder="Item Price" required={true} />
