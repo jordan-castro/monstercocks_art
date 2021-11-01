@@ -137,7 +137,11 @@ class ItemDetails extends Component {
                         <div className="col-12 col-lg-5">
                             <div className="item-info">
                                 <div className="item-thumb text-center">
-                                    <img src={this.props.cock.image} alt="" />
+                                    <a
+                                        href={this.props.cock.image}
+                                        target="_new">
+                                        <img src={this.props.cock.image} alt="" />
+                                    </a>
                                 </div>
                                 <br />
                                 {/* Netstorm Tab */}
@@ -224,11 +228,7 @@ class ItemDetails extends Component {
                                                                     src={owner.image ? owner.image : DEFAULT_AVATAR}
                                                                     alt="" />
                                                                 <p className="m-0">
-                                                                    <a
-                                                                        href={polygonUrl({
-                                                                            address: owner.address
-                                                                        })}
-                                                                        target="_new">
+                                                                    <a href={`/author/${owner.address}`}>
                                                                         {owner.name ? owner.name : shortenAddress(owner.address)}
                                                                     </a>
                                                                     <br />
