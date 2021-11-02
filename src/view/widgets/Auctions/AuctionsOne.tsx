@@ -1,70 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { fetchMostRecentCocks, fetchRandomCocks } from '../../../controller/fetch_cocks';
 import MonsterCock from '../../../models/cock';
 import { CockCardExploreFour } from '../cocks/cock_card';
-
-
-const data = [
-    {
-        id: "1",
-        img: "/img/auction_1.jpg",
-        date: "2021-12-09",
-        title: "Virtual Worlds",
-        seller_thumb: "/img/avatar_1.jpg",
-        seller: "@Richard",
-        price: "1.5 BNB",
-        count: "1 of 1"
-    },
-    {
-        id: "2",
-        img: "/img/auction_2.jpg",
-        date: "2021-10-05",
-        title: "Collectibles",
-        seller_thumb: "/img/avatar_2.jpg",
-        seller: "@JohnDeo",
-        price: "2.7 BNB",
-        count: "1 of 1"
-    },
-    {
-        id: "3",
-        img: "/img/auction_3.jpg",
-        date: "2021-09-15",
-        title: "Arts",
-        seller_thumb: "/img/avatar_3.jpg",
-        seller: "@MKHblots",
-        price: "2.3 BNB",
-        count: "1 of 1"
-    },
-    {
-        id: "4",
-        img: "/img/auction_4.jpg",
-        date: "2021-12-29",
-        title: "Robotic Arts",
-        seller_thumb: "/img/avatar_4.jpg",
-        seller: "@RioArham",
-        price: "1.8 BNB",
-        count: "1 of 1"
-    },
-    {
-        id: "5",
-        img: "/img/auction_5.jpg",
-        date: "2022-01-24",
-        title: "Design Illusions",
-        seller_thumb: "/img/avatar_5.jpg",
-        seller: "@ArtNox",
-        price: "1.7 BNB",
-        count: "1 of 1"
-    },
-    {
-        id: "6",
-        img: "/img/auction_6.jpg",
-        date: "2022-03-30",
-        title: "Photography",
-        seller_thumb: "/img/avatar_6.jpg",
-        seller: "@Junaid",
-        price: "3.5 BNB",
-        count: "1 of 1"
-    }
-]
+import Slider from "react-slick";
 
 class AuctionsOne extends React.Component<{}, {
     cocks?: MonsterCock[],
@@ -76,6 +14,40 @@ class AuctionsOne extends React.Component<{}, {
         heading: "Most Recent Monster Cocks",
         btnText: "View All"
     }
+    private sliderSettings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    initialSlide: 2
+                }
+
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+    }
 
     constructor(props: any) {
         super(props);
@@ -85,10 +57,29 @@ class AuctionsOne extends React.Component<{}, {
             error: false
         }
     }
-    
+
     /**
      * Busca los cocks de la API por Random.
      */
+    getCocks = async () => {
+        let cocks = await fetchMostRecentCocks();
+        if (cocks.length > 0) {
+            this.setState({
+                cocks: cocks,
+                loading: false,
+                error: false
+            });
+        } else {
+            this.setState({
+                loading: false,
+                error: true
+            });
+        }
+    }
+
+    componentDidMount() {
+        this.getCocks();
+    }
 
     render() {
         return (
@@ -103,55 +94,27 @@ class AuctionsOne extends React.Component<{}, {
                                     <h3 className="mt-3 mb-0">{this.initData.heading}</h3>
                                 </div>
                                 <div className="intro-btn">
-                                    <a className="btn content-btn" href="/auctions">{this.initData.btnText}</a>
+                                    <a className="btn content-btn" href="/cocks">{this.initData.btnText}</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="auctions-slides">
-                        <div className="swiper-container slider-mid items">
-                            <div className="swiper-wrapper">
-                                {/* Single Slide */}
-                                {this.state.cocks && this.state.cocks.map((item, idx) => {
+                    {/* Single Slide */}
+                    {this.state.cocks &&
+                        <>
+                            <Slider {...this.sliderSettings}>
+                                {this.state.cocks.map((item, idx) => {
                                     return (
-                                        <CockCardExploreFour
-                                            cock={item}
-                                            idx={idx} />
-                                        // <div key={`auc_${idx}`} className="swiper-slide item">
-                                        //     <div className="card">
-                                        //         <div className="image-over">
-                                        //             <a href="/item-details">
-                                        //                 <img className="card-img-top" src={item.image} alt="" />
-                                        //             </a>
-                                        //         </div>
-                                        //         {/* Card Caption */}
-                                        //         <div className="card-caption col-12 p-0">
-                                        //             {/* Card Body */}
-                                        //             <div className="card-body">
-                                        //                 <div className="countdown-times mb-3">
-                                        //                     <div className="countdown d-flex justify-content-center" data-date="" />
-                                        //                 </div>
-                                        //                 <a href="/item-details">
-                                        //                     <h5 className="mb-0">{item.name}</h5>
-                                        //                 </a>
-                                        //                 <a className="seller d-flex align-items-center my-3" href="/item-details">
-                                        //                     {/* <img className="avatar-sm rounded-circle" src={item.seller_thumb} alt="" /> */}
-                                        //                     {/* <span className="ml-2">{item.seller}</span> */}
-                                        //                 </a>
-                                        //                 <div className="card-bottom d-flex justify-content-between">
-                                        //                     {/* <span>{item.price}</span> */}
-                                        //                     {/* <span>{item.count}</span> */}
-                                        //                 </div>
-                                        //             </div>
-                                        //         </div>
-                                        //     </div>
-                                        // </div>
+                                        <CockCardExploreFour 
+                                        cock={item} 
+                                        idx={idx} 
+                                        slider={true}
+                                        />
                                     );
                                 })}
-                            </div>
-                            <div className="swiper-pagination" />
-                        </div>
-                    </div>
+                            </Slider>
+                        </>
+                    }
                 </div>
             </section>
         );
