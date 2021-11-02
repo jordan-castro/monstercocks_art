@@ -70,7 +70,7 @@ export const parseCock = (cockJson, specials?) => {
         cockId,
         cockName,
         cockUri,
-        MCK_BASE + cockImage,
+        cockImage,
         attributes
     );
 }
