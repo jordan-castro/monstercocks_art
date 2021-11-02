@@ -45,8 +45,6 @@ export async function fetchCocks(pageNumber?: number): Promise<MonsterCock[]> {
     return cocks;
 }
 
-// TODO move all fetches to Centrelized server to save time!
-
 /**
  * 
  * Buscamos un cock sobre el smart contract por su ID.
@@ -120,4 +118,36 @@ export async function fetchCocksByOwner(address: string, pageNumber: number): Pr
         amount: (response.data as any).amount,
         cocks
     };
+}
+
+/**
+ * Busca unos cocks desde el server por random.
+ * 
+ * @returns `Promise<MonsterCock[]>`
+ */
+export async function fetchRandomCocks(): Promise<MonsterCock[]> {
+    // Busca los cocks
+    const response = await valid_http(`${MCK_BASE}${API_COCK_GATEWAY}`, {
+        params: {
+            p: API_KEY,
+            q: 'randomcocks'
+        }
+    });
+
+    // Chequea que funcione
+    if (response === false) {
+        return [];
+    }
+
+    // Crea el array
+    let cocks: MonsterCock[] = [];
+
+    // Ahora creamos los cocks! Usando parse.
+    for (var cock of (response.data as any).cocks) {
+        // Crea y pon el cock
+        const parsedCock = parseCock(cock);
+        cocks.push(parsedCock);
+    }
+
+    return cocks;
 }
