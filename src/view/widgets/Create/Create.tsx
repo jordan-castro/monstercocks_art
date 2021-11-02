@@ -73,6 +73,13 @@ class Create extends Component<{}, {
     updateInstagram = (event) => {
         this.setState({ author: { ...this.state.author, instagram: event.target.value } });
     }
+    
+    /**
+     * Actualiza el github del autor.
+     */
+    updateGithub = (event) => {
+        this.setState({ author: { ...this.state.author, github: event.target.value } });
+    }
 
     /**
      * Hacemos el Submit.
@@ -104,6 +111,18 @@ class Create extends Component<{}, {
         formData.append('about', author.about);
         if (image !== undefined) {
             formData.append('image', image);
+        }
+        if (author.facebook) {
+            formData.append('facebook', author.facebook);
+        }
+        if (author.twitter) {
+            formData.append('twitter', author.twitter);
+        }
+        if (author.instagram) {
+            formData.append('instagram', author.instagram);
+        }
+        if (author.github) {
+            formData.append('github', author.github);
         }
 
         let editResult = await createAuthor(formData);
@@ -176,27 +195,75 @@ class Create extends Component<{}, {
                                     </div>
                                     <div className="col-12">
                                         <div className="form-group mt-3">
-                                            <input type="text" className="form-control" name="name" placeholder="Item Name" required={true} onChange={this.updateName} value={this.state.author.name} />
+                                            <input 
+                                            type="text" 
+                                            className="form-control" 
+                                            name="name" 
+                                            placeholder="Item Name" 
+                                            required={true} 
+                                            onChange={this.updateName} 
+                                            value={this.state.author.name} />
                                         </div>
                                     </div>
                                     <div className="col-12">
                                         <div className="form-group">
-                                            <textarea className="form-control" name="textarea" placeholder="Description" cols={30} rows={3} onChange={this.updateAbout} value={this.state.author.about} />
+                                            <textarea 
+                                            className="form-control" 
+                                            name="textarea" 
+                                            placeholder="Description" 
+                                            cols={30} 
+                                            rows={3} 
+                                            onChange={this.updateAbout} 
+                                            value={this.state.author.about ? this.state.author.about : ""}
+                                            maxLength={200} />
                                         </div>
                                     </div>
                                     <div className="col-12">
                                         <div className="form-group">
-                                            <input type="text" className="form-control" name="facebook" placeholder="Facebook" required={false} onChange={this.updateFacebook} value={this.state.author.facebook} />
+                                            <input 
+                                            type="text" 
+                                            className="form-control" 
+                                            name="facebook" 
+                                            placeholder="Facebook" 
+                                            required={false} 
+                                            onChange={this.updateFacebook} 
+                                            value={this.state.author.facebook ? this.state.author.facebook : ""} />
                                         </div>
                                     </div>
                                     <div className="col-12">
                                         <div className="form-group">
-                                            <input type="text" className="form-control" name="twitter" placeholder="Twitter" required={false} onChange={this.updateTwitter} value={this.state.author.twitter} />
+                                            <input 
+                                            type="text" 
+                                            className="form-control" 
+                                            name="twitter" 
+                                            placeholder="Twitter" 
+                                            required={false} 
+                                            onChange={this.updateTwitter} 
+                                            value={this.state.author.twitter ? this.state.author.twitter : ""} />
                                         </div>
                                     </div>
                                     <div className="col-12">
                                         <div className="form-group">
-                                            <input type="text" className="form-control" name="instagram" placeholder="Instagram" required={false} onChange={this.updateInstagram} value={this.state.author.instagram} />
+                                            <input 
+                                            type="text" 
+                                            className="form-control" 
+                                            name="instagram" 
+                                            placeholder="Instagram" 
+                                            required={false} 
+                                            onChange={this.updateInstagram} 
+                                            value={this.state.author.instagram ? this.state.author.instagram : ""} />
+                                        </div>
+                                    </div>
+                                    <div className="col-12">
+                                        <div className="form-group">
+                                            <input 
+                                            type="text" 
+                                            className="form-control" 
+                                            name="github" 
+                                            placeholder="Github" 
+                                            required={false} 
+                                            onChange={this.updateGithub} 
+                                            value={this.state.author.github ? this.state.author.github : ""} />
                                         </div>
                                     </div>
 
