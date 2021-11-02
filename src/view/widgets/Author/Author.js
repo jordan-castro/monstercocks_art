@@ -5,6 +5,7 @@ import AuthorProfile from '../AuthorProfile/AuthorProfile';
 import Explore from '../Explore/ExploreSix';
 import PageNumbers from '../PageNumbers/PageNumbers';
 import pageAmount from '../../../utils/page_amount';
+import { grabWallet } from '../../../utils/connect_wallet';
 
 class Author extends Component {
     constructor(props) {
@@ -12,16 +13,36 @@ class Author extends Component {
         this.state = {
             cocks: [],
             amount: 0,
-            author: null
+            author: null,
+            edit: false
         }
 
         this.getCocks = this.getCocks.bind(this);
         this.getAuthor = this.getAuthor.bind(this);
+        this.checkUser = this.checkUser.bind(this);
+    }
+
+    // Chequea el usario currentamente logueado
+    // Si es el mismo usuario que el que se esta viendo, se muestra el boton de editar
+    // Si no, no se muestra
+    async checkUser() {
+        const { author } = this.state;
+        let address = await grabWallet();
+        // Chequea el wallet esta connectado
+        if (address == author?.address) {
+            this.setState({
+                edit: true
+            });
+        } else {
+            this.setState({
+                edit: false
+            });
+        }
     }
 
     // Busca los cocks del address
     async getCocks() {
-        const {cocks, amount} = await fetchCocksByOwner(this.props.address, this.props.startingPage - 1);
+        const { cocks, amount } = await fetchCocksByOwner(this.props.address, this.props.startingPage - 1);
         this.setState({
             cocks,
             amount
@@ -40,7 +61,9 @@ class Author extends Component {
 
     componentDidMount() {
         this.getCocks();
-        this.getAuthor();
+        this.getAuthor().then(() => {
+            this.checkUser();
+        });
     }
 
     render() {
@@ -50,7 +73,7 @@ class Author extends Component {
                     <div className="row justify-content-between">
                         <div className="col-12 col-md-4">
                             {/* Author Profile */}
-                            <AuthorProfile author={this.state.author} />
+                            <AuthorProfile author={this.state.author} editMode={this.state.edit} />
                         </div>
                         <div className="col-12 col-md-8">
                             <Explore
