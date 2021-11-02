@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
 const initData = {
-    pre_heading: "NetStorm",
-    heading: "Discover, collect, and sell extraordinary NFTs",
-    content: "Explore on the world's best & largest NFT marketplace",
+    pre_heading: "Monster Cocks Art",
+    heading: "Get your hands on a MonsterCock",
+    content: "Explore the world's largest digital collection of MonsterCocks.",
     btn_1: "Explore",
     btn_2: "Create"
 }

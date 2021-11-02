@@ -1,3 +1,4 @@
+import { addBaseToImage } from "../utils/add_base_to_image";
 import toDateTime from "../utils/to_date_time";
 
 export default class Owner {
@@ -15,7 +16,7 @@ export default class Owner {
         this.tokenId = tokenId;
         this.date = toDateTime(+date);
         this.isCurrentOwner = isCurrentOwner;
-        this.image = image;
+        this.image = addBaseToImage(image);
         this.name = name;
     }
 }

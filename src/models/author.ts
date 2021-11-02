@@ -1,3 +1,4 @@
+import { addBaseToImage } from "../utils/add_base_to_image";
 import { MCK_BASE } from "../utils/globals";
 
 export default class AuthorData {
@@ -9,6 +10,7 @@ export default class AuthorData {
     facebook?: string;
     instagram?: string;
     twitter?: string;
+    github?: string;
 
     constructor(
         id: number, 
@@ -18,28 +20,17 @@ export default class AuthorData {
         about: string, 
         facebook?: string, 
         instagram?: string, 
-        twitter?: string
+        twitter?: string,
+        github?: string
     ) {
         this.id = id;
         this.address = address;
         this.name = name;
-        // Pon el base path si hay un imagen
-        if (image) {
-            this.image = `${MCK_BASE}${image}`;
-        } else {
-            this.image = image;
-        }
+        this.image = addBaseToImage(image);
         this.about = about;
         this.facebook = facebook;
         this.instagram = instagram;
         this.twitter = twitter;
+        this.github = github;
     }
-
-    // Buscamos un author sobre su address que esta en localStorage
-    // TODO
-    // static findAuthorByAddress(address: string): AuthorData {
-        // const authors: AuthorData[] = JSON.parse((window as any).localStorage.getItem('authors'));
-        // const author = authors.find(author => author.address === address);
-        // return author;
-    // }
 }

@@ -2,7 +2,6 @@ import AuthorData from "../models/author";
 import { MCK_BASE } from "../utils/globals";
 import { API_AUTHOR_GATEWAY, API_KEY } from "../utils/server_keys";
 import valid_http from "../utils/valid_http";
-import FormData from 'form-data'
 
 /**
  * @description Fetches author data from the server
@@ -34,33 +33,13 @@ export async function fetchAuthor(address: string): Promise<AuthorData | false> 
 
 /**
  * Creamos un nuevo author.
- * 
- * @param address
- * string - The address of the author
- * 
- * @param name
- * string - The name of the author
- * 
- * @param about
- * string - The about of the author
- *  
- * @param image
- * ?File - The image of the author
+ *
+ * @param formData
+ * La información del author.
  * 
  * @returns `Promise<boolean>` 
  */
-export async function createAuthor(address: string, name: string, about: string, image?): Promise<boolean> {
-    // Crea la form data
-    let formData = new FormData();
-    formData.append('address', address);
-    formData.append('name', name);
-    formData.append('about', about);
-    
-    if (image) {
-        console.log("Hay imagen");
-        formData.append('file', image);
-    }
-
+export async function createAuthor(formData): Promise<boolean> {
     console.log(formData);
 
     // Crea el author
@@ -84,8 +63,9 @@ const parseAuthor = (authorData: any): AuthorData => {
         authorData.name,
         authorData.image,
         authorData.about,
-        authorData.fbook,
-        authorData.insta,
+        authorData.facebook,
+        authorData.instagram,
         authorData.twitter,
+        authorData.github,
     );
 }

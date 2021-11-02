@@ -1,3 +1,4 @@
+import { addBaseToImage } from "../utils/add_base_to_image";
 import Attribute from "./attribute";
 
 export default class MonsterCock {
@@ -11,7 +12,7 @@ export default class MonsterCock {
         this.id = id;
         this.name = name;
         this.uri = uri;
-        this.image = image;
+        this.image = addBaseToImage(image, true);
         this.attributes = attributes;
     }
 }

@@ -4,6 +4,7 @@ import shortenString, { shortenAddress } from '../../../utils/shorten_string';
 import { dateDifference, toFormattedString } from '../../../utils/to_date_time';
 import { OPENSEA_DARK_BANNER, OPENSEA_LIGHT_BANNER, DEFAULT_AVATAR } from '../../../utils/globals';
 import { stripAttributeValue } from '../../../models/attribute';
+import ShareButton from '../ShareButton/ShareButton';
 
 const initData = {
     itemImg: "/img/auction_2.jpg",
@@ -177,7 +178,7 @@ class ItemDetails extends Component {
                                                             // Regresa una lista de transactions
                                                             // Show the transaction from, to, hash, date, event
                                                             <li key={transaction.id} className="single-tab-list d-flex align-items-center">
-                                                                <img className="avatar-sm rounded-circle mr-3" src="https://polygon.technology/wp-content/uploads/2021/05/matic-inverted-token-icon.svg" alt="" />
+                                                                <img className="avatar-sm rounded-circle mr-3" src="/img/poly.svg" alt="" />
                                                                 <p className="m-0">
                                                                     Function called
                                                                     <a
@@ -265,7 +266,10 @@ class ItemDetails extends Component {
                         <div className="col-12 col-lg-6">
                             {/* Content */}
                             <div className="content mt-5 mt-lg-0">
-                                <h3 className="m-0">{this.props.cock.name}</h3>
+                                <div className="row justify-content-between">
+                                    <h3 className="m-0">{this.props.cock.name}</h3>
+                                    <ShareButton />
+                                </div>
                                 <br />
                                 {/* Owner */}
                                 <div className="owner d-flex align-items-center">
