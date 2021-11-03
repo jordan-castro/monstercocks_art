@@ -13,7 +13,7 @@ import valid_http from "./valid_http";
  */
 export async function validId(id: number): Promise<boolean> {
     // Connecta a smart contract
-    const maxCockId = await cockAmount();
+    const maxCockId = await cockAmountFromServer();
     return (id < maxCockId && id >= 0);
 }
 
