@@ -25,7 +25,7 @@ const ExploreTwo = (props) => {
                 </div>
                 <div className="row items">
                     {cocks.map((item, idx) =>
-                        <CockCardExploreFour idx={idx} cock={item} />
+                        <CockCardExploreFour cock={item} key={`exf_${idx}`}/>
                     )}
                 </div>
             </div>
