@@ -5,7 +5,6 @@ const initData = {
     heading: "Get your hands on a MonsterCock",
     content: "Explore the world's largest digital collection of MonsterCocks.",
     btn_1: "Explore",
-    btn_2: "Create"
 }
 
 class Hero extends Component {
@@ -28,8 +27,7 @@ class Hero extends Component {
                             <p>{this.state.data.content}</p>
                             {/* Buttons */}
                             <div className="button-group">
-                                <a className="btn btn-bordered-white" href="/explore-1"><i className="icon-rocket mr-2" />{this.state.data.btn_1}</a>
-                                <a className="btn btn-bordered-white" href="/create"><i className="icon-note mr-2" />{this.state.data.btn_2}</a>
+                                <a className="btn btn-bordered-white" href="/cocks"><i className="icon-rocket mr-2" />{this.state.data.btn_1}</a>
                             </div>
                         </div>
                     </div>

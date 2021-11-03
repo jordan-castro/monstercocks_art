@@ -9,9 +9,13 @@ export default async function connectWallet() {
   if (window.ethereum) {
     try {
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      // Set el session storage
-      sessionStorage.setItem('connected', 'true');
-      return accounts[0];
+      if (accounts.length > 0) {
+        // Set el session storage
+        sessionStorage.setItem('connected', 'true');
+        return accounts[0];
+      } else {
+        return false;
+      }
     } catch (error) {
       return false;
     }

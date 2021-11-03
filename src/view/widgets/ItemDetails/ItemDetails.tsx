@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { openseaUrl, polygonUrl } from '../../../utils/url_builder';
 import shortenString, { shortenAddress } from '../../../utils/shorten_string';
-import { dateDifference, toFormattedString } from '../../../utils/to_date_time';
+import { dateDifference } from '../../../utils/to_date_time';
 import { OPENSEA_DARK_BANNER, OPENSEA_LIGHT_BANNER, DEFAULT_AVATAR } from '../../../utils/globals';
 import { stripAttributeValue } from '../../../models/attribute';
 import ShareButton from '../ShareButton/ShareButton';
+import MonsterCock from '../../../models/cock';
+import Owner from '../../../models/owner';
+import Transaction from '../../../models/transaction';
 
 const initData = {
     itemImg: "/img/auction_2.jpg",
@@ -116,7 +119,15 @@ const CockSiblingCard = (props) => {
     );
 }
 
-class ItemDetails extends Component {
+class ItemDetails extends Component<{
+    cock?: MonsterCock,
+    owner?: Owner,
+    totalAmount?: number,
+    transactions?: Transaction[],
+    owners?: Owner[],
+    siblings?: { previous?: MonsterCock, next?: MonsterCock },
+    creator?: Transaction
+}> {
 
     constructor(props) {
         super(props);
@@ -138,11 +149,13 @@ class ItemDetails extends Component {
                         <div className="col-12 col-lg-5">
                             <div className="item-info">
                                 <div className="item-thumb text-center">
-                                    <a
-                                        href={this.props.cock.image}
-                                        target="_new">
-                                        <img src={this.props.cock.image} alt="" />
-                                    </a>
+                                    {this.props.cock &&
+                                        <a
+                                            href={this.props.cock.image}
+                                            target="_new">
+                                            <img src={this.props.cock.image} alt="" />
+                                        </a>
+                                    }
                                 </div>
                                 <br />
                                 {/* Netstorm Tab */}
@@ -159,7 +172,7 @@ class ItemDetails extends Component {
                                     </li>
                                     <li>
                                         <a id="nav-contact-tab" data-toggle="pill" href="#nav-contact">
-                                            <h5 className="m-0">Attributes ({this.props.cock.attributes.length})</h5>
+                                            <h5 className="m-0">Attributes ({this.props.cock?.attributes.length})</h5>
                                         </a>
                                     </li>
                                 </ul>
@@ -173,11 +186,11 @@ class ItemDetails extends Component {
                                                 // Si esta, entonces muestra los datos
                                                 // Si no, muestra el mensaje de que no hay transactions
                                                 this.props.transactions ?
-                                                    this.props.transactions.map(transaction => {
+                                                    this.props.transactions.map((transaction, idx) => {
                                                         return (
                                                             // Regresa una lista de transactions
                                                             // Show the transaction from, to, hash, date, event
-                                                            <li key={transaction.id} className="single-tab-list d-flex align-items-center">
+                                                            <li key={`tra_${idx}`} className="single-tab-list d-flex align-items-center">
                                                                 <img className="avatar-sm rounded-circle mr-3" src="/img/poly.svg" alt="" />
                                                                 <p className="m-0">
                                                                     Function called
@@ -219,11 +232,11 @@ class ItemDetails extends Component {
                                                 // Si esta, entonces muestra los datos
                                                 // Si no, muestra el mensaje de que no hay owners
                                                 this.props.owners ?
-                                                    this.props.owners.map(owner => {
+                                                    this.props.owners.map((owner, idx) => {
                                                         return (
                                                             // Regresa una lista de owners
                                                             // Un owner tiene address, previous, tokenId, date, isCurrentOwner
-                                                            <li key={owner.address} className="single-tab-list d-flex align-items-center">
+                                                            <li key={`ol_${idx}`} className="single-tab-list d-flex align-items-center">
                                                                 <img
                                                                     className="avatar-sm rounded-circle mr-3"
                                                                     src={owner.image ? owner.image : DEFAULT_AVATAR}
@@ -249,10 +262,10 @@ class ItemDetails extends Component {
                                         {
                                             // Attributes tienen
                                             // type, value
-                                            this.props.cock.attributes.map(attribute => {
+                                            this.props.cock?.attributes.map((attribute, idx) => {
                                                 return (
                                                     <>
-                                                        <li key={attribute.type + attribute.value} className="d-flex justify-content-between align-items-center">
+                                                        <li key={`att_${idx}`} className="d-flex justify-content-between align-items-center">
                                                             <h6 className="m-0">{attribute.type}</h6>
                                                             <p className="m-0">{stripAttributeValue(attribute.value)}</p>
                                                         </li>
@@ -267,7 +280,7 @@ class ItemDetails extends Component {
                             {/* Content */}
                             <div className="content mt-5 mt-lg-0">
                                 <div className="row justify-content-between">
-                                    <h3 className="m-0">{this.props.cock.name}</h3>
+                                    <h3 className="m-0">{this.props.cock?.name}</h3>
                                     <ShareButton />
                                 </div>
                                 <br />
@@ -292,19 +305,19 @@ class ItemDetails extends Component {
                                 {/* Item Info List */}
                                 <div className="item-info-list mt-4">
                                     <ul className="list-unstyled">
-                                        <li key={this.props.cock.name} className="price d-flex justify-content-between">
-                                            <span>Current Price <a href={openseaUrl(this.props.cock.id)}>View on Opensea</a> </span>
-                                            <span>{this.props.cock.id} of {this.props.totalAmount}</span>
+                                        <li key={this.props.cock?.name} className="price d-flex justify-content-between">
+                                            <span>Current Price <a href={openseaUrl(this.props.cock?.id)}>View on Opensea</a> </span>
+                                            <span>{this.props.cock?.id} of {this.props.totalAmount}</span>
                                         </li>
                                         <li>
                                             <span>Size </span>
                                             <span>1900 x 1900 px</span>
                                         </li>
-                                        <li key={this.props.cock.id}>
+                                        <li key={this.props.cock?.id}>
                                             <span>Volume Traded </span>
                                             <span>
                                                 <a
-                                                    href={openseaUrl(this.props.cock.id)}
+                                                    href={openseaUrl(this.props.cock?.id)}
                                                 >
                                                     View on Opensea
                                                 </a>
@@ -313,10 +326,10 @@ class ItemDetails extends Component {
                                     </ul>
                                 </div>
                                 <div className="row items">
-                                    {this.props.siblings.previous ?
+                                    {this.props.siblings?.previous ?
                                         <CockSiblingCard cock={this.props.siblings.previous} />
                                         : null}
-                                    {this.props.siblings.next ?
+                                    {this.props.siblings?.next ?
                                         <CockSiblingCard cock={this.props.siblings.next} />
                                         : null}
                                     {
@@ -342,7 +355,7 @@ class ItemDetails extends Component {
                                 <br />
                                 <div className="row justify-content-center">
                                     <div className="col-12 col-lg-6">
-                                        <a href={openseaUrl(this.props.cock.id)} target="_new">
+                                        <a href={openseaUrl(this.props.cock?.id)} target="_new">
                                             <img className="img-fluid" src={OPENSEA_DARK_BANNER} alt="" />
                                         </a>
                                     </div>

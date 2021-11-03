@@ -30,15 +30,7 @@ class CockPageBuilder extends React.Component<
         cock?: MonsterCock,
         loading: boolean,
         error: boolean,
-        owner?: Owner,
         totalAmount: number,
-        transactions?: Transaction[],
-        owners?: Owner[],
-        siblings?: {
-            previous?: MonsterCock,
-            next?: MonsterCock
-        },
-        creator?: Transaction,
     }>
 {
     constructor(props) {
@@ -48,11 +40,11 @@ class CockPageBuilder extends React.Component<
             loading: true,
             error: false,
             totalAmount: 0,
-            siblings: {
-                previous: undefined,
-                next: undefined,
-            },
         };
+
+        this.compilerSuggestion = this.compilerSuggestion.bind(this);
+        this.loadData = this.loadData.bind(this);
+        this.grabAmount = this.grabAmount.bind(this);
     }
 
     // Suggestion de compiler
@@ -68,31 +60,10 @@ class CockPageBuilder extends React.Component<
         });
     }
 
-    // Carga el dueno del cock.
-    async grabOwners() {
-        // Busca el owner
-        const owner = await fetchOwner((this.state.cock as MonsterCock).id);
-        // Busca los owners 
-        const owners = await fetchOwners((this.state.cock as MonsterCock).id);
-        // Pon la data si no hay error con owner
-        this.setState({
-            owner: owner !== false ? owner : undefined,
-            owners
-        });
-    }
-
-    // Load the transactions for the coc
-    async loadTransactions() {
-        const transactions = await fecthTransactions((this.state.cock as MonsterCock).id);
-        this.setState({
-            transactions
-        });
-    }
-
     // Carga el amount de cocks que hay en este momento
     async grabAmount() {
         // Busca el amounto
-        const amount = await cockAmount();
+        const amount = await MonsterCock.getCockCount();
         // Chequea que funciono
         if (amount != -1) {
             this.setState({
@@ -101,55 +72,14 @@ class CockPageBuilder extends React.Component<
         }
     }
 
-    // Busca el creador del cock.
-    async grabCreator() {
-        // Fecth el creador
-        const creator = await fetchCreatorTransaction((this.state.cock as MonsterCock).id);
-        // Chequea que no haya error
-        if (creator !== false) {
-            this.setState({
-                creator
-            });
-        }
-    }
-
-    // Fetch previos and next cock based on the current cock id.
-    async fetchSiblings() {
-        // Toma los ids
-        const previousId = (this.state.cock as MonsterCock).id - 1;
-        const nextId = (this.state.cock as MonsterCock).id + 1;
-        const siblings: {
-            previous?: MonsterCock;
-            next?: MonsterCock;
-        } = {};
-
-        // Chequea si previos id es mas o igual a 0
-        if (previousId >= 0) {
-            // Toma el previo
-            const previousCock = await fetchCock(previousId);
-            // Chequea que no haya error
-            if (previousCock !== false) {
-                // Pone el previo
-                siblings.previous = (previousCock as MonsterCock);
-            }
-        }
-
-        // Chequea si next es menos el cock amount
-        if (nextId < this.state.totalAmount) {
-            // Toma el next
-            const nextCock = await fetchCock(nextId);
-            // Chequea que no haya error
-            if (nextCock !== false) {
-                // Pone el next
-                siblings.next = (nextCock as MonsterCock);
-            }
-        }
-
-
-        // Ponemos los cocks
-        this.setState({
-            siblings: siblings
-        });
+    async loadData() {
+        let cock = (this.state.cock as MonsterCock);
+        // Busca la informacion
+        cock.getTransactions().then(() => this.setState({cock}));
+        cock.getOwners().then(() => this.setState({cock}));
+        cock.getOwner().then(() => this.setState({cock}));
+        cock.getCreator().then(() => this.setState({cock}));
+        cock.getSiblings().then(() => this.setState({cock}));
     }
 
     componentDidMount() {
@@ -157,31 +87,18 @@ class CockPageBuilder extends React.Component<
         if (this.state.cock === undefined) {
             // Chequea para ID
             if (this.props.id !== undefined) {
-                // Carga el cock
-                fetchCock(this.props.id).then((cock) => {
-                    if (cock === false) {
-                        // Suggestion de compiler
-                        this.compilerSuggestion('No cock');
-                    } else {
-                        // Tenemos un cock!
+                MonsterCock.createCock(this.props.id).then(cock => {
+                    // Chequea que no haya error
+                    if (cock !== false) {
+                        // Pone el cock
                         this.setState({
+                            cock: cock as MonsterCock,
                             loading: false,
-                            error: false,
-                            cock: cock
                         });
-                        // Carga el owners
-                        this.grabOwners();
-                        // Busca transacciones
-                        this.loadTransactions();
-                        // Busca amounto
-                        this.grabAmount().then(() => {
-                            // Busca previos y next
-                            this.fetchSiblings();
-                        });
-                        this.grabCreator();
+                        this.grabAmount();
+                        this.loadData();
                     }
-                }
-                ).catch((error) => this.compilerSuggestion(error));
+                }).catch(error => { this.compilerSuggestion(error); });
             } else {
                 // Suggestion de compiler
                 this.compilerSuggestion('No id');
@@ -207,16 +124,15 @@ class CockPageBuilder extends React.Component<
                             title={this.state.cock?.name}
                             subpage="Cocks"
                             page={this.state.cock?.name}
-
                         />
                         <ItemDetails
                             cock={this.state.cock}
-                            owner={this.state.owner}
+                            owner={this.state.cock?.owner}
                             totalAmount={this.state.totalAmount}
-                            transactions={this.state.transactions}
-                            owners={this.state.owners}
-                            siblings={this.state.siblings}
-                            creator={this.state.creator}
+                            transactions={this.state.cock?.transactions}
+                            owners={this.state.cock?.owners}
+                            siblings={this.state.cock?.siblings}
+                            creator={this.state.cock?.creator}
                         />
                         <ModalSearch />
                         <ModalMenu />

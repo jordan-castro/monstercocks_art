@@ -12,67 +12,49 @@ import { openseaUrl, polygonUrl } from "../../../utils/url_builder";
 export class CockCardExploreFour extends React.Component<{
     cock: MonsterCock,
     idx: number,
+    slider?: boolean,
 }, {
-    owner?: Owner,
-    creator?: Transaction
+    cock: MonsterCock,
 }> {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            cock: props.cock,
+        };
     }
 
-    /**
-     * @dev fetch owner details
-     */
-    async grabOwner() {
-        // Busca detalles del dueño
-        let owner = await fetchOwner(this.props.cock.id);
-        // Chequea si el dueño existe
-        if (owner) {
-            this.setState({
-                owner: owner
-            });
-        }
-    }
-
-    /**
-     * @dev Busca detailes de creador.
-     */
-    async grabCreator() {
-        // Busca creador
-        let creator = await fetchCreatorTransaction(this.props.cock.id);
-        // Chequea si el creador existe
-        if (creator) {
-            this.setState({
-                creator: creator
-            });
-        }
+    loadData = () => {
+        let cock = this.state.cock;
+        cock.getOwner().then(() => this.setState({ cock }));
+        cock.getCreator().then(() => this.setState({ cock }));
     }
 
     componentDidMount() {
-        this.grabOwner();
-        this.grabCreator();
+        this.loadData();
+    }
+
+    className = () => {
+        // "col-12 col-sm-6 col-lg-3 item";
+        return `col-12 ${this.props.slider ? '' : 'col-sm-6 col-lg-3'} item`;
     }
 
     render() {
-        const { cock, idx } = this.props;
-
         return (
-            <div key={`exf_${idx}`} className="col-12 col-sm-6 col-lg-3 item" style={{
+            <div key={`exf_${this.props.idx}`} className={this.className()} style={{
                 display: "block"
             }}>
                 <div className="card">
                     <div className="image-over">
-                        <a href={`/cock/${cock.id}`}>
-                            <img className="card-img-top" src={cock.image} alt="" />
+                        <a href={`/cock/${this.state.cock.id}`}>
+                            <img className="card-img-top" src={this.state.cock.image} alt="" />
                         </a>
                     </div>
                     {/* Card Caption */}
                     <div className="card-caption col-12 p-0">
                         {/* Card Body */}
                         <div className="card-body">
-                            <a href={`/cock/${cock.id}`}>
-                                <h5 className="mb-0">{cock.name}</h5>
+                            <a href={`/cock/${this.state.cock.id}`}>
+                                <h5 className="mb-0">{this.state.cock.name}</h5>
                             </a>
                             <div className="seller d-flex align-items-center my-2">
                                 <span>Owned By</span>
@@ -80,11 +62,11 @@ export class CockCardExploreFour extends React.Component<{
                                     // Chequea si hay owner en el estado,
                                     // Si no hay entonces muestra "Loading"
                                     // Si hay entonces muestra el owner.address
-                                    this.state.owner ?
+                                    this.state.cock.owner ?
                                         (
-                                            <a href="/author">
+                                            <a href={`/author/${this.state.cock.owner?.address}`}>
                                                 <h6 className="ml-2 mb-0">
-                                                    {shortenAddress(this.state.owner.address)}
+                                                    {shortenAddress(this.state.cock.owner.address)}
                                                 </h6>
                                             </a>
                                         ) : (
@@ -98,20 +80,20 @@ export class CockCardExploreFour extends React.Component<{
                                 {
                                     // Chequea si hay owner en el estado,
                                     // Si no hay entonces muestra null
-                                    this.state.creator ?
+                                    this.state.cock.creator ?
                                         (
                                             <>
                                                 <span>Created On</span>
-                                                <a href={polygonUrl({ tx: this.state.creator.hash })} target="_new">
+                                                <a href={polygonUrl({ tx: this.state.cock.creator.hash })} target="_new">
                                                     <h6 className="ml-2 mb-0">
-                                                        {this.state.creator.date.toLocaleDateString().replace(/\//g, "-")}
+                                                        {this.state.cock.creator.date.toLocaleDateString().replace(/\//g, "-")}
                                                     </h6>
                                                 </a>
                                             </>
                                         ) : null
                                 }
                             </div>
-                            <a className="btn btn-bordered-white btn-smaller mt-3" href={`/cock/${cock.id}`}><i className="icon-eye mr-2" />View</a>
+                            <a className="btn btn-bordered-white btn-smaller mt-3" href={`/cock/${this.state.cock.id}`}><i className="icon-eye mr-2" />View</a>
                             {/* <a href={openseaUrl(this.props.cock.id)} target="_new">
                                 <img className="img-fluid" src={OPENSEA_LIGHT_BANNER} alt="" height="20px" width="50%"/>
                             </a> */}
@@ -119,10 +101,10 @@ export class CockCardExploreFour extends React.Component<{
                     </div>
                 </div>
             </div>
+
         );
     }
 }
-
 
 // /**
 //  * Una carta para un Cock.

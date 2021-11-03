@@ -10,13 +10,13 @@ class AuctionsOne extends React.Component<{}, {
     error: boolean
 }> {
     private initData = {
-        pre_heading: "Monster Cocks",
+        pre_heading: "Recent",
         heading: "Most Recent Monster Cocks",
         btnText: "View All"
     }
     private sliderSettings = {
-        dots: true,
         infinite: true,
+        arrows: true,
         speed: 500,
         slidesToShow: 4,
         slidesToScroll: 4,
@@ -27,7 +27,7 @@ class AuctionsOne extends React.Component<{}, {
                     slidesToShow: 3,
                     slidesToScroll: 3,
                     infinite: true,
-                    dots: true
+                    dots: false
                 }
             },
             {
@@ -43,7 +43,8 @@ class AuctionsOne extends React.Component<{}, {
                 breakpoint: 480,
                 settings: {
                     slidesToShow: 1,
-                    slidesToScroll: 1
+                    slidesToScroll: 1,
+                    arrows: false
                 }
             }
         ]
@@ -85,7 +86,7 @@ class AuctionsOne extends React.Component<{}, {
         return (
             <section className="live-auctions-area">
                 <div className="container">
-                    <div className="row">
+                    <div className="row" style={{marginBottom: "20px"}}>
                         <div className="col-12">
                             {/* Intro */}
                             <div className="intro d-flex justify-content-between align-items-end m-0">
@@ -105,10 +106,10 @@ class AuctionsOne extends React.Component<{}, {
                             <Slider {...this.sliderSettings}>
                                 {this.state.cocks.map((item, idx) => {
                                     return (
-                                        <CockCardExploreFour 
-                                        cock={item} 
-                                        idx={idx} 
-                                        slider={true}
+                                        <CockCardExploreFour
+                                            cock={item}
+                                            idx={idx}
+                                            slider={true}
                                         />
                                     );
                                 })}
