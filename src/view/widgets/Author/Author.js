@@ -85,7 +85,7 @@ class Author extends Component {
                     <PageNumbers
                         currentPage={this.props.startingPage}
                         amountOfPages={pageAmount(this.state.amount, 20)}
-                        href={`/author/${this.props.address}`}
+                        href={`/author/${this.props.address}?`}
                     />
                 </div>
             </section>

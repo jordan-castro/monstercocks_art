@@ -22,7 +22,7 @@ export default function PageNumbers(props: PageNumbersProps) {
             pageButtons.push(
                 <a
                     key={`_page_${i}`}
-                    href={`${props.href}?pn=${i}`}
+                    href={`${props.href}pn=${i}`}
                     className={props.currentPage == i ? "page-numbers-active" : "page-numbers"}
                 >
                     {i}
