@@ -11,7 +11,7 @@ import { openseaUrl, polygonUrl } from "../../../utils/url_builder";
 
 export class CockCardExploreFour extends React.Component<{
     cock: MonsterCock,
-    idx: number,
+    idx?: number,
     slider?: boolean,
 }, {
     cock: MonsterCock,
@@ -40,7 +40,7 @@ export class CockCardExploreFour extends React.Component<{
 
     render() {
         return (
-            <div key={`exf_${this.props.idx}`} className={this.className()} style={{
+            <div className={this.className()} style={{
                 display: "block"
             }}>
                 <div className="card">
@@ -66,7 +66,11 @@ export class CockCardExploreFour extends React.Component<{
                                         (
                                             <a href={`/author/${this.state.cock.owner?.address}`}>
                                                 <h6 className="ml-2 mb-0">
-                                                    {shortenAddress(this.state.cock.owner.address)}
+                                                    {
+                                                        this.state.cock.owner?.name ?
+                                                            this.state.cock.owner.name :
+                                                            shortenAddress(this.state.cock.owner.address)
+                                                    }
                                                 </h6>
                                             </a>
                                         ) : (
@@ -105,80 +109,3 @@ export class CockCardExploreFour extends React.Component<{
         );
     }
 }
-
-// /**
-//  * Una carta para un Cock.
-//  */
-// export class CockCard extends React.Component<{ cock?: MonsterCock, main?: boolean }, { loading: boolean }> {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             loading: true,
-//         };
-//     }
-//     /** 
-//      * El nombre dek css para el carta de cock 
-//      */
-//     cName = this.props.main !== undefined
-//         ? this.props.main
-//             ? 'cock-main' : 'cock-def'
-//         : 'cock-def';
-
-//     /**
-//      *  El elemento del imagen.
-//      */
-//     img() {
-//         return (
-//             <>
-//                 <img
-//                     src={this.props.cock?.image}
-//                     onLoad={() => this.setState({
-//                         loading: false,
-//                     })}
-//                     style={{
-//                         display: this.state.loading ? 'none' : 'flex',
-//                     }}
-//                     className={this.cName}
-//                 />
-//                 <div
-//                     style={{
-//                         display: this.state.loading ? 'flex' : 'none',
-//                         justifyContent: 'center',
-//                         backgroundColor: 'black',
-//                         height: '800px'
-//                     }}
-//                 >
-//                     <Loader
-//                         centerType='center-within-div'
-//                     />
-//                 </div>
-//             </>
-//         );
-//     }
-
-//     render() {
-//         return (
-//             <div className={this.cName}>
-//                 <Card>
-//                     {
-//                         this.props.cock !== undefined ?
-//                             this.img()
-//                             : null
-//                     }
-//                     {
-//                         this.props.main !== undefined && !this.props.main ?
-//                             <CardContent>
-//                                 {
-//                                     this.props.cock !== undefined ?
-//                                         <Typography variant="h5" component="div">
-//                                             {this.props.cock.name}
-//                                         </Typography> : null
-//                                 }
-//                             </CardContent>
-//                             : null
-//                     }
-//                 </Card>
-//             </div>
-//         );
-//     }
-// }
