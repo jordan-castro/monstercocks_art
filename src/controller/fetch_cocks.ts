@@ -222,14 +222,18 @@ export async function fetchMostPopularCocks(): Promise<MonsterCock[]> {
  * @param search
  * string, El search del cock.
  * 
+ * @param page
+ * number, El numero de pagina.
+ * 
  * @returns {Promise<MonsterCock[]>}
  */
-export async function fetchCocksBySearch(search: string): Promise<MonsterCock[]> {
+export async function fetchCocksBySearch(search: string, page: number): Promise<MonsterCock[]> {
     // Busca los cocks
     const response = await valid_http(`${MCK_BASE}${API_COCK_GATEWAY}`, {
         params: {
             p: API_KEY,
             q: 'search',
+            n: page.toString(),
             s: search
         }
     });
