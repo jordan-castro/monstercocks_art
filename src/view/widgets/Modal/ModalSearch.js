@@ -4,14 +4,25 @@ const initData = {
     menuName: "Search",
     menuIcon: "far fa-times-circle icon-close",
     heading: "What are you looking for?",
-    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    content: "Search for a MCK NFT based on its name id or the address that owns it.",
     btnText: "Search"
 }
 
 class ModalSearch extends Component {
     state = {
-        data: {}
+        data: {},
+        query: ""
     }
+
+    /**
+     * @dev Set la query de la modal por un evento del input
+     */
+    setQuery = (e) => {
+        this.setState({
+            query: e.target.value
+        })
+    }
+
     componentDidMount(){
         this.setState({
             data: initData
@@ -36,7 +47,7 @@ class ModalSearch extends Component {
                                     </div>
                                     <div className="row">
                                         <div className="col-12 input-group mt-4">
-                                            <input type="text" placeholder="Enter your keywords" />
+                                            <input type="text" placeholder="Search" value={this.state.query} onChange={this.setQuery}/>
                                         </div>
                                     </div>
                                     <div className="row">

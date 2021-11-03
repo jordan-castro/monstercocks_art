@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 const initData = {
-    pre_heading: "Monster Cocks Art",
-    heading: "Get your hands on a MonsterCock",
+    pre_heading: "MonsterCocks Art",
+    heading: "Get your hands on your MonsterCock",
     content: "Explore the world's largest digital collection of MonsterCocks.",
     btn_1: "Explore",
 }

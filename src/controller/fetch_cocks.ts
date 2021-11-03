@@ -225,9 +225,9 @@ export async function fetchMostPopularCocks(): Promise<MonsterCock[]> {
  * @param page
  * number, El numero de pagina.
  * 
- * @returns {Promise<MonsterCock[]>}
+ * @returns {Promise<{amount: number, cocks: MonsterCock[]}>}
  */
-export async function fetchCocksBySearch(search: string, page: number): Promise<MonsterCock[]> {
+export async function fetchCocksBySearch(search: string, page: number) {
     // Busca los cocks
     const response = await valid_http(`${MCK_BASE}${API_COCK_GATEWAY}`, {
         params: {
@@ -247,11 +247,14 @@ export async function fetchCocksBySearch(search: string, page: number): Promise<
     let cocks: MonsterCock[] = [];
 
     // Ahora creamos los cocks! Usando parse.
-    for (var cock of (response.data as any)) {
+    for (var cock of (response.data as any).cocks) {
         // Crea y pon el cock
         const parsedCock = parseCock(cock);
         cocks.push(parsedCock);
     }
 
-    return cocks;
+    return {
+        amount: (response.data as any).amount,
+        cocks
+    };
 }
