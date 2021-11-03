@@ -228,20 +228,28 @@ export async function fetchMostPopularCocks(): Promise<MonsterCock[]> {
  * @returns {Promise<{amount: number, cocks: MonsterCock[]}>}
  */
 export async function fetchCocksBySearch(search: string, page: number) {
+    const params = {
+        p: API_KEY,
+        q: 'search',
+        n: page.toString(),
+        s: search,
+        timestamp: new Date().getTime()
+    };
+    console.log(params);
     // Busca los cocks
     const response = await valid_http(`${MCK_BASE}${API_COCK_GATEWAY}`, {
-        params: {
-            p: API_KEY,
-            q: 'search',
-            n: page.toString(),
-            s: search
-        }
+        params
     });
 
     // Chequea que funcione
     if (response === false) {
-        return [];
+        return {
+            amount: 0,
+            cocks: []
+        }
     }
+
+    console.log(response.data); 
 
     // Crea el array
     let cocks: MonsterCock[] = [];
