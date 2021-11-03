@@ -7,7 +7,7 @@ import Explore from '../widgets/Explore/ExploreTwo';
 import Scrollup from '../widgets/Scrollup/Scrollup';
 import ModalMenu from '../widgets/Modal/ModalMenu';
 import ModalSearch from '../widgets/Modal/ModalSearch';
-import { fetchCocks } from '../../controller/fetch_cocks';
+import { fetchCocks, fetchCocksBySearch } from '../../controller/fetch_cocks';
 import { Loader } from '../widgets/loader';
 import Footer from '../widgets/Footer/Footer';
 import PageNumbers from '../widgets/PageNumbers/PageNumbers';
@@ -21,15 +21,18 @@ export default function ExploreCocksPage() {
     if (startingPage === null || startingPage === '0') {
         startingPage = '1';
     }
+    // Busca si estamos haciendo search
+    let search = query.get('s');
 
     return (
-        <ExploreCocksPageBuilder startingPage={+startingPage} />
+        <ExploreCocksPageBuilder startingPage={+startingPage} search={search}/>
     );
 }
 
 class ExploreCocksPageBuilder extends React.Component<
     {
         startingPage: number,
+        search: string | null,
     },
     {
         cocks: MonsterCock[],
@@ -52,33 +55,44 @@ class ExploreCocksPageBuilder extends React.Component<
 
     // Fetch los cocks de la pageNumber
     async grabCocks() {
-        let cocks = await fetchCocks((this.state.pageNumber - 1));
+        let cocks: MonsterCock[] = [];
+        let amount = 0;
+        // Chequea si estamos buscando los cocks desde search
+        if (this.props.search !== null) {
+            console.log(this.props.search);
+            // Busca los cocks
+            let response = await fetchCocksBySearch(this.props.search, this.state.pageNumber - 1);
+            cocks = response.cocks;
+            amount = response.amount;
+        } else {
+            // Busca los cocks regularmente
+            cocks = await fetchCocks(this.state.pageNumber - 1);
+            amount = await MonsterCock.getCockCount();
+        }
         // Set el state y sube la pageNumber
         this.setState({
             cocks,
             isLoading: false,
-            pageNumber: this.state.pageNumber,
-            // Si cocks es una lista empty, error
-            error: cocks.length === 0,
-        });
-    }
-
-    // Busca cuantos paginas hay en total.
-    private async getPageAmount() {
-        let amount = await cockAmountFromServer();
-        
-        // Divide the amount by 20 to get the amount of pages.
-        let pages = pageAmount(amount, 20);
-
-        this.setState({
-            amountOfPages: pages,
+            amountOfPages: pageAmount(amount, 20),
+            // // Si cocks es una lista empty, error
+            // error: cocks.length == 0,
         });
     }
     
+    /**
+     * Cree el HREF para los page numbers.
+     * Chequea si hamos pasado un search, si lo hay, agrega el search al href.
+     */
+    private createHref = () => {
+        let href = '/cocks?';
+        if (this.props.search !== null) {
+            href += 's=' + this.props.search + "&";
+        }
+        return href;
+    }
 
     componentDidMount() {
         this.grabCocks();
-        this.getPageAmount();
     }
 
     render() {
@@ -110,7 +124,8 @@ class ExploreCocksPageBuilder extends React.Component<
                         pageNumber={this.state.pageNumber}
                     />
                     <PageNumbers
-                        currentPage={this.state.pageNumber} href="/cocks" 
+                        currentPage={this.state.pageNumber} 
+                        href={this.createHref()}
                         amountOfPages={this.state.amountOfPages}
                     />
                     <Footer />
