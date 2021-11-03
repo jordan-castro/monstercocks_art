@@ -4,7 +4,7 @@ const initData = {
     menuName: "Search",
     menuIcon: "far fa-times-circle icon-close",
     heading: "What are you looking for?",
-    content: "Search for a MCK NFT based on its name id or the address that owns it.",
+    content: "Search for a MCK NFT based on its name or id.",
     btnText: "Search"
 }
 
@@ -23,11 +23,26 @@ class ModalSearch extends Component {
         })
     }
 
-    componentDidMount(){
+    /** 
+     * El button de click para buscar la vaina.
+     */
+    search = (event) => {
+        event.preventDefault();
+        let query = this.state.query;
+        let url = "/cocks?s=";
+        if (query.length > 0) {
+            url += query;
+            console.log(url);
+            window.location.href = url;
+        }
+    }
+
+    componentDidMount() {
         this.setState({
             data: initData
         })
     }
+    
     render() {
         return (
             <div id="search" className="modal fade p-0">
@@ -47,12 +62,12 @@ class ModalSearch extends Component {
                                     </div>
                                     <div className="row">
                                         <div className="col-12 input-group mt-4">
-                                            <input type="text" placeholder="Search" value={this.state.query} onChange={this.setQuery}/>
+                                            <input type="text" placeholder="Search" value={this.state.query} onChange={this.setQuery} />
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="col-12 input-group align-self-center">
-                                            <button className="btn btn-bordered-white mt-3">{this.state.data.btnText}</button>
+                                            <button className="btn btn-bordered-white mt-3" onClick={this.search}>{this.state.data.btnText}</button>
                                         </div>
                                     </div>
                                 </div>
