@@ -21,7 +21,7 @@ const AuthorPage = (props) => {
         <div className="main">
             <Header />
             <Breadcrumb title="Author Profile" subpage="Pages" page="Author" />
-            <AuthorProfile address={address} startingPage={startingPage}/>
+            <AuthorProfile address={address} startingPage={+(startingPage)}/>
             <Footer />
             <ModalSearch />
             <ModalMenu />
