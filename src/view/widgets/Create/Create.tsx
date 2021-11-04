@@ -1,12 +1,16 @@
 import { Component } from 'react';
 import swal from '@sweetalert/with-react';
 import AuthorData from '../../../models/author';
-import { grabWallet } from '../../../utils/connect_wallet';
 import AuthorProfile from "../AuthorProfile/AuthorProfile";
 import { createAuthor, fetchAuthor } from '../../../controller/fetch_author';
 import FormData from 'form-data'
+import { OWNER_ROUTE } from '../../../utils/globals';
 
-class Create extends Component<{}, {
+class Create extends Component<{
+    active,
+    account,
+    activate
+}, {
     author: AuthorData,
     connected: boolean,
     imageFile?: File,
@@ -126,6 +130,10 @@ class Create extends Component<{}, {
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
+                onclick: async () => {
+                    await this.props.activate();
+                    window.location.reload();
+                }
             });
             // Cieera
             return;
@@ -161,7 +169,7 @@ class Create extends Component<{}, {
 
         if (editResult) {
             // Si se creo el autor, lo redireccionamos
-            window.location.href = "/author/" + author.address;
+            window.location.href = OWNER_ROUTE + author.address;
         } else {
             // Si no, lo notificamos
             swal("Error", "No se pudo crear el autor", "error");
@@ -173,7 +181,7 @@ class Create extends Component<{}, {
      * si no lo encuentra busca en la blockchain.
      */
     grabAddress = async () => {
-        let res = await grabWallet();
+        let res = false; // Todo
         // Chequea falso
         if (!res) {
             swal({
