@@ -5,10 +5,10 @@ import AuthorProfile from '../AuthorProfile/AuthorProfile';
 import Explore from '../Explore/ExploreSix';
 import PageNumbers from '../PageNumbers/PageNumbers';
 import pageAmount from '../../../utils/page_amount';
-import { useWeb3React } from "@web3-react/core";
 import AuthorData from '../../../models/author';
 import MonsterCock from '../../../models/cock';
 import RouteHandler, { Routes } from '../../../utils/route_handler';
+import { grabWallet, isConnected } from '../../../utils/connect_wallet';
 
 class AuthorProps {
     startingPage: number;
@@ -25,8 +25,6 @@ const Author = (props: AuthorProps) => {
     const [cocks, setCocks] = useState<MonsterCock[]>();
     const [amount, setAmount] = useState<number>(0);
     const [edit, setEdit] = useState<boolean>(false);
-
-    const { active, account, library, connector, activate, deactivate } = useWeb3React()
 
     useEffect(() => {
         // Fetch author data
@@ -59,8 +57,13 @@ const Author = (props: AuthorProps) => {
     // Si no, no se muestra
     const checkUser = async () => {
         // Chequea el wallet esta connectado
-        if (account == author?.address) {
-            setEdit(true);
+        let wallet = await grabWallet();
+        if (wallet) {
+            if (wallet == author?.address) {
+                setEdit(true);
+            } else {
+                setEdit(false);
+            }
         } else {
             setEdit(false);
         }
@@ -111,12 +114,12 @@ const Author = (props: AuthorProps) => {
                         currentPage={props.startingPage}
                         amountOfPages={amount ? pageAmount(amount, 20) : 0}
                         onPageNumberClicked={(pageNumber) => {
-                            return RouteHandler.goToNextPage(Routes.OWNER, {
+                            return RouteHandler.goToNextPage(RouteHandler.getOwnerUrl(props.address), {
                                 key: 'pn',
                                 value: pageNumber
                             });
                         }}
-                        // href={RouteHandler.getOwnerUrl(props.address)}
+                    // href={RouteHandler.getOwnerUrl(props.address)}
                     />
                 }
             </div>

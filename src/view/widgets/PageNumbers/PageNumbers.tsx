@@ -17,8 +17,6 @@ class PageNumbersProps {
 }
 
 export default function PageNumbers(props: PageNumbersProps) {
-    console.log(props.currentPage);
-
     // Crea los objectos de la pagina numeros
     const createPageButtons = (props) => {
         let pageButtons: JSX.Element[] = [];
@@ -27,7 +25,7 @@ export default function PageNumbers(props: PageNumbersProps) {
                 <a
                     key={`_page_${i}`}
                     href={props.onPageNumberClicked(i)}
-                    className={props.currentPage == i ? "page-numbers-active" : "page-numbers"}
+                    className={props.currentPage === i ? "page-numbers-active" : "page-numbers"}
                 >
                     {i}
                 </a>
@@ -37,10 +35,8 @@ export default function PageNumbers(props: PageNumbersProps) {
     }
 
     return (
-        <div className="social-icons d-flex" style={{
-            width: '100%',
-            justifyContent: 'center',
-            margin: '20px'
+        <div className="social-icons d-flex justify-content-center" style={{
+            marginTop: '20px',
         }}>
             {
                 createPageButtons(props)

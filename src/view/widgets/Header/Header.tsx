@@ -1,36 +1,39 @@
 import { Component, useEffect, useState } from 'react';
 import { shortenAddress } from '../../../utils/shorten_string';
-import { useWeb3React } from "@web3-react/core";
-import { injected, isConnected, needToConnect, stopConnecting } from '../../../utils/connect_wallet';
+import connectWallet, { grabWallet, isConnected } from '../../../utils/connect_wallet';
 import swal from '@sweetalert/with-react';
 import RouteHandler from '../../../utils/route_handler';
+import { DEFAULT_ADDRESS } from '../../../utils/globals';
 
-const WalletConnectButton = (props) => {
-    const { active, account, library, connector, activate, deactivate } = useWeb3React()
+const WalletConnectButton = (props: {
+    reload: boolean,
+}) => {
+    const { reload } = props;
+
+    const [connected, setConnected] = useState(false);
+    const [address, setAddress] = useState('');
 
     useEffect(() => {
-        // Chequea si ya estamos connectado
+        // Chequea si ya esta connectado
         if (isConnected()) {
-            activate(injected).then(() => {
-                // props.onConnect();
-            });
-            stopConnecting();
+            connect();
         }
     });
 
     const connect = async () => {
-        if (active) {
-            needToConnect();
-            // Vamos a su pagina
-            window.location.href = RouteHandler.getOwnerUrl(account!);
-            // Cieera
-            return;
-        }
-        try {
-            await activate(injected);
-            needToConnect();
-        } catch (error) {
-            console.log(error);
+        // Busca el address
+        let _address = await connectWallet();
+        // Chequea si funciono
+        if (_address) {
+            // Chequea si tenemos que recargar!
+            if (reload && sessionStorage.getItem('reload') != 'false') {
+                sessionStorage.setItem('reload', 'false');
+                window.location.reload();
+                return;
+            }
+            setAddress(_address);
+            setConnected(true);
+        } else {
             // Digamos que habia un error en ingles
             swal({
                 title: "Error",
@@ -41,90 +44,15 @@ const WalletConnectButton = (props) => {
         }
     }
 
-    const disconnect = async () => {
-        try {
-            await deactivate();
-            stopConnecting();
-        } catch (error) {
-            console.log(error);
-            // Digamos que habia un error en ingles
-            swal({
-                title: "Error",
-                text: "There was an error disconnecting from the wallet",
-                icon: "error",
-                button: "Ok",
-            });
-        }
-    }
-
-    // // Chequea primero si ya esta conectado
-    // if (this.state.isConnected) {
-    //     // Vamos por el author page de esta address
-    //     window.location.href = `/author/${this.state.address}`;
-    //     // Cieera
-    //     return;
-    // }
-    // // Estamos connectando
-    // this.setState({
-    //     isConnecting: true,
-    // });
-
-    // let wallet = await connectWallet();
-    // // Chequea falso
-    // if (wallet == false || wallet == undefined) {
-    //     // Muestra un dialog customizado
-    //     await swal({
-    //         title: "Error",
-    //         text: "There was a problem connecting your wallet.",
-    //         icon: "error",
-    //         button: "Ok",
-    //     });
-
-    //     // Setea no conectado
-    //     this.setState({
-    //         isConnected: false,
-    //         isConnecting: false,
-    //     });
-    // } else {
-    //     // Pon la connected en el sessionStorage a true
-    //     window.sessionStorage.setItem('connected', true);
-    //     // Setea el address en el state
-    //     this.setState({
-    //         address: wallet,
-    //         isConnected: true,
-    //         isConnecting: false,
-    //     });
-    //     // Chequea si deberiamos recargar la pagina
-    //     if (this.props.reload && window.sessionStorage.getItem('reloaded') != "true") {
-    //         window.sessionStorage.setItem('reloaded', true);
-    //         // Recarga la pagina
-    //         window.location.reload();
-    //     }
-    // }
-
-    // // Chequea web3 esta connectado
-    // async checkWeb3() {
-    //     // Chequeqa si ya esta conectado
-    //     if (checkWallet()) {
-    //         // Setea el address en el state
-    //         await this.connect();
-    //     }
-    // }
-
-    // componentDidMount() {
-    //     // Chequea web3
-    //     this.checkWeb3();
-    // }
-
     return (
         <button
-            className={`btn ml-lg-auto ${active ? '' : 'btn-bordered-white'}`}
+            className={`btn ml-lg-auto ${connected ? '' : 'btn-bordered-white'}`}
             onClick={connect}>
             <i className="icon-wallet mr-md-2" />
             {
                 // Chequea si esta conectado
-                active ? (
-                    shortenAddress(account!)
+                connected ? (
+                    shortenAddress(address)
                 ) : (
                     <span>Connect Wallet</span>
                 )
@@ -133,7 +61,20 @@ const WalletConnectButton = (props) => {
     );
 }
 
-const Header = (props) => {
+const Header = (props: {
+    reload?: boolean,
+}) => {
+    // Busca el wallet
+    const [wallet, setWallet] = useState(DEFAULT_ADDRESS);
+
+    useEffect(() => {
+        grabWallet().then((wallet) => {
+            if (wallet) {
+                setWallet(wallet);
+            }
+        });
+    });
+
     return (
         <header id="header">
             {/* Navbar */}
@@ -175,7 +116,7 @@ const Header = (props) => {
                             <a className="nav-link" href="#">Pages <i className="fas fa-angle-down ml-1" /></a>
                             <ul className="dropdown-menu">
                                 <li className="nav-item"><a href="/owners" className="nav-link">Owners</a></li>
-                                <li className="nav-item"><a href="/owner" className="nav-link">Profile</a></li>
+                                <li className="nav-item"><a href={RouteHandler.getOwnerUrl(wallet)} className="nav-link">Profile</a></li>
                                 {/* <li className="nav-item"><a href="/wallet-connect" className="nav-link">Wallet Connect</a></li>
                                 <li className="nav-item"><a href="/create" className="nav-link">Create</a></li>
                                 <li className="nav-item"><a href="/login" className="nav-link">Login</a></li>
@@ -205,7 +146,7 @@ const Header = (props) => {
                     {/* Navbar Action Button */}
                     <ul className="navbar-nav action">
                         <li className="nav-item ml-3">
-                            <WalletConnectButton />
+                            <WalletConnectButton reload={props.reload ? props.reload : false} />
                         </li>
                     </ul>
                 </div>

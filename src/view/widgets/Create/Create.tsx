@@ -5,15 +5,14 @@ import AuthorProfile from "../AuthorProfile/AuthorProfile";
 import { createAuthor, fetchAuthor } from '../../../controller/fetch_author';
 import FormData from 'form-data'
 import RouteHandler from '../../../utils/route_handler';
+import { grabWallet } from '../../../utils/connect_wallet';
+import { DEFAULT_ADDRESS } from '../../../utils/globals';
 
-class Create extends Component<{
-    active,
-    account,
-    activate
-}, {
+class Create extends Component<{}, {
     author: AuthorData,
     connected: boolean,
     imageFile?: File,
+    canSubmit: boolean,
 }> {
     // // Base para facebook, twitter, instagram, y github
     // private facebookUrl = 'https://www.facebook.com/';
@@ -24,8 +23,9 @@ class Create extends Component<{
     constructor(props) {
         super(props);
         this.state = {
-            author: new AuthorData(0, "0x0000unknown", "", "", ""),
+            author: new AuthorData(0, DEFAULT_ADDRESS, "", "", ""),
             connected: false,
+            canSubmit: true,
         }
     }
 
@@ -47,9 +47,11 @@ class Create extends Component<{
      * Update the author's image
      */
     updateImage = (event) => {
+        // Los tipos de archivos que soporta el input file son:
+        const allowedImageTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
         if (event.target.files && event.target.files[0]) {
-            // Chqeuea tipo de imagen
-            if (event.target.files[0].type.match(/image.*/)) {
+            // Chqeuea tipo de imagen es uno de los allowed
+            if (allowedImageTypes.includes(event.target.files[0].type)) {
                 // Si es una imagen la muestra
                 let img = event.target.files[0];
                 this.setState({
@@ -62,23 +64,6 @@ class Create extends Component<{
             }
         }
     }
-
-    // /**
-    //  * Chequea si un string es uno de los urls default.
-    //  * 
-    //  * @param val
-    //  * @param parent
-    //  * 
-    //  * @returns {string}
-    //  */
-    // checkUrl = (val: string, parent: string): string => {
-    //     // Chequea si el val no tiene el parent
-    //     if (val.indexOf(parent) === -1) {
-    //         val = parent;
-    //     }
-
-    //     return val;
-    // }
 
     /**
      * Update the authors Facebook.
@@ -121,19 +106,21 @@ class Create extends Component<{
      */
     handleSubmit = async (event) => {
         event.preventDefault();
+        // Chequea si podemos hacer submit a este tiempo. Es para que no se DDos el servicio.
+        if (!this.state.canSubmit) {
+            // Hcemos nada
+            return;
+        }
+        this.setState({ canSubmit: false });
         // Chequea que estamos conectado
-        if (!this.state.connected) {
+        if (!this.state.connected || this.state.author.address == DEFAULT_ADDRESS) {
             // Di al usario que tenemos connectar el wallet
             swal({
                 title: "Connect Wallet",
                 text: "Please connect your wallet to continue.",
                 icon: "warning",
-                buttons: true,
+                buttons: "Ok",
                 dangerMode: true,
-                onclick: async () => {
-                    await this.props.activate();
-                    window.location.reload();
-                }
             });
             // Cieera
             return;
@@ -174,6 +161,7 @@ class Create extends Component<{
             // Si no, lo notificamos
             swal("Error", "No se pudo crear el autor", "error");
         }
+        this.setState({ canSubmit: true });
     }
 
     /**
@@ -181,7 +169,7 @@ class Create extends Component<{
      * si no lo encuentra busca en la blockchain.
      */
     grabAddress = async () => {
-        let res = false; // Todo
+        let res = await grabWallet(); // Todo
         // Chequea falso
         if (!res) {
             swal({
