@@ -40,7 +40,7 @@ class CockCardPopular extends React.Component<{
                         <a href={this.cockUrl()}>
                             <img className="card-img-top" src={this.props.cock.image} alt="" />
                         </a>
-                        <a className="seller" href={`/author/${this.state.cock.image}`}>
+                        <a className="seller" href={`/cock/${this.state.cock.id}`}>
                                 <div className="seller-thumb avatar-lg">
                                     <img className="rounded-circle" src={this.state.cock.image} alt="" />
                                 </div>

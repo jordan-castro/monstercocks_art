@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { openseaUrl, polygonUrl } from '../../../utils/url_builder';
 import shortenString, { shortenAddress } from '../../../utils/shorten_string';
 import { dateDifference } from '../../../utils/to_date_time';
-import { OPENSEA_DARK_BANNER, OPENSEA_LIGHT_BANNER, DEFAULT_AVATAR } from '../../../utils/globals';
+import { OPENSEA_DARK_BANNER, OPENSEA_LIGHT_BANNER, DEFAULT_AVATAR, OWNER_ROUTE } from '../../../utils/globals';
 import { stripAttributeValue } from '../../../models/attribute';
 import ShareButton from '../ShareButton/ShareButton';
 import MonsterCock from '../../../models/cock';
@@ -242,7 +242,7 @@ class ItemDetails extends Component<{
                                                                     src={owner.image ? owner.image : DEFAULT_AVATAR}
                                                                     alt="" />
                                                                 <p className="m-0">
-                                                                    <a href={`/author/${owner.address}`}>
+                                                                    <a href={`${OWNER_ROUTE}${owner.address}`}>
                                                                         {owner.name ? owner.name : shortenAddress(owner.address)}
                                                                     </a>
                                                                     <br />
@@ -289,7 +289,7 @@ class ItemDetails extends Component<{
                                     <span>Owned By</span>
                                     {
                                         this.props.owner ?
-                                            <a className="owner-meta d-flex align-items-center ml-3" href={"/author/" + this.props.owner.address}>
+                                            <a className="owner-meta d-flex align-items-center ml-3" href={OWNER_ROUTE + this.props.owner.address}>
                                                 <img
                                                     className="avatar-sm rounded-circle"
                                                     src={this.props.owner?.image ? this.props.owner.image : DEFAULT_AVATAR}
