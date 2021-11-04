@@ -11,7 +11,7 @@ class AuctionsOne extends React.Component<{}, {
 }> {
     private initData = {
         pre_heading: "Recent",
-        heading: "Most Recent Monster Cocks",
+        heading: "Most Recent MonsterCocks",
         btnText: "View All"
     }
     private sliderSettings = {
