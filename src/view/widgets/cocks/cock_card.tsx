@@ -4,7 +4,7 @@ import { fetchCreatorTransaction } from "../../../controller/fetch_transactions"
 import MonsterCock from "../../../models/cock";
 import Owner from "../../../models/owner";
 import Transaction from "../../../models/transaction";
-import { OPENSEA_DARK_BANNER, OPENSEA_LIGHT_BANNER } from "../../../utils/globals";
+import { OPENSEA_DARK_BANNER, OPENSEA_LIGHT_BANNER, OWNER_ROUTE } from "../../../utils/globals";
 import { shortenAddress } from "../../../utils/shorten_string";
 import { openseaUrl, polygonUrl } from "../../../utils/url_builder";
 
@@ -64,7 +64,7 @@ export class CockCardExploreFour extends React.Component<{
                                     // Si hay entonces muestra el owner.address
                                     this.state.cock.owner ?
                                         (
-                                            <a href={`/author/${this.state.cock.owner?.address}`}>
+                                            <a href={`${OWNER_ROUTE}${this.state.cock.owner?.address}`}>
                                                 <h6 className="ml-2 mb-0">
                                                     {
                                                         this.state.cock.owner?.name ?
