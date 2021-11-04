@@ -2,96 +2,13 @@ import React, { Component } from 'react';
 import { openseaUrl, polygonUrl } from '../../../utils/url_builder';
 import shortenString, { shortenAddress } from '../../../utils/shorten_string';
 import { dateDifference } from '../../../utils/to_date_time';
-import { OPENSEA_DARK_BANNER, OPENSEA_LIGHT_BANNER, DEFAULT_AVATAR, OWNER_ROUTE } from '../../../utils/globals';
+import { OPENSEA_DARK_BANNER, OPENSEA_LIGHT_BANNER, DEFAULT_AVATAR } from '../../../utils/globals';
 import { stripAttributeValue } from '../../../models/attribute';
 import ShareButton from '../ShareButton/ShareButton';
 import MonsterCock from '../../../models/cock';
 import Owner from '../../../models/owner';
 import Transaction from '../../../models/transaction';
-
-const initData = {
-    itemImg: "/img/auction_2.jpg",
-    date: "2022-03-30",
-    tab_1: "Bids",
-    tab_2: "History",
-    tab_3: "Details",
-    ownerImg: "/img/avatar_1.jpg",
-    itemOwner: "Themeland",
-    created: "15 Jul 2021",
-    title: "Walking On Air",
-    content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum obcaecati dignissimos quae quo ad iste ipsum officiis deleniti asperiores sit.",
-    price_1: "1.5 ETH",
-    price_2: "$500.89",
-    count: "1 of 5",
-    size: "14000 x 14000 px",
-    volume: "64.1",
-    highest_bid: "2.9 BNB",
-    bid_count: "1 of 5",
-    btnText: "Place a Bid"
-}
-
-const tabData_1 = [
-    {
-        id: "1",
-        img: "/img/avatar_1.jpg",
-        price: "14 ETH",
-        time: "4 hours ago",
-        author: "@arham"
-    },
-    {
-        id: "2",
-        img: "/img/avatar_2.jpg",
-        price: "10 ETH",
-        time: "8 hours ago",
-        author: "@junaid"
-    },
-    {
-        id: "3",
-        img: "/img/avatar_3.jpg",
-        price: "12 ETH",
-        time: "3 hours ago",
-        author: "@yasmin"
-    }
-]
-
-const tabData_2 = [
-    {
-        id: "1",
-        img: "/img/avatar_6.jpg",
-        price: "32 ETH",
-        time: "10 hours ago",
-        author: "@hasan"
-    },
-    {
-        id: "2",
-        img: "/img/avatar_7.jpg",
-        price: "24 ETH",
-        time: "6 hours ago",
-        author: "@artnox"
-    },
-    {
-        id: "3",
-        img: "/img/avatar_8.jpg",
-        price: "29 ETH",
-        time: "12 hours ago",
-        author: "@meez"
-    }
-]
-
-const sellerData = [
-    {
-        id: "1",
-        img: "/img/avatar_1.jpg",
-        seller: "@ArtNoxStudio",
-        post: "Creator"
-    },
-    {
-        id: "2",
-        img: "/img/avatar_2.jpg",
-        seller: "Virtual Worlds",
-        post: "Collection"
-    }
-]
+import RouteHandler from '../../../utils/route_handler';
 
 /**
  * Un component para mostart el cock previouso y cock siguiente,
@@ -99,12 +16,12 @@ const sellerData = [
  * 
  * @param {cock: MonsterCock} props: Los props.
 */
-const CockSiblingCard = (props) => {
+const CockSiblingCard = (props: {cock: MonsterCock}) => {
     const { cock } = props;
 
     return (
         <div key={cock.id} className="col-12 col-md-6 item px-lg-2">
-            <a href={`/cock/${cock.id}`}>
+            <a href={RouteHandler.getCockUrl(cock.id)}>
                 <div className="card">
                     <div className="single-seller d-flex align-items-center">
                         <img className="avatar-md rounded-circle" src={cock.image} alt="" />
@@ -133,10 +50,6 @@ class ItemDetails extends Component<{
         super(props);
         // Ponomes el state inicial
         this.state = {
-            initData: initData,
-            tabData_1: tabData_1,
-            tabData_2: tabData_2,
-            sellerData: sellerData,
             amount: 0
         };
     }
@@ -242,7 +155,7 @@ class ItemDetails extends Component<{
                                                                     src={owner.image ? owner.image : DEFAULT_AVATAR}
                                                                     alt="" />
                                                                 <p className="m-0">
-                                                                    <a href={`${OWNER_ROUTE}${owner.address}`}>
+                                                                    <a href={RouteHandler.getOwnerUrl(owner.address)}>
                                                                         {owner.name ? owner.name : shortenAddress(owner.address)}
                                                                     </a>
                                                                     <br />
@@ -289,7 +202,7 @@ class ItemDetails extends Component<{
                                     <span>Owned By</span>
                                     {
                                         this.props.owner ?
-                                            <a className="owner-meta d-flex align-items-center ml-3" href={OWNER_ROUTE + this.props.owner.address}>
+                                            <a className="owner-meta d-flex align-items-center ml-3" href={RouteHandler.getOwnerUrl(this.props.owner.address)}>
                                                 <img
                                                     className="avatar-sm rounded-circle"
                                                     src={this.props.owner?.image ? this.props.owner.image : DEFAULT_AVATAR}

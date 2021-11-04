@@ -1,4 +1,5 @@
 import MonsterCock from '../../../models/cock';
+import RouteHandler from '../../../utils/route_handler';
 
 const ExploreSix = (props: {
     cocks: MonsterCock[],
@@ -45,7 +46,7 @@ const ExploreSix = (props: {
                         <div key={`eds_${idx}`} className="col-12 col-md-6 item explore-item" data-grou={"all"}>
                             <div className="card text-center">
                                 <div className="image-over">
-                                    <a href={`/cock/${item.id}`}>
+                                    <a href={RouteHandler.getCockUrl(item.id)}>
                                         <img className="card-img-top" src={item.image} alt="" />
                                     </a>
                                     {/* Author */}
@@ -59,7 +60,7 @@ const ExploreSix = (props: {
                                 <div className="card-caption col-12 p-0">
                                     {/* Card Body */}
                                     <div className="card-body mt-4">
-                                        <a href={`/cock/${item.id}`}>
+                                        <a href={RouteHandler.getCockUrl(item.id)}>
                                             <h5 className="mb-2">{item.name}</h5>
                                         </a>
                                         {/* <span>{item.content}</span> */}

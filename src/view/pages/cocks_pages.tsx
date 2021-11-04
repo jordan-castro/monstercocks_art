@@ -13,6 +13,7 @@ import Footer from '../widgets/Footer/Footer';
 import PageNumbers from '../widgets/PageNumbers/PageNumbers';
 import { cockAmountFromServer } from '../../utils/valid_id';
 import pageAmount from '../../utils/page_amount';
+import RouteHandler, { Routes } from '../../utils/route_handler';
 
 export default function ExploreCocksPage() {
     let query = new URLSearchParams(useLocation().search);;
@@ -25,7 +26,7 @@ export default function ExploreCocksPage() {
     let search = query.get('s');
 
     return (
-        <ExploreCocksPageBuilder startingPage={+startingPage} search={search}/>
+        <ExploreCocksPageBuilder startingPage={+startingPage} search={search} />
     );
 }
 
@@ -78,17 +79,32 @@ class ExploreCocksPageBuilder extends React.Component<
             // error: cocks.length == 0,
         });
     }
-    
+
+    private createQuery = (): undefined | {key: string, value: string} => {
+        // Toca el query pasado en this.props.search
+        const { search } = this.props;
+        let query: undefined | {key: string, value: string} = undefined;
+
+        // Si search es null, no hace nada
+        if (search !== null) {
+            query = {
+                key: 's',
+                value: search,
+            };
+        }
+
+        return query;
+    }
+
     /**
      * Cree el HREF para los page numbers.
      * Chequea si hamos pasado un search, si lo hay, agrega el search al href.
      */
-    private createHref = () => {
-        let href = '/cocks?';
-        if (this.props.search !== null) {
-            href += 's=' + this.props.search + "&";
-        }
-        return href;
+    private createHref = (i): string => {
+        return RouteHandler.goToNextPage(Routes.COCKS, {
+            key: 'pn',
+            value: i,
+        }, this.createQuery());
     }
 
     componentDidMount() {
@@ -122,11 +138,12 @@ class ExploreCocksPageBuilder extends React.Component<
                         }}
                         cocks={this.state.cocks}
                         pageNumber={this.state.pageNumber}
+                        query={this.createQuery()}
                     />
                     <PageNumbers
-                        currentPage={this.state.pageNumber} 
-                        href={this.createHref()}
+                        currentPage={this.state.pageNumber}
                         amountOfPages={this.state.amountOfPages}
+                        onPageNumberClicked={this.createHref}
                     />
                     <Footer />
                     <ModalSearch />

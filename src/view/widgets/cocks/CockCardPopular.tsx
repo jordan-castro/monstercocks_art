@@ -1,6 +1,7 @@
 import React from "react";
 import MonsterCock from "../../../models/cock";
 import Owner from "../../../models/owner";
+import RouteHandler from "../../../utils/route_handler";
 
 class CockCardPopular extends React.Component<{
     cock: MonsterCock,
@@ -24,10 +25,6 @@ class CockCardPopular extends React.Component<{
         cock.getOwner().then(() => this.setState({ cock }));
     }
 
-    cockUrl = () => {
-        return `/cock/${this.props.cock.id}`;
-    }
-
     componentDidMount() {
         // this.loadData();
     }   
@@ -37,10 +34,10 @@ class CockCardPopular extends React.Component<{
             <div key={`cd_${this.props.idx}`} className="col-12 col-sm-6 col-lg-3 item">
                 <div className="card no-hover text-center">
                     <div className="image-over">
-                        <a href={this.cockUrl()}>
+                        <a href={RouteHandler.getCockUrl(this.props.cock.id)}>
                             <img className="card-img-top" src={this.props.cock.image} alt="" />
                         </a>
-                        <a className="seller" href={`/cock/${this.state.cock.id}`}>
+                        <a className="seller" href={RouteHandler.getCockUrl(this.props.cock.id)}>
                                 <div className="seller-thumb avatar-lg">
                                     <img className="rounded-circle" src={this.state.cock.image} alt="" />
                                 </div>
@@ -57,7 +54,7 @@ class CockCardPopular extends React.Component<{
                     <div className="card-caption col-12 p-0">
                         {/* Card Body */}
                         <div className="card-body mt-4">
-                            <a href={this.cockUrl()}>
+                            <a href={RouteHandler.getCockUrl(this.props.cock.id)}>
                                 <h5 className="mb-2">{this.props.cock.name}</h5>
                             </a>
                             {/* <span>{item.content}</span> */}

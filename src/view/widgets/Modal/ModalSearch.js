@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import RouteHandler, { Routes } from '../../../utils/route_handler';
 
 const initData = {
     menuName: "Search",
@@ -29,11 +30,11 @@ class ModalSearch extends Component {
     search = (event) => {
         event.preventDefault();
         let query = this.state.query;
-        let url = "/cocks?s=";
         if (query.length > 0) {
-            url += query;
-            console.log(url);
-            window.location.href = url;
+            window.location.href = RouteHandler.goToQuery(Routes.COCKS, {
+                key: "s",
+                value: query
+            });
         }
     }
 

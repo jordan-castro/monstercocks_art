@@ -3,7 +3,7 @@ import { shortenAddress } from '../../../utils/shorten_string';
 import { useWeb3React } from "@web3-react/core";
 import { injected, isConnected, needToConnect, stopConnecting } from '../../../utils/connect_wallet';
 import swal from '@sweetalert/with-react';
-import { OWNER_ROUTE } from '../../../utils/globals';
+import RouteHandler from '../../../utils/route_handler';
 
 const WalletConnectButton = (props) => {
     const { active, account, library, connector, activate, deactivate } = useWeb3React()
@@ -22,7 +22,7 @@ const WalletConnectButton = (props) => {
         if (active) {
             needToConnect();
             // Vamos a su pagina
-            window.location.href = OWNER_ROUTE + account;
+            window.location.href = RouteHandler.getOwnerUrl(account!);
             // Cieera
             return;
         }

@@ -3,12 +3,16 @@ import './PageNumbers.css';
 class PageNumbersProps {
     amountOfPages: number;
     currentPage: number;
-    href: string;
+    // A function that gets called when a page number is clicked
+    onPageNumberClicked = (pageNumber: number) => {
+        console.log(`Page number ${pageNumber} clicked`);
+        return '';
+    };
 
-    constructor(amountOfPages: number, currentPage: number, href: string) {
+    constructor(amountOfPages: number, currentPage: number, onPageNumberClicked: (pageNumber: number) => string) {
         this.amountOfPages = amountOfPages;
         this.currentPage = currentPage;
-        this.href = href;
+        this.onPageNumberClicked = onPageNumberClicked;
     }
 }
 
@@ -22,7 +26,7 @@ export default function PageNumbers(props: PageNumbersProps) {
             pageButtons.push(
                 <a
                     key={`_page_${i}`}
-                    href={`${props.href}pn=${i}`}
+                    href={props.onPageNumberClicked(i)}
                     className={props.currentPage == i ? "page-numbers-active" : "page-numbers"}
                 >
                     {i}

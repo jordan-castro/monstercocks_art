@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { fetchAuthor } from '../../../controller/fetch_author';
 import { fetchCocksByOwner } from '../../../controller/fetch_cocks';
 import AuthorProfile from '../AuthorProfile/AuthorProfile';
@@ -8,7 +8,7 @@ import pageAmount from '../../../utils/page_amount';
 import { useWeb3React } from "@web3-react/core";
 import AuthorData from '../../../models/author';
 import MonsterCock from '../../../models/cock';
-import { OWNER_ROUTE } from '../../../utils/globals';
+import RouteHandler, { Routes } from '../../../utils/route_handler';
 
 class AuthorProps {
     startingPage: number;
@@ -27,6 +27,15 @@ const Author = (props: AuthorProps) => {
     const [edit, setEdit] = useState<boolean>(false);
 
     const { active, account, library, connector, activate, deactivate } = useWeb3React()
+
+    useEffect(() => {
+        // Fetch author data
+        getAuthor();
+        // Fetch cocks
+        getCocks();
+        // Chequea usario
+        checkUser();
+    });
 
     // author?: AuthorData,
     // edit: boolean,
@@ -101,7 +110,13 @@ const Author = (props: AuthorProps) => {
                     <PageNumbers
                         currentPage={props.startingPage}
                         amountOfPages={amount ? pageAmount(amount, 20) : 0}
-                        href={`${OWNER_ROUTE}${props.address}?`}
+                        onPageNumberClicked={(pageNumber) => {
+                            return RouteHandler.goToNextPage(Routes.OWNER, {
+                                key: 'pn',
+                                value: pageNumber
+                            });
+                        }}
+                        // href={RouteHandler.getOwnerUrl(props.address)}
                     />
                 }
             </div>

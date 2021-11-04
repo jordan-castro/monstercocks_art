@@ -90,6 +90,8 @@ class CockPageBuilder extends React.Component<
                 MonsterCock.createCock(this.props.id).then(cock => {
                     // Chequea que no haya error
                     if (cock !== false) {
+                        // Cambia el titulo del documento al nombre del cock
+                        document.title = cock.name;
                         // Pone el cock
                         this.setState({
                             cock: cock as MonsterCock,

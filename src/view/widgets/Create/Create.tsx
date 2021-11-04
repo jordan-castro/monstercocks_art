@@ -4,7 +4,7 @@ import AuthorData from '../../../models/author';
 import AuthorProfile from "../AuthorProfile/AuthorProfile";
 import { createAuthor, fetchAuthor } from '../../../controller/fetch_author';
 import FormData from 'form-data'
-import { OWNER_ROUTE } from '../../../utils/globals';
+import RouteHandler from '../../../utils/route_handler';
 
 class Create extends Component<{
     active,
@@ -169,7 +169,7 @@ class Create extends Component<{
 
         if (editResult) {
             // Si se creo el autor, lo redireccionamos
-            window.location.href = OWNER_ROUTE + author.address;
+            window.location.href = RouteHandler.getOwnerUrl(author.address);
         } else {
             // Si no, lo notificamos
             swal("Error", "No se pudo crear el autor", "error");

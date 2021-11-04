@@ -1,12 +1,8 @@
 import React from "react";
-import { fetchOwner } from "../../../controller/fetch_owner";
-import { fetchCreatorTransaction } from "../../../controller/fetch_transactions";
 import MonsterCock from "../../../models/cock";
-import Owner from "../../../models/owner";
-import Transaction from "../../../models/transaction";
-import { OPENSEA_DARK_BANNER, OPENSEA_LIGHT_BANNER, OWNER_ROUTE } from "../../../utils/globals";
+import RouteHandler from "../../../utils/route_handler";
 import { shortenAddress } from "../../../utils/shorten_string";
-import { openseaUrl, polygonUrl } from "../../../utils/url_builder";
+import { polygonUrl } from "../../../utils/url_builder";
 
 
 export class CockCardExploreFour extends React.Component<{
@@ -45,7 +41,7 @@ export class CockCardExploreFour extends React.Component<{
             }}>
                 <div className="card">
                     <div className="image-over">
-                        <a href={`/cock/${this.state.cock.id}`}>
+                        <a href={RouteHandler.getCockUrl(this.state.cock.id)}>
                             <img className="card-img-top" src={this.state.cock.image} alt="" />
                         </a>
                     </div>
@@ -53,7 +49,7 @@ export class CockCardExploreFour extends React.Component<{
                     <div className="card-caption col-12 p-0">
                         {/* Card Body */}
                         <div className="card-body">
-                            <a href={`/cock/${this.state.cock.id}`}>
+                            <a href={RouteHandler.getCockUrl(this.state.cock.id)}>
                                 <h5 className="mb-0">{this.state.cock.name}</h5>
                             </a>
                             <div className="seller d-flex align-items-center my-2">
@@ -64,7 +60,7 @@ export class CockCardExploreFour extends React.Component<{
                                     // Si hay entonces muestra el owner.address
                                     this.state.cock.owner ?
                                         (
-                                            <a href={`${OWNER_ROUTE}${this.state.cock.owner?.address}`}>
+                                            <a href={RouteHandler.getOwnerUrl(this.state.cock.owner?.address)}>
                                                 <h6 className="ml-2 mb-0">
                                                     {
                                                         this.state.cock.owner?.name ?
@@ -97,7 +93,7 @@ export class CockCardExploreFour extends React.Component<{
                                         ) : null
                                 }
                             </div>
-                            <a className="btn btn-bordered-white btn-smaller mt-3" href={`/cock/${this.state.cock.id}`}><i className="icon-eye mr-2" />View</a>
+                            <a className="btn btn-bordered-white btn-smaller mt-3" href={RouteHandler.getCockUrl(this.state.cock.id)}><i className="icon-eye mr-2" />View</a>
                             {/* <a href={openseaUrl(this.props.cock.id)} target="_new">
                                 <img className="img-fluid" src={OPENSEA_LIGHT_BANNER} alt="" height="20px" width="50%"/>
                             </a> */}
