@@ -1,3 +1,4 @@
+import fetchAttributes from "../controller/fetch_attributes";
 import { fetchCock } from "../controller/fetch_cocks";
 import { fetchOwner, fetchOwners } from "../controller/fetch_owner";
 import { fecthTransactions, fetchCreatorTransaction } from "../controller/fetch_transactions";
@@ -12,7 +13,7 @@ export default class MonsterCock {
     name: string;
     uri: string;
     image: string;
-    attributes: Attribute[];
+    attributes?: Attribute[];
     owner?: Owner;
     owners?: Owner[];
     transactions?: Transaction[];
@@ -22,12 +23,11 @@ export default class MonsterCock {
         previous: MonsterCock
     };
 
-    constructor(id: number, name: string, uri: string, image: string, attributes: Attribute[]) {
+    constructor(id: number, name: string, uri: string, image: string) {
         this.id = id;
         this.name = name;
         this.uri = uri;
         this.image = addBaseToImage(image, true);
-        this.attributes = attributes;
     }
 
     /**
@@ -41,6 +41,17 @@ export default class MonsterCock {
     static async createCock(id: number) {
         let cock = await fetchCock(id);
         return cock;
+    }
+
+    /**
+     * Busca los attributos del cock.
+     */
+    async getAttributes() {
+        let attributes = await fetchAttributes(this.id);
+        // Chequea resulta
+        if (attributes.length > 0) {
+            this.attributes = attributes;
+        }
     }
 
     /**

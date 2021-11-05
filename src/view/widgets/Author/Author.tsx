@@ -9,6 +9,7 @@ import AuthorData from '../../../models/author';
 import MonsterCock from '../../../models/cock';
 import RouteHandler, { Routes } from '../../../utils/route_handler';
 import { grabWallet, isConnected } from '../../../utils/connect_wallet';
+import { Loader } from '../loader';
 
 class AuthorProps {
     startingPage: number;
@@ -25,32 +26,26 @@ const Author = (props: AuthorProps) => {
     const [cocks, setCocks] = useState<MonsterCock[]>();
     const [amount, setAmount] = useState<number>(0);
     const [edit, setEdit] = useState<boolean>(false);
+    const [authorLoading, setAuthorLoading] = useState<boolean>(true);
+    const [cocksLoading, setCocksLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        // Fetch author data
-        getAuthor();
-        // Fetch cocks
-        getCocks();
+        console.log('Author: useEffect');
+        // Chequea si todivia no existe un author
+        if (!author) {
+            console.log('Author: useEffect: fetchAuthor');
+            // Fetch author data
+            getAuthor();
+        }
+        // Chequea si todivia no existe los cocks
+        if (!cocks) {
+            console.log('Author: useEffect: fetchCocks');
+            // Fetch cocks
+            getCocks();
+        }
         // Chequea usario
         checkUser();
     });
-
-    // author?: AuthorData,
-    // edit: boolean,
-    // amount: number,
-    // cocks: MonsterCock[],
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         cocks: [],
-    //         amount: 0,
-    //         edit: false
-    //     }
-
-    //     this.getCocks = this.getCocks.bind(this);
-    //     this.getAuthor = this.getAuthor.bind(this);
-    //     this.checkUser = this.checkUser.bind(this);
-    // }
 
     // Chequea el usario currentamente logueado
     // Si es el mismo usuario que el que se esta viendo, se muestra el boton de editar
@@ -72,8 +67,10 @@ const Author = (props: AuthorProps) => {
     // Busca los cocks del address
     const getCocks = async () => {
         const { cocks, amount } = await fetchCocksByOwner(props.address, props.startingPage - 1);
+        console.log(cocks);
         setCocks(cocks);
         setAmount(amount);
+        setCocksLoading(false);
     }
 
     const getAuthor = async () => {
@@ -82,6 +79,7 @@ const Author = (props: AuthorProps) => {
         if (author) {
             setAuthor(author);
         }
+        setAuthorLoading(false);
     }
 
     // componentDidMount() {
@@ -97,15 +95,32 @@ const Author = (props: AuthorProps) => {
                 <div className="row justify-content-between">
                     <div className="col-12 col-md-4">
                         {/* Author Profile */}
-                        {author &&
-                            <AuthorProfile author={author} editMode={edit} />
+                        {
+                            authorLoading ? (
+                                <div>
+                                    <p>Loading author...</p>
+                                    <Loader />
+                                </div>
+                            ) : (
+                                author &&
+                                <AuthorProfile author={author} editMode={edit} />
+                            )
                         }
                     </div>
                     <div className="col-12 col-md-8">
-                        <Explore
-                            cocks={cocks ? cocks : []}
-                            amount={amount}
-                        />
+                        {
+                            cocksLoading ? (
+                                <div className="">
+                                    <p>Loading cocks...</p>
+                                    <Loader />
+                                </div>
+                            ) : (
+                                <Explore
+                                    cocks={cocks ? cocks : []}
+                                    amount={amount}
+                                />
+                            )
+                        }
                     </div>
                 </div>
                 {/* Pagination */}

@@ -21,15 +21,22 @@ const WalletConnectButton = (props: {
     });
 
     const connect = async () => {
+        if (connected) {
+            return;
+        }
         // Busca el address
         let _address = await connectWallet();
         // Chequea si funciono
         if (_address) {
             // Chequea si tenemos que recargar!
-            if (reload && sessionStorage.getItem('reload') != 'false') {
+            if ((reload !== false) && sessionStorage.getItem('reload') != 'false') {
                 sessionStorage.setItem('reload', 'false');
                 window.location.reload();
                 return;
+            } else {
+                console.log('No se recarga');
+                console.log(reload != false);
+                console.log(sessionStorage.getItem('reload') != 'false');
             }
             setAddress(_address);
             setConnected(true);
@@ -42,6 +49,7 @@ const WalletConnectButton = (props: {
                 button: "Ok",
             });
         }
+        sessionStorage.setItem('reload', 'true');
     }
 
     return (

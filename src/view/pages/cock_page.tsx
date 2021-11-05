@@ -75,6 +75,7 @@ class CockPageBuilder extends React.Component<
     async loadData() {
         let cock = (this.state.cock as MonsterCock);
         // Busca la informacion
+        cock.getAttributes().then(() => this.setState({cock}));
         cock.getTransactions().then(() => this.setState({cock}));
         cock.getOwners().then(() => this.setState({cock}));
         cock.getOwner().then(() => this.setState({cock}));

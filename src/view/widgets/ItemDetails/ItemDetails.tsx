@@ -43,7 +43,7 @@ class ItemDetails extends Component<{
     transactions?: Transaction[],
     owners?: Owner[],
     siblings?: { previous?: MonsterCock, next?: MonsterCock },
-    creator?: Transaction
+    creator?: Transaction,
 }> {
 
     constructor(props) {
@@ -85,7 +85,7 @@ class ItemDetails extends Component<{
                                     </li>
                                     <li>
                                         <a id="nav-contact-tab" data-toggle="pill" href="#nav-contact">
-                                            <h5 className="m-0">Attributes ({this.props.cock?.attributes.length})</h5>
+                                            <h5 className="m-0">Attributes ({this.props.cock?.attributes?.length})</h5>
                                         </a>
                                     </li>
                                 </ul>
@@ -175,7 +175,7 @@ class ItemDetails extends Component<{
                                         {
                                             // Attributes tienen
                                             // type, value
-                                            this.props.cock?.attributes.map((attribute, idx) => {
+                                            this.props.cock?.attributes && this.props.cock?.attributes.map((attribute, idx) => {
                                                 return (
                                                     <>
                                                         <li key={`att_${idx}`} className="d-flex justify-content-between align-items-center">

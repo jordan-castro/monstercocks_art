@@ -6,6 +6,7 @@ import { polygonUrl } from '../../../utils/url_builder';
 import shortenString, { shortenAddress } from '../../../utils/shorten_string';
 import ShareButton from '../ShareButton/ShareButton';
 import ClipboardButton from '../ClipboardButton/ClipboardButton';
+import RouteHandler from '../../../utils/route_handler';
 
 const SocialIcon = (props: { href: string, social: string, icon: string }) => {
     return (
@@ -75,7 +76,7 @@ const AuthorProfile = (props: {
                                 </div>
                                 <hr />
                                 <div className="row d-flex justify-content-center">
-                                    <ShareButton />
+                                    <ShareButton shareLink={window.location.host + RouteHandler.getOwnerUrl(author.address)}/>
                                     {
                                         editMode &&
                                         <a className="btn btn-bordered-white btn-smaller" href="/edit" style={{

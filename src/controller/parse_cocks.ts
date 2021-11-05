@@ -1,33 +1,5 @@
 import Attribute from '../models/attribute';
 import MonsterCock from '../models/cock';
-import { MCK_BASE } from '../utils/globals';
-
-/**
- * Crea una lista de attributes sobre JSON.
- * 
- * @param attributesJson 
- * JSON, el JSON de los attributos.
- * 
- * @returns `Attribute[]`
- */
-const parseAttributes = (attributesJson) => {
-    let attributes: Attribute[] = [];
-
-    // Loop sobre los attributes
-    for (var x = 0; x < attributesJson.length; x++) {
-        // Creamos el attribute
-        var attribute = attributesJson[x];
-        // Un push
-        attributes.push(
-            new Attribute(
-                attribute.type || attribute.trait_type,
-                attribute.value
-            )
-        );
-    }
-
-    return attributes;
-}
 
 /**
  * Crea un objecto de MonsterCock por una respuesta de JSON.
@@ -53,13 +25,6 @@ export const parseCock = (cockJson, specials?) => {
     let cockUri = cockJson.uri;
     let cockImage = cockJson.image;
 
-    let attributes: Attribute[] = [];
-    // Chequea si hay attributes
-    if (cockJson.attributes) {
-        // Los attributes
-        attributes = parseAttributes(cockJson.attributes);
-    }
-
     if (specials !== undefined) {
         cockId = specials.id;
         cockUri = specials.uri;
@@ -70,7 +35,6 @@ export const parseCock = (cockJson, specials?) => {
         cockId,
         cockName,
         cockUri,
-        cockImage,
-        attributes
+        cockImage
     );
 }
