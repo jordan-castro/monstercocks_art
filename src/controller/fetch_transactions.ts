@@ -77,9 +77,7 @@ export async function fetchCreatorTransaction(id: number): Promise<Transaction |
     return parseTransaction(response.data);
 }
 
-// TODO un transaction?!
-
-const parseTransaction = (transactionData) => {
+export const parseTransaction = (transactionData) => {
     return new Transaction(
         transactionData.hash,
         transactionData.addressFrom,
