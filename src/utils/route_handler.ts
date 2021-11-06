@@ -73,7 +73,9 @@ export enum Routes {
     COCK = "/cock/",
     COCKS = "/cocks/",
     EDIT = "/edit",
-    OWNER = "/owner/"
+    OWNER = "/owner/",
+    OWNERS = "/owners/",
+    ACTIVTY = "/activity/"
 }
 
 export default RouteHandler;
