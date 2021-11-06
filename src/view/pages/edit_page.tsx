@@ -9,7 +9,7 @@ import Scrollup from "../widgets/Scrollup/Scrollup";
 const EditPage = (props) => {
     return (
         <div className="main">
-            <Header reload={true}/>
+            <Header />
             <Breadcrumb title="Edit" subpage="Authors" page="Edit" />
             <Create />
             <Footer />
