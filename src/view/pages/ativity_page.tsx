@@ -19,7 +19,7 @@ const ActivityPage = () => {
     return (
         <div className="main">
             <Header />
-            <Breadcrumb title="Activity" subpage="Pages" page="Activity" />
+            <Breadcrumb title="Activity" page="Activity" />
             <Activity page={+startingPage}/>
             <Footer />
             <ModalSearch />

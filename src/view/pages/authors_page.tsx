@@ -9,6 +9,7 @@ import Scrollup from "../widgets/Scrollup/Scrollup";
 import { useEffect, useState } from "react";
 import PageNumbers from "../widgets/PageNumbers/PageNumbers";
 import RouteHandler, { Routes } from "../../utils/route_handler";
+import Breadcrumb from "../widgets/Breadcrumb/Breadcrumb";
 
 const AuthorsPage = () => {
     // Busca el numero de la pagina desde el url params
@@ -26,6 +27,7 @@ const AuthorsPage = () => {
     return (
         <div className="main">
             <Header />
+            <Breadcrumb title="Owners" page="Owners"/>
             <Authors pageNumber={+startingPage} onAmountLoad={(amount) => setPages(amount)} />
             {/* <TopSeller pageNumber={+startingPage}/> */}
             <PageNumbers amountOfPages={pages} currentPage={+startingPage} onPageNumberClicked={

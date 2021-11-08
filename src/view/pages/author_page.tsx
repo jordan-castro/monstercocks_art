@@ -20,7 +20,7 @@ const AuthorPage = (props) => {
     return (
         <div className="main">
             <Header />
-            <Breadcrumb title="Author Profile" subpage="Pages" page="Author" />
+            <Breadcrumb title="Author Profile" page="Author" />
             <AuthorProfile address={address} startingPage={+(startingPage)}/>
             <Footer />
             <ModalSearch />
