@@ -36,8 +36,10 @@ const fetchActivity = async (pageNumber: number): Promise<Transaction[]> =>  {
     let transactions: Transaction[] = [];
 
     for (let transaction of transactionsJson) {
-        transactions.push(parseTransaction(transaction));
+        transactions.push(Transaction.fromActivity(transaction));
     }
 
     return transactions;
 }
+
+export default fetchActivity;
