@@ -12,7 +12,7 @@ import { parseTransaction } from "./fetch_transactions";
  * 
  * @return {Promise<Transaction[]>}
  */
-const fetchActivity = async (pageNumber: number): Promise<Transaction[]> =>  {
+const fetchActivity = async (pageNumber: number): Promise<{amount: number, txs: Transaction[]}> =>  {
     const response = await valid_http(`${MCK_BASE}${API_COCK_GATEWAY}`, {
         params: {
             q: "activity",
@@ -23,7 +23,10 @@ const fetchActivity = async (pageNumber: number): Promise<Transaction[]> =>  {
 
     // Chequea response es falso
     if (response === false) {
-        return [];
+        return {
+            amount: 0,
+            txs: []
+        };
     }
 
     let data = (response.data as any);
@@ -39,7 +42,10 @@ const fetchActivity = async (pageNumber: number): Promise<Transaction[]> =>  {
         transactions.push(Transaction.fromActivity(transaction));
     }
 
-    return transactions;
+    return {
+        amount: amount,
+        txs: transactions
+    };
 }
 
 export default fetchActivity;

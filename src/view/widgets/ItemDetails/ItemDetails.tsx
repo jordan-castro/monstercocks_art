@@ -116,18 +116,12 @@ class ItemDetails extends Component<{
                                                                     {dateDifference(transaction.date)}
                                                                     <br />
                                                                     From: <a
-                                                                        href={polygonUrl({
-                                                                            address: transaction.from
-                                                                        })}
-                                                                        target="_new">
+                                                                        href={RouteHandler.getOwnerUrl(transaction.from)}>
                                                                         {shortenAddress(transaction.from)}
                                                                     </a>
                                                                     <br />
                                                                     To: <a
-                                                                        href={polygonUrl({
-                                                                            address: transaction.to
-                                                                        })}
-                                                                        target="_new">
+                                                                        href={RouteHandler.getOwnerUrl(transaction.to)}>
                                                                         {shortenAddress(transaction.to)}
                                                                     </a>
                                                                 </p>
