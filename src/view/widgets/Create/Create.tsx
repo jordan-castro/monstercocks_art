@@ -23,7 +23,7 @@ class Create extends Component<{}, {
     constructor(props) {
         super(props);
         this.state = {
-            author: new AuthorData(0, DEFAULT_ADDRESS, "", "", ""),
+            author: new AuthorData(0, DEFAULT_ADDRESS),
             connected: false,
             canSubmit: true,
         }
@@ -183,7 +183,7 @@ class Create extends Component<{}, {
             // Busca el author por su address
             let author = await fetchAuthor(res);
             this.setState({
-                author: author ? author : new AuthorData(0, res, "", "", ""),
+                author: author ? author : this.state.author,
                 connected: true,
             });
         }
@@ -227,10 +227,10 @@ class Create extends Component<{}, {
                                                 type="text"
                                                 className="form-control"
                                                 name="name"
-                                                placeholder="Item Name"
-                                                required={true}
+                                                placeholder="Name"
+                                                required={false}
                                                 onChange={this.updateName}
-                                                value={this.state.author.name} />
+                                                value={this.state.author.name ? this.state.author.name : ''} />
                                         </div>
                                     </div>
                                     <div className="col-12">

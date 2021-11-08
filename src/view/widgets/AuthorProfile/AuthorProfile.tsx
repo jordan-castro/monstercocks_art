@@ -7,6 +7,7 @@ import shortenString, { shortenAddress } from '../../../utils/shorten_string';
 import ShareButton from '../ShareButton/ShareButton';
 import ClipboardButton from '../ClipboardButton/ClipboardButton';
 import RouteHandler from '../../../utils/route_handler';
+import { safeAuthorName, safeImage } from '../../../utils/get_safe';
 
 const SocialIcon = (props: { href: string, social: string, icon: string }) => {
     return (
@@ -23,19 +24,14 @@ const AuthorProfile = (props: {
 }) => {
     const { author, editMode } = props;
 
-    const authorImage = () => {
-        const { author } = props;
-        return author?.image ? author.image : DEFAULT_AVATAR;
-    }
-
     return (
         <div className="card no-hover text-center">
             <div className="image-over">
-                <img className="card-img-top" src={authorImage()} alt="" />
+                <img className="card-img-top" src={safeImage(author.image)} alt="Profile Image" />
                 {/* Author */}
                 <div className="author">
                     <div className="author-thumb avatar-lg">
-                        <img className="rounded-circle" src={authorImage()} alt="" />
+                        <img className="rounded-circle" src={safeImage(author.image)} alt="Profile Image" />
                     </div>
                 </div>
             </div>
@@ -46,7 +42,7 @@ const AuthorProfile = (props: {
                     author ?
                         (
                             <div className="card-body mt-4">
-                                <h5 className="mb-3">{author.name ? author.name : shortenAddress(author.address)}</h5>
+                                <h5 className="mb-3">{safeAuthorName(author.address, author.name)}</h5>
                                 <p className="my-3">{author.about}</p>
                                 <div className="input-group">
                                     <input type="text" className="form-control" readOnly value={shortenString(author.address, 25)} />

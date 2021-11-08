@@ -75,8 +75,6 @@ class ExploreCocksPageBuilder extends React.Component<
             cocks,
             isLoading: false,
             amountOfPages: pageAmount(amount, 20),
-            // // Si cocks es una lista empty, error
-            // error: cocks.length == 0,
         });
     }
 

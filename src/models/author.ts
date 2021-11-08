@@ -1,12 +1,13 @@
 import { addBaseToImage } from "../utils/add_base_to_image";
-import { MCK_BASE } from "../utils/globals";
+import { DEFAULT_AVATAR, MCK_BASE } from "../utils/globals";
+import { shortenAddress } from "../utils/shorten_string";
 
 export default class AuthorData {
     id: number;
     address: string;
-    name: string;
-    image: string;
-    about: string;
+    name?: string;
+    image?: string;
+    about?: string;
     facebook?: string;
     instagram?: string;
     twitter?: string;
@@ -15,9 +16,9 @@ export default class AuthorData {
     constructor(
         id: number, 
         address: string, 
-        name: string, 
-        image: string, 
-        about: string, 
+        name?: string, 
+        image?: string, 
+        about?: string,  
         facebook?: string, 
         instagram?: string, 
         twitter?: string,
@@ -26,7 +27,7 @@ export default class AuthorData {
         this.id = id;
         this.address = address;
         this.name = name;
-        this.image = addBaseToImage(image);
+        this.image = image;
         this.about = about;
         this.facebook = facebook;
         this.instagram = instagram;

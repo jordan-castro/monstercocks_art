@@ -55,53 +55,13 @@ export async function createAuthor(formData): Promise<boolean> {
     return response && response.data === 1;
 }
 
-/**
- * Busca los authors.
- * 
- * @param {number} page 
- * La página a buscar.
- * 
- * @returns `Promise<Owner[]>`
- */
-export const fetchAuthors = async (page: number): Promise<AuthorData[]> => {
-    const response = await valid_http(`${MCK_BASE}${API_AUTHOR_GATEWAY}`, {
-        params: {
-            q: 'authors',
-            p: API_KEY,
-            n: page.toString(),
-        }
-    });
-
-    // Chequea la resulta de response
-    if (response === false) {
-        return [];
-    }
-
-    // Pon la data en su propio variable
-    const data = response.data as any;
-
-    const amount = data.amount ? data.amount : 0;
-    const authorsJson = data.result ? data.result : [];
-
-    // Crea un array de authors
-    let authors: AuthorData[] = [];
-
-    for (let author of authorsJson) {
-        // Hacemos un parse de author y push al authors array.
-        authors.push(parseAuthor(author));        
-    }
-
-    return authors;
-}
-
-
-const parseAuthor = (authorData: any): AuthorData => {
+export const parseAuthor = (authorData: any): AuthorData => {
     return new AuthorData(
         authorData.id,
         authorData.address,
-        authorData.name,
-        authorData.image,
-        authorData.about,
+        authorData.name != null && authorData.name.length > 0 ? authorData.name : undefined,
+        authorData.image != null ? authorData.image : undefined,
+        authorData.about != null && authorData.about.length > 0 ? authorData.about : undefined,
         authorData.facebook,
         authorData.instagram,
         authorData.twitter,

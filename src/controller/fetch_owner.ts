@@ -82,7 +82,7 @@ export async function fetchOwner(id: number) {
  * 
  * @param ownerData 
  */
-const parseOwner = (ownerData) => {
+export const parseOwner = (ownerData) => {
     return new Owner(
         ownerData.ownerAddress,
         ownerData.previousOwner,

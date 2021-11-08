@@ -20,6 +20,11 @@ export default function PageNumbers(props: PageNumbersProps) {
     // Crea los objectos de la pagina numeros
     const createPageButtons = (props) => {
         let pageButtons: JSX.Element[] = [];
+        // No hay nada para mostrar
+        if (props.amountOfPages <= 1) {
+            return null;
+        }
+
         for (let i = 1; i <= props.amountOfPages; i++) {
             pageButtons.push(
                 <a
