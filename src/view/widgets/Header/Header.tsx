@@ -20,6 +20,18 @@ const WalletConnectButton = (props: {
         }
     });
 
+    /**
+     * Connecta desde tocar un button.
+     */
+    const walletOnClick = async () => {
+        if (connected) {
+            return;
+        }
+
+        await connect();
+        window.location.reload();
+    }
+
     const connect = async () => {
         if (connected) {
             return;
@@ -29,15 +41,6 @@ const WalletConnectButton = (props: {
         // Chequea si funciono
         if (_address) {
             // Chequea si tenemos que recargar!
-            if ((reload !== false) && sessionStorage.getItem('reload') != 'false') {
-                sessionStorage.setItem('reload', 'false');
-                window.location.reload();
-                return;
-            } else {
-                console.log('No se recarga');
-                console.log(reload != false);
-                console.log(sessionStorage.getItem('reload') != 'false');
-            }
             setAddress(_address);
             setConnected(true);
         } else {
@@ -49,13 +52,12 @@ const WalletConnectButton = (props: {
                 button: "Ok",
             });
         }
-        sessionStorage.setItem('reload', 'true');
     }
 
     return (
         <button
             className={`btn ml-lg-auto ${connected ? '' : 'btn-bordered-white'}`}
-            onClick={connect}>
+            onClick={walletOnClick}>
             <i className="icon-wallet mr-md-2" />
             {
                 // Chequea si esta conectado
