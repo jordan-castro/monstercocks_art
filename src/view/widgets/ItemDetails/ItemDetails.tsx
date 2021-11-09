@@ -190,7 +190,6 @@ class ItemDetails extends Component<{
                                     <h3 className="m-0">{this.props.cock?.name}</h3>
                                     <ShareButton
                                         shareLink={window.location.href}
-                                        shareTitle={`Check out ${this.props.cock?.name} on monstercocks.art`}
                                     />
                                 </div>
                                 <br />
