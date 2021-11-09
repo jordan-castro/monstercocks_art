@@ -9,7 +9,7 @@
     # Los metas default
     $og_title = "MonsterCocks Art";
     $og_description = "The worlds largest digitial collection of MonsterCocks!";
-    $og_image = "/logo.png";
+    $og_image = "https://www.monstercocks.art/logo.png";
     $og_url = "http://www.monstercocks.art";
     $og_site_name = "MonsterCocks Art";
 
