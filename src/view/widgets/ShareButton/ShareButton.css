@@ -1,0 +1,10 @@
+/* Override .card class to have less padding */
+.share-button {
+    padding: 10px !important;
+    margin: 5px !important; 
+}
+
+/* Override i tag to be a little bigger. Only when used with the share tag */
+.share-button-icon {
+    font-size: 1.5em;
+}

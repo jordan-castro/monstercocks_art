@@ -47,9 +47,9 @@ const AuthorProfile = (props: {
                                 <div className="input-group">
                                     <input type="text" className="form-control" readOnly value={shortenString(author.address, 25)} />
                                     <div className="input-group-append">
-                                    <ClipboardButton whatToCopy={author?.address ? author.address : 'Empty'}> 
-                                        <i className="icon-docs" />
-                                    </ClipboardButton>
+                                        <ClipboardButton whatToCopy={author?.address ? author.address : 'Empty'}>
+                                            <i className="icon-docs" />
+                                        </ClipboardButton>
                                         {/* <button onClick={() => {
                                             // Copy the field in the clipboard
                                             navigator.clipboard.writeText(author?.address ? author.address : 'Empty');
@@ -71,8 +71,9 @@ const AuthorProfile = (props: {
                                     }
                                 </div>
                                 <hr />
+                                    <strong>Share</strong>
                                 <div className="row d-flex justify-content-center">
-                                    <ShareButton shareLink={window.location.host + RouteHandler.getOwnerUrl(author.address)}/>
+                                    <ShareButton shareLink={window.location.host + RouteHandler.getOwnerUrl(author.address)} shareTitle={author.about ? author.about : safeAuthorName(author.address, author.name)} />
                                     {
                                         editMode &&
                                         <a className="btn btn-bordered-white btn-smaller" href="/edit" style={{

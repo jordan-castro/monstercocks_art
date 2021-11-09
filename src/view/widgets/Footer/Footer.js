@@ -54,7 +54,7 @@ const Footer = (props) => {
                             <div className="footer-items">
                                 {/* Logo */}
                                 <a className="navbar-brand" href="/">
-                                    <img src="img/monstercocks.png" alt="" />
+                                    <img src="/img/monstercocks.png" alt="" />
                                 </a>
                                 <p>MonsterCocks is a Non-Fungible-Token (NFT) based around people's infatuation with monster cocks.</p>
                                 {/* Social Icons */}

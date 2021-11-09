@@ -1,9 +1,29 @@
-import Snackbar from "@material-ui/core/Snackbar";
 import React from "react";
-
+import {
+    EmailShareButton,
+    FacebookShareButton,
+    HatenaShareButton,
+    InstapaperShareButton,
+    LineShareButton,
+    LinkedinShareButton,
+    LivejournalShareButton,
+    MailruShareButton,
+    OKShareButton,
+    PinterestShareButton,
+    PocketShareButton,
+    RedditShareButton,
+    TelegramShareButton,
+    TumblrShareButton,
+    TwitterShareButton,
+    ViberShareButton,
+    VKShareButton,
+    WhatsappShareButton,
+    WorkplaceShareButton
+} from "react-share";
+import './ShareButton.css';
 
 class ShareButton extends React.Component<{
-    shareLink?: string,
+    shareLink: string,
     shareTitle?: string,
 }, {
     open: boolean,
@@ -15,43 +35,35 @@ class ShareButton extends React.Component<{
         };
     }
 
-    handleClick = () => {
-        navigator.clipboard.writeText(this.props.shareLink ? this.props.shareLink : window.location.href);
-        this.setState({ open: true });
-    }
-
-    handleClose = (event, reason) => {
-        if (reason === "clickaway") {
-            return;
-        }
-
-        this.setState({ open: false });
-    }
-
     render() {
         return (
-            <div>
-                <button
-                    className="btn btn-bordered-white btn-smaller"
-                    onClick={this.handleClick}>
-                    <i className="icon-share" style={{
-                        marginRight: '5px',
-                    }} />
-                    {this.props.shareTitle ? this.props.shareTitle : "Share"}
-                </button>
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "left",
-                    }}
-                    open={this.state.open}
-                    autoHideDuration={6000}
-                    onClose={this.handleClose}
-                    ContentProps={{
-                        "aria-describedby": "message-id",
-                    }}
-                    message={<span id="message-id">Copied to clipboard</span>}
-                />
+            // Display a horizontal list of share buttons with a little space between them
+            <div className="social-icons d-flex justify-content-center">
+                <FacebookShareButton url={this.props.shareLink} quote={this.props.shareTitle}>
+                    <div className="share-button card">
+                        <i className="share-button-icon fab fa-facebook-f"></i>
+                    </div>
+                </FacebookShareButton>
+                <TwitterShareButton url={this.props.shareLink} title={this.props.shareTitle}>
+                    <div className="share-button card">
+                        <i className="share-button-icon fab fa-twitter"></i>
+                    </div>
+                </TwitterShareButton>
+                <TelegramShareButton url={this.props.shareLink} title={this.props.shareTitle}>
+                    <div className="share-button card">
+                        <i className="share-button-icon fab fa-telegram-plane"></i>
+                    </div>
+                </TelegramShareButton>
+                <WhatsappShareButton url={this.props.shareLink} title={this.props.shareTitle}>
+                    <div className="share-button card">
+                        <i className="share-button-icon fab fa-whatsapp"></i>
+                    </div>
+                </WhatsappShareButton>
+                <RedditShareButton url={this.props.shareLink} title={this.props.shareTitle}>
+                    <div className="share-button card">
+                        <i className="share-button-icon fab fa-reddit-alien"></i>
+                    </div>
+                </RedditShareButton>
             </div>
         );
     }

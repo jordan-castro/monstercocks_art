@@ -16,7 +16,7 @@ import RouteHandler from '../../../utils/route_handler';
  * 
  * @param {cock: MonsterCock} props: Los props.
 */
-const CockSiblingCard = (props: {cock: MonsterCock}) => {
+const CockSiblingCard = (props: { cock: MonsterCock }) => {
     const { cock } = props;
 
     return (
@@ -188,7 +188,10 @@ class ItemDetails extends Component<{
                             <div className="content mt-5 mt-lg-0">
                                 <div className="row justify-content-between">
                                     <h3 className="m-0">{this.props.cock?.name}</h3>
-                                    <ShareButton />
+                                    <ShareButton
+                                        shareLink={window.location.href}
+                                        shareTitle={`Check out my MonsterCock ${this.props.cock?.name}`}
+                                    />
                                 </div>
                                 <br />
                                 {/* Owner */}
