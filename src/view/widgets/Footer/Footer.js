@@ -10,7 +10,12 @@ const socialLinks = [
     {
         link: "https://discord.gg/dAWr5HbcU6",
         icon: "fab fa-discord"
+    },
+    {
+        link: "https://www.reddit.com/r/MonsterCocksArt/",
+        icon: "fab fa-reddit"
     }
+
 ];
 const usefulLinks = [
     {
@@ -51,7 +56,7 @@ const Footer = (props) => {
                                 <a className="navbar-brand" href="/">
                                     <img src="img/monstercocks.png" alt="" />
                                 </a>
-                                <p>MonsterCocks is all about ...</p>
+                                <p>MonsterCocks is a Non-Fungible-Token (NFT) based around people's infatuation with monster cocks.</p>
                                 {/* Social Icons */}
                                 <div className="social-icons d-flex">
                                     {socialLinks.map((item, idx) => {
@@ -93,18 +98,15 @@ const Footer = (props) => {
                                 </ul>
                             </div>
                         </div>
-                        <div className="col-12 col-sm-6 col-lg-3">
-                            {/* Footer Items */}
+                        {/* <div className="col-12 col-sm-6 col-lg-3">
                             <div className="footer-items">
-                                {/* Footer Title */}
                                 <h4 className="footer-title">Subscribe to the Newsletter</h4>
-                                {/* Subscribe Form */}
                                 <div className="subscribe-form d-flex align-items-center">
                                     <input type="email" className="form-control" placeholder="info@yourmail.com" />
                                     <button type="submit" className="btn"><i className="icon-paper-plane" /></button>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
