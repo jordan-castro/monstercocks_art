@@ -15,6 +15,7 @@ import { fecthTransactions, fetchCreatorTransaction } from "../../controller/fet
 import ModalSearch from "../widgets/Modal/ModalSearch";
 import ModalMenu from "../widgets/Modal/ModalMenu";
 import Scrollup from "../widgets/Scrollup/Scrollup";
+import Footer from "../widgets/Footer/Footer";
 
 export function CockPage() {
     let { id } = useParams();
@@ -137,6 +138,7 @@ class CockPageBuilder extends React.Component<
                             siblings={this.state.cock?.siblings}
                             creator={this.state.cock?.creator}
                         />
+                        <Footer />
                         <ModalSearch />
                         <ModalMenu />
                         <Scrollup />
