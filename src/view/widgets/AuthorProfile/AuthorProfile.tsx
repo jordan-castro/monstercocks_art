@@ -9,7 +9,7 @@ import ClipboardButton from '../ClipboardButton/ClipboardButton';
 import RouteHandler from '../../../utils/route_handler';
 import { safeAuthorName, safeImage } from '../../../utils/get_safe';
 
-const SocialIcon = (props: { href: string, social: string, icon: string }) => {
+export const SocialIcon = (props: { href: string, social: string, icon: string }) => {
     return (
         <a className={props.social} href={props.href} target="_blank">
             <i className={props.icon} />
@@ -73,7 +73,7 @@ const AuthorProfile = (props: {
                                 <hr />
                                     <strong>Share</strong>
                                 <div className="row d-flex justify-content-center">
-                                    <ShareButton shareLink={window.location.host + RouteHandler.getOwnerUrl(author.address)} shareTitle={author.about ? author.about : safeAuthorName(author.address, author.name)} />
+                                    <ShareButton shareLink={window.location.href} shareTitle={author.about ? author.about : safeAuthorName(author.address, author.name)} />
                                     {
                                         editMode &&
                                         <a className="btn btn-bordered-white btn-smaller" href="/edit" style={{

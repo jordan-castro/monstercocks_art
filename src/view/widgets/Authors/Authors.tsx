@@ -5,6 +5,7 @@ import { fetchAuthors } from '../../../controller/fetch_activity';
 import { Loader } from '../loader';
 import RouteHandler from '../../../utils/route_handler';
 import { safeAuthorName, safeImage } from '../../../utils/get_safe';
+import { SocialIcon } from '../AuthorProfile/AuthorProfile';
 
 class Authors extends Component<{
     pageNumber: number,
@@ -94,8 +95,23 @@ class Authors extends Component<{
                                                         <a href={RouteHandler.getOwnerUrl(item.owner.address)}>
                                                             <h5>{safeAuthorName(item.author.address, item.author.name)}</h5>
                                                         </a>
+                                                        <div className="social-icons d-flex justify-content-center my-3">
+                                                            {
+                                                                item.author.twitter && <SocialIcon href={item.author.twitter} social="Twitter" icon="fab fa-twitter" />
+                                                            }
+                                                            {
+                                                                item.author.instagram && <SocialIcon href={item.author.instagram} social="Instagram" icon="fab fa-instagram" />
+                                                            }
+                                                            {
+                                                                item.author.facebook && <SocialIcon href={item.author.facebook} social="Facebook" icon="fab fa-facebook-f" />
+                                                            }
+                                                            {
+                                                                item.author.github && <SocialIcon href={item.author.github} social="Github" icon="fab fa-github" />
+                                                            }
+                                                        </div>
+
                                                         <a className="btn btn-bordered-white btn-smaller" href={RouteHandler.getOwnerUrl(item.owner.address)}>
-                                                            <i className="icon-eye mr-2"/>
+                                                            <i className="icon-eye mr-2" />
                                                             View
                                                         </a>
                                                     </div>
